@@ -717,36 +717,59 @@ window.TUTORIALS = [
   },
 
   {
-    id: "moonlight", title: "Stream PC Games to Your Phone", category: "Streaming",
-    difficulty: "intermediate", time: "20 min",
-    summary: "Sunshine + Moonlight.",
-    intro: "Play PC games on phone.",
-    tags: ["gaming"], platforms: ["linux", "android", "mac", "windows", "ios"],
-    steps: {
-      linux: [
-        { title: "Sunshine", text: "Host.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
-        { title: "Config", text: "Web UI.", code: "https://localhost:47990", lang: "text" },
-        { title: "Games", text: "Applications → + Add." }
-      ],
-      android: [
-        { title: "Moonlight", text: "App." },
-        { title: "Pair", text: "PIN in Sunshine." },
-        { title: "Bitrate", text: "20 Mbps.", note: { type: "tip", text: "5GHz WiFi." } }
-      ],
-      mac: [
-        { title: "Moonlight", text: "Site.", code: "https://moonlight-stream.org/", lang: "text" }
-      ],
-      windows: [
-        { title: "Sunshine", text: "Host.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
-        { title: "Config", text: "Web UI.", code: "https://localhost:47990", lang: "text" }
-      ],
-      ios: [
-        { title: "Moonlight", text: "App Store." },
-        { title: "Controller", text: "Bluetooth recommended." }
-      ]
-    },
-    repo: { url: "https://github.com/LizardByte/Sunshine", label: "Sunshine" }
+  id: "moonlight",
+  title: "Stream PC Games to Any Device",
+  category: "Streaming",
+  difficulty: "intermediate",
+  time: "20 min",
+  summary: "Play PC games on your phone, tablet, or another PC using Sunshine + Moonlight.",
+  intro: "Sunshine runs on your gaming PC as the host. Moonlight runs on the device you want to play on — phone, tablet, Mac, or another PC. Free, low-latency, over your own network.",
+  tags: ["gaming", "streaming"],
+  platforms: ["linux", "android", "mac", "windows", "ios"],
+  steps: {
+    linux: [
+      { title: "Install Sunshine (on gaming PC)", text: "Download the Linux build.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
+      { title: "Configure Sunshine", text: "Open the web UI in a browser on the same PC.", code: "https://localhost:47990", lang: "text" },
+      { title: "Create admin account", text: "First launch asks you to set a username + password for the web UI." },
+      { title: "Add your games", text: "In the Sunshine web UI → Applications → + Add. Point it to your game's .exe or a launcher like Steam, Epic, Heroic." },
+      { title: "Install Moonlight on client", text: "On the device you want to play on, install Moonlight — see your platform's tab." }
+    ],
+    android: [
+      { title: "Install Sunshine (on gaming PC)", text: "Follow the Linux/Windows/Mac tab for the host. Sunshine must run on your gaming PC." },
+      { title: "Install Moonlight", text: "On your Android phone/tablet, from Play Store or F-Droid." },
+      { title: "Pair with your PC", text: "Open Moonlight → it auto-detects PCs on your WiFi. Tap yours → a 4-digit PIN appears." },
+      { title: "Enter PIN in Sunshine", text: "On your PC, open the Sunshine web UI → PIN section → paste the PIN → confirm." },
+      { title: "Set stream quality", text: "Start at 20 Mbps on 5GHz WiFi. Raise if smooth, lower if stuttering.", note: { type: "tip", text: "Ethernet on the PC is strongly recommended." } },
+      { title: "Add a controller", text: "Bluetooth controller (Xbox, PS5, 8BitDo) gives the best experience. Touchscreen works but is clunky." },
+      { title: "Play", text: "Pick a game → it launches on your PC and streams to your phone." }
+    ],
+    mac: [
+      { title: "Install Sunshine (on gaming PC)", text: "Sunshine runs on the PC that has the games. See the Linux/Windows tab on that machine." },
+      { title: "Install Moonlight on Mac", text: "Download from the official site.", code: "https://moonlight-stream.org/", lang: "text" },
+      { title: "Pair with your PC", text: "Open Moonlight → it auto-detects your gaming PC on the same network → tap it → get a PIN." },
+      { title: "Authorize on PC", text: "On your gaming PC, open the Sunshine web UI at localhost:47990 → paste the PIN → confirm." },
+      { title: "Play", text: "Pick a game and start streaming. Use the Mac keyboard/mouse or a Bluetooth controller." },
+      { title: "Performance tip", text: "5GHz WiFi or Ethernet required. 2.4GHz will lag badly.", note: { type: "tip", text: "Lower the bitrate if you see stutter." } }
+    ],
+    windows: [
+      { title: "Install Sunshine on your gaming PC", text: "Download the Windows installer.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
+      { title: "Set up Sunshine", text: "Open https://localhost:47990 in a browser → create admin account." },
+      { title: "Add games", text: "Applications → + Add → point to your game .exe or launcher (Steam, Epic, Xbox app)." },
+      { title: "Install Moonlight on client", text: "On the device you'll play on — phone, tablet, Mac, or another PC." },
+      { title: "Pair", text: "Moonlight auto-detects your PC on the same WiFi → enter the PIN shown on your client into the Sunshine web UI." },
+      { title: "Play", text: "Pick a game and stream. Start at 20 Mbps on 5GHz WiFi or Ethernet." }
+    ],
+    ios: [
+      { title: "Install Sunshine (on gaming PC)", text: "Sunshine runs on your PC — see the Linux/Windows/Mac tab." },
+      { title: "Install Moonlight", text: "From the App Store. Free." },
+      { title: "Pair with PC", text: "Open Moonlight → auto-detects PCs on your WiFi → tap yours → get a PIN." },
+      { title: "Authorize", text: "On your PC, open Sunshine's web UI → paste the PIN → confirm." },
+      { title: "Add a controller", text: "Bluetooth controller strongly recommended. iPhone touchscreen for games is rough." },
+      { title: "Play", text: "Pick a game → streams to your iPhone/iPad." }
+    ]
   },
+  repo: { url: "https://github.com/LizardByte/Sunshine", label: "Sunshine on GitHub" }
+}
 
   // ===== NETWORKING =====
   {
