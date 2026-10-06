@@ -1465,3 +1465,28 @@ body::before {
 }
 
 .prog-item .clear-btn:hover { opacity: 1; }
+
+/* ============ SIDEBAR PAGE ICONS ============ */
+#pageNav .nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#pageNav .nav-btn .nav-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color 0.2s ease, filter 0.2s ease;
+}
+
+#pageNav .nav-btn:hover .nav-icon {
+  color: var(--neon-cyan);
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+}
+
+#pageNav .nav-btn.active .nav-icon {
+  color: var(--neon-cyan);
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8));
+}
