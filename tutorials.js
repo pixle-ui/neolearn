@@ -25,7 +25,7 @@ window.PLATFORMS = [
 ];
 
 // =============================================
-// TUTORIALS — full library
+// TUTORIALS
 // =============================================
 window.TUTORIALS = [
 
@@ -34,7 +34,7 @@ window.TUTORIALS = [
     id: "ollama", title: "Run AI Models Locally with Ollama", category: "AI",
     difficulty: "beginner", time: "15 min",
     summary: "Run Llama, Mistral, DeepSeek offline on your own machine.",
-    intro: "Ollama runs large language models locally with one command.",
+    intro: "Ollama runs large language models locally with one command. No API keys, nothing leaves your device.",
     tags: ["ai", "llm"], platforms: ["linux", "android", "mac", "windows"],
     steps: {
       linux: [
@@ -47,7 +47,7 @@ window.TUTORIALS = [
         { title: "Install Termux", text: "F-Droid." },
         { title: "proot Ubuntu", text: "Full Linux.", code: "pkg install proot-distro -y\nproot-distro install ubuntu\nproot-distro login ubuntu", lang: "bash" },
         { title: "Ollama", text: "Install.", code: "curl -fsSL https://ollama.com/install.sh | sh", lang: "bash" },
-        { title: "Tiny model", text: "Small fits phones.", code: "ollama pull tinyllama\nollama run tinyllama", lang: "bash" }
+        { title: "Tiny model", text: "Fits phones.", code: "ollama pull tinyllama\nollama run tinyllama", lang: "bash" }
       ],
       mac: [
         { title: "Install", text: "Homebrew.", code: "brew install ollama", lang: "bash" },
@@ -64,8 +64,8 @@ window.TUTORIALS = [
   {
     id: "gemini-cli", title: "Use Google Gemini from the Terminal", category: "AI",
     difficulty: "beginner", time: "10 min",
-    summary: "Official Gemini CLI — chat with Gemini from your shell.",
-    intro: "Google's official Gemini CLI.",
+    summary: "Official Gemini CLI.",
+    intro: "Google's official Gemini CLI gives you a fast AI assistant in the terminal.",
     tags: ["ai", "gemini"], platforms: ["linux", "android", "mac", "windows"],
     steps: {
       linux: [
@@ -154,23 +154,22 @@ window.TUTORIALS = [
   {
     id: "metasploit-theory", title: "Metasploit: How Exploitation Frameworks Work", category: "Hacking",
     difficulty: "intermediate", time: "20 min",
-    summary: "Understand what Metasploit is and how penetration testers use it — safely.",
-    intro: "Metasploit is the most popular exploitation framework. This tutorial explains the concepts and how to practice in LEGAL labs, not how to attack real systems.",
-    tags: ["metasploit", "pentest"], platforms: ["linux", "mac"],
+    summary: "Understand what Metasploit is — safely.",
+    intro: "Metasploit is the most popular exploitation framework. Concepts only, legal labs only.",
+    tags: ["metasploit"], platforms: ["linux", "mac"],
     steps: {
       linux: [
-        { title: "⚠️ Legal warning", text: "Exploiting systems you don't own is a serious crime. Use only on TryHackMe/HackTheBox labs or your own VMs.", note: { type: "danger", text: "Legal labs only." } },
-        { title: "What it is", text: "A framework with modules: exploits, payloads, auxiliaries, post-exploitation. Automates finding and using vulnerabilities." },
-        { title: "Install (legal labs)", text: "Kali ships it. Or:", code: "sudo apt install metasploit-framework -y", lang: "bash" },
-        { title: "Start the console", text: "Only run against lab machines.", code: "msfconsole", lang: "bash" },
-        { title: "Basic workflow", text: "Search → use → show options → set → run.", code: "search <keyword>\nuse <module>\nshow options\nset RHOSTS <lab-ip>\nrun", lang: "bash" },
-        { title: "Practice legally", text: "Free legal targets.", code: "https://tryhackme.com\nhttps://www.hackthebox.com", lang: "text" },
-        { title: "Ethical rule", text: "Never use on systems you don't own or have written permission to test." }
+        { title: "⚠️ Legal warning", text: "Exploiting systems you don't own is a crime. Use TryHackMe/HackTheBox labs only.", note: { type: "danger", text: "Legal labs only." } },
+        { title: "What it is", text: "Framework with modules: exploits, payloads, auxiliaries, post-exploitation." },
+        { title: "Install", text: "Kali ships it. Or:", code: "sudo apt install metasploit-framework -y", lang: "bash" },
+        { title: "Start", text: "Lab machines only.", code: "msfconsole", lang: "bash" },
+        { title: "Workflow", text: "Search → use → set → run.", code: "search <keyword>\nuse <module>\nshow options\nset RHOSTS <lab-ip>\nrun", lang: "bash" },
+        { title: "Practice", text: "Free legal targets.", code: "https://tryhackme.com\nhttps://www.hackthebox.com", lang: "text" }
       ],
       mac: [
         { title: "⚠️ Legal warning", text: "Legal labs only.", note: { type: "danger", text: "Others = crime." } },
-        { title: "Easier path", text: "Run Kali Linux in a VM (UTM or VirtualBox) — Metasploit is pre-installed." },
-        { title: "Practice legally", text: "TryHackMe free labs.", code: "https://tryhackme.com", lang: "text" }
+        { title: "Easier path", text: "Run Kali Linux in UTM or VirtualBox — Metasploit pre-installed." },
+        { title: "Practice", text: "TryHackMe.", code: "https://tryhackme.com", lang: "text" }
       ]
     },
     repo: { url: "https://www.metasploit.com/", label: "Metasploit" }
@@ -179,53 +178,49 @@ window.TUTORIALS = [
   {
     id: "hydra-defense", title: "Password Attacks: How Hydra Works (Defense)", category: "Hacking",
     difficulty: "intermediate", time: "15 min",
-    summary: "Understand password-cracking tools to defend against them better.",
-    intro: "Hydra is a password-cracking tool used by pentesters and attackers. Learn what it does and how to harden against it.",
+    summary: "Understand password-cracking tools to defend.",
+    intro: "Hydra is a password-cracking tool. Learn what it does and how to harden against it.",
     tags: ["hydra", "defense"], platforms: ["linux", "mac"],
     steps: {
       linux: [
         { title: "⚠️ Defense only", text: "Running Hydra against real accounts is a crime.", note: { type: "danger", text: "Defense only." } },
-        { title: "What Hydra does", text: "Tries username/password lists against logins — SSH, FTP, HTTP forms, etc. Fast but loud (creates many failed logins)." },
+        { title: "What Hydra does", text: "Tries password lists against logins. Fast but loud." },
         { title: "Detection", text: "Watch auth logs.", code: "sudo tail -f /var/log/auth.log", lang: "bash" },
-        { title: "Defense 1: Fail2ban", text: "Auto-blocks offending IPs.", code: "sudo apt install fail2ban -y\nsudo systemctl enable --now fail2ban", lang: "bash" },
-        { title: "Defense 2: SSH keys only", text: "Disable password auth entirely.", code: "sudo nano /etc/ssh/sshd_config\n# PasswordAuthentication no", lang: "bash" },
-        { title: "Defense 3: 2FA", text: "Even correct passwords fail without a second factor." },
-        { title: "Practice legally", text: "TryHackMe has Hydra labs against your own machines.", code: "https://tryhackme.com", lang: "text" }
+        { title: "Defense 1: Fail2ban", text: "Auto-blocks.", code: "sudo apt install fail2ban -y\nsudo systemctl enable --now fail2ban", lang: "bash" },
+        { title: "Defense 2: SSH keys only", text: "Disable password auth.", code: "sudo nano /etc/ssh/sshd_config\n# PasswordAuthentication no", lang: "bash" },
+        { title: "Defense 3: 2FA", text: "Even correct passwords fail." },
+        { title: "Practice", text: "TryHackMe labs.", code: "https://tryhackme.com", lang: "text" }
       ],
       mac: [
         { title: "⚠️ Defense only", text: "Defense only.", note: { type: "danger", text: "Others = crime." } },
-        { title: "Enable firewall", text: "System Settings → Network → Firewall ON." },
-        { title: "Strong login password", text: "Use a passphrase." },
-        { title: "Practice legally", text: "TryHackMe.", code: "https://tryhackme.com", lang: "text" }
+        { title: "Firewall", text: "System Settings → Network → Firewall ON." },
+        { title: "Strong password", text: "Use a passphrase." }
       ]
     },
-    repo: { url: "https://tryhackme.com", label: "TryHackMe (legal labs)" }
+    repo: { url: "https://tryhackme.com", label: "TryHackMe" }
   },
 
   {
     id: "hashcat-theory", title: "Password Hashes & Hashcat (Defense)", category: "Hacking",
     difficulty: "intermediate", time: "15 min",
     summary: "What password hashes are and how attackers crack them.",
-    intro: "Passwords aren't stored in plain text — they're hashed. Understanding hashing teaches you why password managers matter.",
+    intro: "Passwords are stored as hashes. Understanding hashing teaches why password managers matter.",
     tags: ["hashcat", "hashes"], platforms: ["linux", "mac", "windows"],
     steps: {
       linux: [
         { title: "⚠️ Defense only", text: "Cracking hashes without permission is illegal.", note: { type: "danger", text: "Defense only." } },
-        { title: "What a hash is", text: "A one-way function: password → hash. Attacker tries millions of guesses, hashing each, until one matches." },
-        { title: "Why bcrypt/argon2 matter", text: "Slow hashes defeat fast cracking. Never store MD5/SHA1 passwords." },
-        { title: "Test your own hash", text: "Generate on YOUR OWN files.", code: "echo -n 'mypassword' | sha256sum", lang: "bash" },
-        { title: "Defense: password managers", text: "Long random passwords can't be cracked by dictionary attacks. Use Bitwarden or KeePass." },
-        { title: "Practice legally", text: "TryHackMe hash-cracking rooms.", code: "https://tryhackme.com", lang: "text" }
+        { title: "What a hash is", text: "One-way function: password → hash. Attacker guesses, hashes, compares." },
+        { title: "Slow hashes matter", text: "bcrypt and argon2 defeat fast cracking. Never store MD5/SHA1." },
+        { title: "Generate your own", text: "Local test.", code: "echo -n 'mypassword' | sha256sum", lang: "bash" },
+        { title: "Defense: managers", text: "Long random passwords can't be cracked. Bitwarden, KeePass." }
       ],
       mac: [
         { title: "⚠️ Defense only", text: "Defense only." },
-        { title: "Generate hashes", text: "Local test.", code: "echo -n 'mypassword' | shasum -a 256", lang: "bash" },
-        { title: "Use strong passwords", text: "Password manager recommended." }
+        { title: "Generate", text: "Local.", code: "echo -n 'mypassword' | shasum -a 256", lang: "bash" }
       ],
       windows: [
         { title: "⚠️ Defense only", text: "Defense only." },
-        { title: "Generate hash", text: "PowerShell.", code: "$hash = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes('mypassword')))", lang: "powershell" },
-        { title: "Use strong passwords", text: "Bitwarden, KeePass." }
+        { title: "Generate", text: "PowerShell.", code: "$h = [System.BitConverter]::ToString([System.Security.Cryptography.SHA256]::Create().ComputeHash([System.Text.Encoding]::UTF8.GetBytes('mypassword')))", lang: "powershell" }
       ]
     },
     repo: { url: "https://hashcat.net/wiki/", label: "Hashcat Wiki" }
@@ -234,61 +229,60 @@ window.TUTORIALS = [
   {
     id: "steganography", title: "Steganography: Hide Data in Images", category: "Hacking",
     difficulty: "intermediate", time: "15 min",
-    summary: "Hide text inside PNGs — a classic trick.",
-    intro: "Steganography hides data inside other files. Used in CTFs and by penetration testers for payload delivery.",
-    tags: ["steganography", "ctf"], platforms: ["linux", "mac", "android"],
+    summary: "Hide text inside PNGs.",
+    intro: "Steganography hides data inside other files. Used in CTFs and by pentesters.",
+    tags: ["steganography"], platforms: ["linux", "mac", "android"],
     steps: {
       linux: [
-        { title: "What it is", text: "Hiding data in plain sight — e.g. text in image pixels." },
-        { title: "Install tools", text: "steghide + binwalk.", code: "sudo apt install steghide binwalk -y", lang: "bash" },
-        { title: "Hide text in image", text: "Needs a JPEG.", code: "steghide embed -cf image.jpg -ef secret.txt", lang: "bash" },
-        { title: "Extract", text: "Recover the hidden file.", code: "steghide extract -sf image.jpg", lang: "bash" },
-        { title: "Detect hidden files", text: "binwalk scans for embedded content.", code: "binwalk image.jpg", lang: "bash" },
-        { title: "Practice legally", text: "CTFs like picoCTF have great steg challenges.", code: "https://picoctf.org", lang: "text" }
+        { title: "What it is", text: "Hiding data in plain sight — text in image pixels." },
+        { title: "Install", text: "steghide + binwalk.", code: "sudo apt install steghide binwalk -y", lang: "bash" },
+        { title: "Hide", text: "Needs JPEG.", code: "steghide embed -cf image.jpg -ef secret.txt", lang: "bash" },
+        { title: "Extract", text: "Recover.", code: "steghide extract -sf image.jpg", lang: "bash" },
+        { title: "Detect", text: "binwalk scans.", code: "binwalk image.jpg", lang: "bash" },
+        { title: "Practice", text: "picoCTF has great steg challenges.", code: "https://picoctf.org", lang: "text" }
       ],
       mac: [
-        { title: "Install", text: "Homebrew.", code: "brew install steghide", lang: "bash" },
-        { title: "Hide + extract", text: "Same commands.", code: "steghide embed -cf image.jpg -ef secret.txt", lang: "bash" }
+        { title: "Install", text: "Brew.", code: "brew install steghide", lang: "bash" },
+        { title: "Use", text: "Same commands.", code: "steghide embed -cf image.jpg -ef secret.txt", lang: "bash" }
       ],
       android: [
-        { title: "Install Termux + proot Ubuntu", text: "See proot tutorial." },
-        { title: "Inside Ubuntu", text: "Install tools.", code: "apt install steghide binwalk -y", lang: "bash" },
-        { title: "Use", text: "Same commands.", code: "steghide embed -cf image.jpg -ef secret.txt", lang: "bash" }
+        { title: "proot Ubuntu", text: "See proot tutorial." },
+        { title: "Install inside", text: "apt tools.", code: "apt install steghide binwalk -y", lang: "bash" }
       ]
     },
     repo: { url: "https://steghide.sourceforge.net/", label: "Steghide" }
   },
 
   {
-    id: "osint", title: "OSINT: Find Public Info About Anyone (Ethically)", category: "Hacking",
+    id: "osint", title: "OSINT: Find Public Info Ethically", category: "Hacking",
     difficulty: "beginner", time: "15 min",
-    summary: "Open Source Intelligence — using only public info, legally.",
-    intro: "OSINT = gathering info from public sources. Used by journalists, security researchers, and private investigators. Learn the tools and the ethics.",
+    summary: "Open Source Intelligence — public info only.",
+    intro: "OSINT = gathering info from public sources. Used by journalists and researchers.",
     tags: ["osint", "recon"], platforms: ["linux", "android", "mac", "windows", "ios"],
     steps: {
       linux: [
-        { title: "Ethics first", text: "Only search for people with consent or for legitimate purposes (checking your own footprint, security research, journalism)." },
-        { title: "Google dorks", text: "Site-specific searches reveal public info.", code: "site:example.com filetype:pdf\n\"John Doe\" site:linkedin.com", lang: "text" },
-        { title: "Check your own footprint", text: "See what's public about you.", code: "https://haveibeenpwned.com\nhttps://web.archive.org", lang: "text" },
-        { title: "Username search", text: "Cross-platform handle search.", code: "https://namechk.com\nhttps://whatsmyname.app", lang: "text" },
-        { title: "Metadata", text: "Photos often contain GPS + device info.", code: "exiftool photo.jpg", lang: "bash" },
-        { title: "Remove your data", text: "Google yourself, opt out of data brokers, tight privacy settings." }
+        { title: "Ethics first", text: "Only for legitimate purposes (own footprint, research, journalism)." },
+        { title: "Google dorks", text: "Site-specific searches.", code: "site:example.com filetype:pdf\n\"John Doe\" site:linkedin.com", lang: "text" },
+        { title: "Check your footprint", text: "See what's public about you.", code: "https://haveibeenpwned.com\nhttps://web.archive.org", lang: "text" },
+        { title: "Username search", text: "Cross-platform.", code: "https://namechk.com\nhttps://whatsmyname.app", lang: "text" },
+        { title: "Metadata", text: "Photos contain GPS.", code: "exiftool photo.jpg", lang: "bash" },
+        { title: "Remove your data", text: "Google yourself, opt out of brokers, tighten privacy." }
       ],
       android: [
-        { title: "Ethics first", text: "Only for legitimate purposes." },
-        { title: "Check your footprint", text: "Open in browser.", code: "https://haveibeenpwned.com", lang: "text" },
+        { title: "Ethics first", text: "Legitimate only." },
+        { title: "Check footprint", text: "Browser.", code: "https://haveibeenpwned.com", lang: "text" },
         { title: "Username search", text: "Browser.", code: "https://namechk.com", lang: "text" }
       ],
       mac: [
-        { title: "Ethics first", text: "Legitimate use only." },
+        { title: "Ethics first", text: "Legitimate only." },
         { title: "exiftool", text: "Install + inspect.", code: "brew install exiftool\nexiftool photo.jpg", lang: "bash" }
       ],
       windows: [
-        { title: "Ethics first", text: "Legitimate use only." },
-        { title: "exiftool", text: "Download + use.", code: "https://exiftool.org", lang: "text" }
+        { title: "Ethics first", text: "Legitimate only." },
+        { title: "exiftool", text: "Download.", code: "https://exiftool.org", lang: "text" }
       ],
       ios: [
-        { title: "Ethics first", text: "Legitimate use only." },
+        { title: "Ethics first", text: "Legitimate only." },
         { title: "Check footprint", text: "Safari.", code: "https://haveibeenpwned.com", lang: "text" }
       ]
     },
@@ -343,7 +337,7 @@ window.TUTORIALS = [
   {
     id: "termux-cron", title: "Schedule Tasks on Android (Termux Cron)", category: "Hacking",
     difficulty: "intermediate", time: "18 min",
-    summary: "Automate backups and downloads in the background.",
+    summary: "Automate backups in the background.",
     intro: "Termux cron jobs.",
     tags: ["termux", "cron"], platforms: ["android"],
     steps: {
@@ -365,7 +359,7 @@ window.TUTORIALS = [
   {
     id: "termux-server", title: "Turn Your Phone into a Linux Server", category: "Hacking",
     difficulty: "intermediate", time: "15 min",
-    summary: "SSH into your own phone from a laptop.",
+    summary: "SSH into your own phone.",
     intro: "Termux runs SSH server.",
     tags: ["termux", "ssh"], platforms: ["android"],
     steps: {
@@ -717,59 +711,59 @@ window.TUTORIALS = [
   },
 
   {
-  id: "moonlight",
-  title: "Stream PC Games to Any Device",
-  category: "Streaming",
-  difficulty: "intermediate",
-  time: "20 min",
-  summary: "Play PC games on your phone, tablet, or another PC using Sunshine + Moonlight.",
-  intro: "Sunshine runs on your gaming PC as the host. Moonlight runs on the device you want to play on — phone, tablet, Mac, or another PC. Free, low-latency, over your own network.",
-  tags: ["gaming", "streaming"],
-  platforms: ["linux", "android", "mac", "windows", "ios"],
-  steps: {
-    linux: [
-      { title: "Install Sunshine (on gaming PC)", text: "Download the Linux build.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
-      { title: "Configure Sunshine", text: "Open the web UI in a browser on the same PC.", code: "https://localhost:47990", lang: "text" },
-      { title: "Create admin account", text: "First launch asks you to set a username + password for the web UI." },
-      { title: "Add your games", text: "In the Sunshine web UI → Applications → + Add. Point it to your game's .exe or a launcher like Steam, Epic, Heroic." },
-      { title: "Install Moonlight on client", text: "On the device you want to play on, install Moonlight — see your platform's tab." }
-    ],
-    android: [
-      { title: "Install Sunshine (on gaming PC)", text: "Follow the Linux/Windows/Mac tab for the host. Sunshine must run on your gaming PC." },
-      { title: "Install Moonlight", text: "On your Android phone/tablet, from Play Store or F-Droid." },
-      { title: "Pair with your PC", text: "Open Moonlight → it auto-detects PCs on your WiFi. Tap yours → a 4-digit PIN appears." },
-      { title: "Enter PIN in Sunshine", text: "On your PC, open the Sunshine web UI → PIN section → paste the PIN → confirm." },
-      { title: "Set stream quality", text: "Start at 20 Mbps on 5GHz WiFi. Raise if smooth, lower if stuttering.", note: { type: "tip", text: "Ethernet on the PC is strongly recommended." } },
-      { title: "Add a controller", text: "Bluetooth controller (Xbox, PS5, 8BitDo) gives the best experience. Touchscreen works but is clunky." },
-      { title: "Play", text: "Pick a game → it launches on your PC and streams to your phone." }
-    ],
-    mac: [
-      { title: "Install Sunshine (on gaming PC)", text: "Sunshine runs on the PC that has the games. See the Linux/Windows tab on that machine." },
-      { title: "Install Moonlight on Mac", text: "Download from the official site.", code: "https://moonlight-stream.org/", lang: "text" },
-      { title: "Pair with your PC", text: "Open Moonlight → it auto-detects your gaming PC on the same network → tap it → get a PIN." },
-      { title: "Authorize on PC", text: "On your gaming PC, open the Sunshine web UI at localhost:47990 → paste the PIN → confirm." },
-      { title: "Play", text: "Pick a game and start streaming. Use the Mac keyboard/mouse or a Bluetooth controller." },
-      { title: "Performance tip", text: "5GHz WiFi or Ethernet required. 2.4GHz will lag badly.", note: { type: "tip", text: "Lower the bitrate if you see stutter." } }
-    ],
-    windows: [
-      { title: "Install Sunshine on your gaming PC", text: "Download the Windows installer.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
-      { title: "Set up Sunshine", text: "Open https://localhost:47990 in a browser → create admin account." },
-      { title: "Add games", text: "Applications → + Add → point to your game .exe or launcher (Steam, Epic, Xbox app)." },
-      { title: "Install Moonlight on client", text: "On the device you'll play on — phone, tablet, Mac, or another PC." },
-      { title: "Pair", text: "Moonlight auto-detects your PC on the same WiFi → enter the PIN shown on your client into the Sunshine web UI." },
-      { title: "Play", text: "Pick a game and stream. Start at 20 Mbps on 5GHz WiFi or Ethernet." }
-    ],
-    ios: [
-      { title: "Install Sunshine (on gaming PC)", text: "Sunshine runs on your PC — see the Linux/Windows/Mac tab." },
-      { title: "Install Moonlight", text: "From the App Store. Free." },
-      { title: "Pair with PC", text: "Open Moonlight → auto-detects PCs on your WiFi → tap yours → get a PIN." },
-      { title: "Authorize", text: "On your PC, open Sunshine's web UI → paste the PIN → confirm." },
-      { title: "Add a controller", text: "Bluetooth controller strongly recommended. iPhone touchscreen for games is rough." },
-      { title: "Play", text: "Pick a game → streams to your iPhone/iPad." }
-    ]
+    id: "moonlight",
+    title: "Stream PC Games to Any Device",
+    category: "Streaming",
+    difficulty: "intermediate",
+    time: "20 min",
+    summary: "Play PC games on your phone, tablet, or another computer using Sunshine + Moonlight.",
+    intro: "Sunshine runs on your gaming PC as the host. Moonlight runs on the device you want to play on — phone, tablet, Mac, or another PC. Free, low-latency, over your own network.",
+    tags: ["gaming", "streaming"],
+    platforms: ["linux", "android", "mac", "windows", "ios"],
+    steps: {
+      linux: [
+        { title: "Install Sunshine (on gaming PC)", text: "Download the Linux build.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
+        { title: "Configure Sunshine", text: "Open the web UI in a browser on the same PC.", code: "https://localhost:47990", lang: "text" },
+        { title: "Create admin account", text: "First launch asks for username + password for the web UI." },
+        { title: "Add your games", text: "Sunshine → Applications → + Add. Point to your game or launcher." },
+        { title: "Install Moonlight on client", text: "On the device you'll play on — see your platform's tab." }
+      ],
+      android: [
+        { title: "Install Sunshine (on gaming PC)", text: "Follow Linux/Windows/Mac tab for the host PC." },
+        { title: "Install Moonlight", text: "On your Android phone/tablet, from Play Store or F-Droid." },
+        { title: "Pair with PC", text: "Moonlight auto-detects your PC → tap it → a 4-digit PIN appears." },
+        { title: "Enter PIN in Sunshine", text: "On your PC, open the Sunshine web UI → paste PIN → confirm." },
+        { title: "Set stream quality", text: "Start at 20 Mbps on 5GHz WiFi.", note: { type: "tip", text: "Ethernet on the PC is best." } },
+        { title: "Add a controller", text: "Bluetooth controller gives the best experience." },
+        { title: "Play", text: "Pick a game → it launches and streams to your phone." }
+      ],
+      mac: [
+        { title: "Install Sunshine (on gaming PC)", text: "Sunshine runs on the PC that has the games — see Linux/Windows tab." },
+        { title: "Install Moonlight on Mac", text: "Download from the official site.", code: "https://moonlight-stream.org/", lang: "text" },
+        { title: "Pair with PC", text: "Moonlight auto-detects your PC → tap it → get a PIN." },
+        { title: "Authorize on PC", text: "On your PC: Sunshine web UI → paste PIN → confirm." },
+        { title: "Play", text: "Pick a game. Use Mac keyboard/mouse or a Bluetooth controller." },
+        { title: "Performance tip", text: "5GHz WiFi or Ethernet required.", note: { type: "tip", text: "Lower bitrate if stutter." } }
+      ],
+      windows: [
+        { title: "Install Sunshine (on gaming PC)", text: "Download the Windows installer.", code: "https://github.com/LizardByte/Sunshine/releases", lang: "text" },
+        { title: "Set up Sunshine", text: "Open https://localhost:47990 → create admin account." },
+        { title: "Add games", text: "Applications → + Add → point to your game or launcher." },
+        { title: "Install Moonlight on client", text: "On the device you'll play on." },
+        { title: "Pair", text: "Moonlight auto-detects → enter the PIN in Sunshine web UI." },
+        { title: "Play", text: "Start at 20 Mbps on 5GHz WiFi or Ethernet." }
+      ],
+      ios: [
+        { title: "Install Sunshine (on gaming PC)", text: "See Linux/Windows/Mac tab for the host." },
+        { title: "Install Moonlight", text: "From the App Store. Free." },
+        { title: "Pair with PC", text: "Moonlight auto-detects PCs → tap yours → get a PIN." },
+        { title: "Authorize", text: "On your PC: Sunshine web UI → paste PIN → confirm." },
+        { title: "Add a controller", text: "Bluetooth controller strongly recommended." },
+        { title: "Play", text: "Pick a game → streams to iPhone/iPad." }
+      ]
+    },
+    repo: { url: "https://github.com/LizardByte/Sunshine", label: "Sunshine" }
   },
-  repo: { url: "https://github.com/LizardByte/Sunshine", label: "Sunshine on GitHub" }
-}
 
   // ===== NETWORKING =====
   {
@@ -861,7 +855,7 @@ window.TUTORIALS = [
     id: "js-basics", title: "JavaScript in 20 Minutes", category: "Coding",
     difficulty: "beginner", time: "20 min",
     summary: "The language that runs the web.",
-    intro: "JavaScript powers every website. Learn variables, functions, arrays, and DOM.",
+    intro: "JavaScript powers every website. Learn variables, functions, arrays, DOM.",
     tags: ["javascript"], platforms: ["linux", "android", "mac", "windows", "ios"],
     steps: {
       linux: [
@@ -870,14 +864,13 @@ window.TUTORIALS = [
         { title: "Functions", text: "Arrow functions.", code: "const add = (a, b) => a + b;\nconsole.log(add(2, 3));", lang: "javascript" },
         { title: "Arrays", text: "List data.", code: "const colors = [\"red\", \"blue\"];\ncolors.push(\"green\");\nconsole.log(colors.length);", lang: "javascript" },
         { title: "Objects", text: "Key-value.", code: "const user = { name: \"Neo\", age: 42 };\nconsole.log(user.name);", lang: "javascript" },
-        { title: "DOM", text: "Manipulate the page.", code: "document.body.style.background = \"black\";\ndocument.title = \"Changed!\";", lang: "javascript" },
+        { title: "DOM", text: "Manipulate page.", code: "document.body.style.background = \"black\";\ndocument.title = \"Changed!\";", lang: "javascript" },
         { title: "Events", text: "Respond to clicks.", code: "document.addEventListener(\"click\", () => alert(\"Clicked!\"));", lang: "javascript" }
       ],
       android: [
         { title: "Kiwi Browser", text: "Full dev tools on Android." },
         { title: "Console", text: "Menu → Dev tools → Console." },
-        { title: "Try it", text: "Same examples.", code: "let name = \"Neo\";\nconsole.log(name);", lang: "javascript" },
-        { title: "Edit pages live", text: "Any site, instantly.", code: "document.body.style.background = \"pink\";", lang: "javascript" }
+        { title: "Try it", text: "Same examples.", code: "let name = \"Neo\";\nconsole.log(name);", lang: "javascript" }
       ],
       mac: [
         { title: "Safari DevTools", text: "Safari → Develop → Show JavaScript Console." },
@@ -889,7 +882,7 @@ window.TUTORIALS = [
       ],
       ios: [
         { title: "Safari Web Inspector", text: "Enable in Settings → Safari → Advanced → Web Inspector." },
-        { title: "Or use Play.js", text: "Real JS editor for iOS." }
+        { title: "Or Play.js", text: "Real JS editor for iOS." }
       ]
     },
     repo: { url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN JavaScript" }
@@ -898,21 +891,20 @@ window.TUTORIALS = [
   {
     id: "react-basics", title: "React in 15 Minutes", category: "Coding",
     difficulty: "intermediate", time: "15 min",
-    summary: "Build interactive UIs with React.",
-    intro: "React is the most popular UI framework. Learn components, props, and state.",
-    tags: ["react", "javascript"], platforms: ["linux", "android", "mac", "windows"],
+    summary: "Build interactive UIs.",
+    intro: "React — most popular UI framework.",
+    tags: ["react"], platforms: ["linux", "android", "mac", "windows"],
     steps: {
       linux: [
         { title: "Install Node", text: "Prereq.", code: "sudo apt install nodejs npm -y", lang: "bash" },
         { title: "Create app", text: "Vite is fastest.", code: "npm create vite@latest myapp -- --template react\ncd myapp\nnpm install\nnpm run dev", lang: "bash" },
         { title: "Components", text: "Edit src/App.jsx.", code: "function Hello({ name }) {\n  return <h1>Hello, {name}!</h1>;\n}\nexport default function App() {\n  return <Hello name=\"Neo\" />;\n}", lang: "javascript" },
         { title: "State", text: "useState hook.", code: "import { useState } from 'react';\nexport default function App() {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(count + 1)}>Clicked {count}</button>;\n}", lang: "javascript" },
-        { title: "Build", text: "For production.", code: "npm run build", lang: "bash" }
+        { title: "Build", text: "Production.", code: "npm run build", lang: "bash" }
       ],
       android: [
         { title: "Install Node", text: "Termux.", code: "pkg install nodejs -y", lang: "bash" },
-        { title: "Create", text: "Vite app.", code: "npm create vite@latest myapp -- --template react\ncd myapp\nnpm install\nnpm run dev -- --host", lang: "bash" },
-        { title: "Open in browser", text: "localhost:5173." }
+        { title: "Create", text: "Vite app.", code: "npm create vite@latest myapp -- --template react\ncd myapp\nnpm install\nnpm run dev -- --host", lang: "bash" }
       ],
       mac: [
         { title: "Setup", text: "Brew + create.", code: "brew install node\nnpm create vite@latest myapp -- --template react\ncd myapp && npm install && npm run dev", lang: "bash" }
