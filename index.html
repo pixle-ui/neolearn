@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeoLearn — Cool Tech, Explained</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" type="button">☰</button>
+    <div class="brand"><span class="brand-icon">⌬</span> NeoLearn</div>
+    <div class="spacer"></div>
+    <span class="version">v2.0</span>
+  </header>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span>⌬ NeoLearn</span>
+      <button class="close-btn" id="closeBtn" type="button">✕</button>
+    </div>
+
+    <div class="sidebar-section">Pages</div>
+<nav id="pageNav">
+  <button class="nav-btn" data-page="home">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-btn" data-page="favorites">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+    <span>Favorites</span>
+  </button>
+  <button class="nav-btn" data-page="progress">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-8M21 20V6"/></svg>
+    <span>Progress</span>
+  </button>
+  <button class="nav-btn" data-page="about">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+    <span>About</span>
+  </button>
+</nav>
+
+    <div class="sidebar-section">Categories</div>
+    <nav id="categoryNav"></nav>
+
+    <div class="sidebar-section">All Tutorials</div>
+    <nav id="tutorialNav"></nav>
+  </aside>
+
+  <main class="content">
+
+    <!-- HOME -->
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="hero-tag">// free //</div>
+        <h1>Learn <span class="grad">cool tech.</span><br>Step by step.</h1>
+        <p>Real tutorials. Real commands. Copy, paste, done.</p>
+        <div class="search-wrap">
+          <input type="text" id="searchInput" placeholder="🔍 Search tutorials..." />
+        </div>
+      </div>
+      <div class="filter-chips" id="filterChips"></div>
+      <div class="tutorial-grid" id="tutorialGrid"></div>
+      <div class="empty" id="emptyState" style="display:none;">
+        <p>No tutorials match.</p>
+      </div>
+    </section>
+
+    <!-- TUTORIAL DETAIL -->
+    <section class="page" id="tutorial">
+      <button class="back-btn" id="backBtn" type="button">← Back</button>
+      <article id="tutorialContent"></article>
+    </section>
+
+    <!-- FAVORITES -->
+    <section class="page" id="favorites">
+      <div class="about-header">
+        <h1>
+  <svg class="page-icon pink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+  Favorites
+</h1>
+        <p>Your bookmarked tutorials.</p>
+      </div>
+      <div class="tutorial-grid" id="favGrid"></div>
+      <div class="empty" id="favEmpty" style="display:none;">
+        <p>No favorites yet. Tap ☆ on any tutorial card to save it.</p>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="page" id="progress">
+      <div class="about-header">
+        <h1>
+  <svg class="page-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-8M21 20V6"/></svg>
+  Your Progress
+       </h1>
+        <p>Steps you've marked as complete.</p>
+      </div>
+      <div id="progressList"></div>
+      <div class="empty" id="progressEmpty" style="display:none;">
+        <p>No progress yet. Open a tutorial and check off steps.</p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="about">
+      <div class="about-header">
+        <h1>
+  <svg class="page-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+  About NeoLearn
+       </h1>
+        <p>A free, open library of practical tech tutorials.</p>
+      </div>
+
+      <div class="about-card">
+  <h3>Who built this</h3>
+  <p><b>PIXLE</b> — builder of NeoLearn.</p>
+  <p>Built with plain HTML, CSS, and JavaScript. No frameworks, no build tools.</p>
+  <p style="margin-top: 8px;">
+    <a href="mailto:pixle.dev@proton.me" class="repo-btn" style="padding: 10px 20px; font-size: 13px;">
+      ✉️ Contact
+    </a>
+  </p>
+</div>
+      
+      <div class="about-card">
+        <h3>What is this?</h3>
+        <p>NeoLearn is a collection of step-by-step tutorials for running cool tech — AI models, Termux, Linux, VPNs, security tools, and more — on any device. Every tutorial gives you the exact commands for YOUR platform.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>Features</h3>
+        <ul>
+          <li>📱 Multi-platform — Linux, Android, Mac, Windows, iOS</li>
+          <li>📋 One-tap copy for every command</li>
+          <li>⭐ Save favorites</li>
+          <li>✅ Track your progress step by step</li>
+          <li>💯 100% free, no accounts, no tracking</li>
+          <li>💾 Everything saves locally in your browser</li>
+        </ul>
+      </div>
+
+      <div class="about-card">
+        <h3>Built with</h3>
+        <p>Pure HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies. You can host it anywhere for free.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>Disclaimer</h3>
+        <p>Tutorials involving network scanning, traffic capture, and security tools are intended for use on <b>your own devices and networks</b>, or in legal lab environments like TryHackMe. Always follow your local laws. The authors of NeoLearn are not responsible for misuse.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>Credits</h3>
+        <p>All tools mentioned are the work of their respective open-source communities. Source links are provided at the end of each tutorial. NeoLearn just shows you how to use them.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>Reset data</h3>
+        <p>Your favorites and progress are stored only in this browser. To clear them:</p>
+        <button class="danger-btn" id="resetBtn">🗑 Reset all my data</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="tutorials.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
