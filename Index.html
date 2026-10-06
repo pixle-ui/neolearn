@@ -24,12 +24,24 @@
     </div>
 
     <div class="sidebar-section">Pages</div>
-    <nav id="pageNav">
-      <button class="nav-btn" data-page="home">🏠 Home</button>
-      <button class="nav-btn" data-page="favorites">⭐ Favorites</button>
-      <button class="nav-btn" data-page="progress">📊 Progress</button>
-      <button class="nav-btn" data-page="about">ℹ️ About</button>
-    </nav>
+<nav id="pageNav">
+  <button class="nav-btn" data-page="home">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-btn" data-page="favorites">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+    <span>Favorites</span>
+  </button>
+  <button class="nav-btn" data-page="progress">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-8M21 20V6"/></svg>
+    <span>Progress</span>
+  </button>
+  <button class="nav-btn" data-page="about">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+    <span>About</span>
+  </button>
+</nav>
 
     <div class="sidebar-section">Categories</div>
     <nav id="categoryNav"></nav>
@@ -43,7 +55,7 @@
     <!-- HOME -->
     <section class="page active" id="home">
       <div class="hero">
-        <div class="hero-tag">// free forever</div>
+        <div class="hero-tag">// free //</div>
         <h1>Learn <span class="grad">cool tech.</span><br>Step by step.</h1>
         <p>Real tutorials. Real commands. Copy, paste, done.</p>
         <div class="search-wrap">
