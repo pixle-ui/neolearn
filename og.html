@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Image Maker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .card {
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #05030d 0%, #1a0b2e 60%, #05030d 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8vh 8vw;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,47,185,0.25), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(0,240,255,0.20), transparent 45%);
+      pointer-events: none;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 5vh;
+      position: relative;
+      z-index: 1;
+    }
+    .brand-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ff2fb9, #00f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #05030d;
+      box-shadow: 0 0 30px rgba(255,47,185,0.6);
+    }
+    .brand-name {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+    h1 {
+      font-size: 8vh;
+      line-height: 1.1;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, #ff2fb9, #00f0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .sub {
+      margin-top: 3vh;
+      font-size: 3.2vh;
+      color: #a49dc0;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+    .url {
+      position: absolute;
+      bottom: 5vh;
+      left: 8vw;
+      font-family: monospace;
+      font-size: 2.5vh;
+      color: #00f0ff;
+      letter-spacing: 1px;
+      z-index: 1;
+      font-weight: 700;
+    }
+    .tags {
+      position: absolute;
+      bottom: 5vh;
+      right: 8vw;
+      display: flex;
+      gap: 10px;
+      z-index: 1;
+    }
+    .tag {
+      font-family: monospace;
+      font-size: 2vh;
+      padding: 6px 14px;
+      background: rgba(255,47,185,0.15);
+      border: 1px solid rgba(255,47,185,0.4);
+      border-radius: 50px;
+      color: #ff2fb9;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">⌬</div>
+      <div class="brand-name">NeoLearn</div>
+    </div>
+    <h1>Learn <span class="grad">cool tech.</span><br>Step by step.</h1>
+    <div class="sub">Free tutorials for Linux, Android, Mac, Windows, iOS.<br>37 tutorials. No signup. No ads.</div>
+    <div class="url">▸ neolearn-a09.pages.dev</div>
+    <div class="tags">
+      <span class="tag">AI</span>
+      <span class="tag">TERMUX</span>
+      <span class="tag">LINUX</span>
+      <span class="tag">SECURITY</span>
+    </div>
+  </div>
+</body>
+</html>
