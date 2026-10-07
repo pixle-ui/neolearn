@@ -1,4 +1,5 @@
 // =============================================
+// =============================================
 // PLATFORMS
 // =============================================
 window.PLATFORMS = [
@@ -767,39 +768,90 @@ window.TUTORIALS = [
 
   // ===== NETWORKING =====
   {
-    id: "wireguard", title: "Set Up Your Own VPN (WireGuard)", category: "Networking",
-    difficulty: "intermediate", time: "25 min",
-    summary: "Modern VPN.",
-    intro: "WireGuard — fast, simple.",
-    tags: ["vpn"], platforms: ["linux", "android", "mac", "windows", "ios"],
-    steps: {
-      linux: [
-        { title: "Install", text: "Debian/Ubuntu.", code: "sudo apt update\nsudo apt install wireguard -y", lang: "bash" },
-        { title: "Keys", text: "Server.", code: "wg genkey | tee privatekey | wg pubkey > publickey", lang: "bash" },
-        { title: "Config", text: "/etc/wireguard/wg0.conf", code: "[Interface]\nAddress = 10.0.0.1/24\nListenPort = 51820\nPrivateKey = <server>", lang: "ini" },
-        { title: "Firewall", text: "UFW.", code: "sudo ufw allow 51820/udp", lang: "bash" },
-        { title: "Start", text: "Boot.", code: "sudo systemctl enable --now wg-quick@wg0", lang: "bash" }
-      ],
-      android: [
-        { title: "Install", text: "WireGuard app." },
-        { title: "Tunnel", text: "QR or paste." },
-        { title: "Always-on", text: "VPN settings." }
-      ],
-      mac: [
-        { title: "Install", text: "App Store.", code: "https://apps.apple.com/app/wireguard/id1451685025", lang: "text" },
-        { title: "Tunnel", text: "Paste or scan." }
-      ],
-      windows: [
-        { title: "Install", text: "Site.", code: "https://www.wireguard.com/install/", lang: "text" },
-        { title: "Tunnel", text: "Import .conf." }
-      ],
-      ios: [
-        { title: "Install", text: "App Store.", code: "https://apps.apple.com/app/wireguard/id1441195209", lang: "text" },
-        { title: "Tunnel", text: "Scan or paste." }
-      ]
-    },
-    repo: { url: "https://www.wireguard.com/quickstart/", label: "WireGuard" }
+  id: "wireguard",
+  title: "Set Up Your Own VPN (WireGuard)",
+  category: "Networking",
+  difficulty: "intermediate",
+  time: "30 min",
+  summary: "Build your own private VPN server — connect your phone, laptop, and any device to it, from anywhere.",
+  intro: "WireGuard is a modern VPN protocol that's faster and simpler than OpenVPN. You run a small server (on a VPS or at home), and connect your devices to it. Use it to encrypt traffic on public WiFi, access your home network remotely, or bypass restrictions.",
+  tags: ["vpn", "wireguard", "privacy", "self-hosted"],
+  platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "What a VPN actually does (and why free VPNs are dangerous)",
+    "Set up a WireGuard server on a Linux VPS",
+    "Generate secure keys",
+    "Connect from Android, iOS, Mac, and Windows",
+    "Test that it's really working"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Understanding", title: "What you're building", text: "You'll create a small VPN server on a cheap Linux VPS (or a Raspberry Pi at home). Then you connect your phone and laptop to it. All traffic between them is encrypted end-to-end.", type: "read" },
+      { title: "Get a server", text: "Any Linux VPS works. Cheap options: **Hetzner** (~€4/mo), **DigitalOcean** ($6/mo), **Oracle Cloud** (free tier). A $5 VPS handles 20+ devices easily.", note: { type: "tip", text: "Oracle Cloud gives you a free-forever ARM VPS with 24GB RAM." }, type: "read" },
+      { chapter: "Server setup", title: "SSH into your server", text: "Connect from your own computer.", code: "ssh root@your-server-ip", type: "code" },
+      { title: "Install WireGuard", text: "Works on Debian, Ubuntu, Fedora, Arch.", code: "sudo apt update\nsudo apt install wireguard -y", type: "code" },
+      { title: "Enable IP forwarding", text: "The server needs to forward packets between clients and the internet.", code: "echo 'net.ipv4.ip_forward=1' | sudo tee /etc/sysctl.d/99-wireguard.conf\nsudo sysctl -p /etc/sysctl.d/99-wireguard.conf", type: "code" },
+      { chapter: "Generate keys", title: "Server keys", text: "WireGuard uses public-key cryptography. Generate a private key and derive the public key from it.", code: "cd /etc/wireguard\nwg genkey | sudo tee server-private.key | wg pubkey | sudo tee server-public.key\nsudo chmod 600 server-private.key", type: "code" },
+      { title: "Client keys (one per device)", text: "Every device gets its own keypair. For your first phone:", code: "wg genkey | tee phone-private.key | wg pubkey > phone-public.key", type: "code" },
+      { chapter: "Server config", title: "Create wg0.conf", text: "This is the WireGuard server configuration.", code: "sudo nano /etc/wireguard/wg0.conf", type: "code" },
+      { title: "Paste this", text: "Replace `<server_private_key>` and `<phone_public_key>` with actual values from your `.key` files. Run `cat` on them to see the contents.", code: "[Interface]\nAddress = 10.0.0.1/24\nListenPort = 51820\nPrivateKey = <server_private_key>\nPostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\nPostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n\n[Peer]\n# Phone\nPublicKey = <phone_public_key>\nAllowedIPs = 10.0.0.2/32", lang: "ini", type: "code" },
+      { title: "Note on eth0", text: "If your server's main network interface is named differently (check with `ip a`), replace `eth0`. It's often `eth0`, `ens3`, or `enp1s0`.", type: "tip" },
+      { chapter: "Start the server", title: "Open the firewall", text: "Allow UDP port 51820 through.", code: "sudo ufw allow 51820/udp", type: "code" },
+      { title: "Start WireGuard", text: "Enable it on boot and start it now.", code: "sudo systemctl enable --now wg-quick@wg0", type: "code" },
+      { title: "Check status", text: "Should show the interface is up.", code: "sudo wg show", output: "interface: wg0\n  public key: ...\n  listening port: 51820", type: "try" },
+      { chapter: "Client config", title: "Generate phone config", text: "This is what your phone will import. Save it as phone.conf.", code: "cat > phone.conf << EOF\n[Interface]\nPrivateKey = $(cat phone-private.key)\nAddress = 10.0.0.2/24\nDNS = 1.1.1.1\n\n[Peer]\nPublicKey = $(cat server-public.key)\nEndpoint = YOUR_SERVER_IP:51820\nAllowedIPs = 0.0.0.0/0\nPersistentKeepalive = 25\nEOF\ncat phone.conf", type: "code" },
+      { title: "Add more devices", text: "Repeat the key + config steps for each device. Give each one a unique IP (10.0.0.3, 10.0.0.4, etc.). The server config gets one `[Peer]` block per device.", type: "tip" },
+      { title: "Done", text: "The server is running. Now go to your phone's tab to install the client and connect.", type: "read" }
+    ],
+    android: [
+      { chapter: "Before you start", title: "You need a server first", text: "WireGuard on Android is just the **client**. You need a server to connect to. Follow the **Linux** tab on a VPS to set one up — takes 15 minutes. Then come back.", type: "read" },
+      { title: "The client config", text: "Your server should have given you a `phone.conf` file. You'll import it on your phone.", type: "read" },
+      { chapter: "Install", title: "Install the app", text: "**WireGuard** from Play Store or F-Droid. Free, official, no ads.", code: "https://play.google.com/store/apps/details?id=com.wireguard.android", type: "code" },
+      { chapter: "Import config", title: "Method 1: QR code (easiest)", text: "On your server, run this to display a QR code:", code: "pkg install qrencode -y\nqrencode -t ansiutf8 < phone.conf", type: "code" },
+      { title: "Scan it", text: "Open WireGuard on your phone → tap **+** → **Scan from QR code** → point at the terminal.", type: "try" },
+      { title: "Method 2: Paste config text", text: "In WireGuard app: tap **+** → **Create from file or archive**, or tap **+** → **Create empty tunnel** and paste the content of `phone.conf`.", type: "read" },
+      { chapter: "Connect", title: "Turn it on", text: "You'll see a new tunnel. Tap the toggle to connect. Status should change to **Active**.", type: "try" },
+      { title: "Verify it works", text: "Open a browser → visit `https://ifconfig.me`. The IP shown should be your **server's** IP, not your phone's real IP.", code: "https://ifconfig.me", type: "try" },
+      { chapter: "Always-on VPN", title: "Auto-connect", text: "Settings → Network & Internet → VPN → WireGuard → toggle **Always-on VPN** ON. Now the tunnel comes up whenever your phone boots.", type: "code" },
+      { title: "Per-app VPN", text: "In WireGuard app → tap your tunnel → **Edit** → you can specify apps that should **skip** the VPN, or only ones that should **use** it.", type: "tip" },
+      { chapter: "Troubleshooting", title: "Tunnel connects but nothing loads", text: "Most common cause: the server's `eth0` in the config is wrong. SSH into the server, run `ip a`, find the real interface name, update `/etc/wireguard/wg0.conf`, then `sudo wg-quick down wg0 && sudo wg-quick up wg0`.", type: "warn" }
+    ],
+    mac: [
+      { chapter: "Before you start", title: "Server first", text: "You need a WireGuard server. If you don't have one, follow the **Linux** tab on a VPS. Then return here with your `client.conf` file.", type: "read" },
+      { chapter: "Install", title: "Install from the App Store", text: "Official app by WireGuard Development Team. Free.", code: "https://apps.apple.com/app/wireguard/id1451685025", type: "code" },
+      { title: "Or via Homebrew", text: "If you prefer command line:", code: "brew install --cask wireguard-tools", type: "code" },
+      { chapter: "Import the tunnel", title: "Add a tunnel", text: "Open the WireGuard app → click **Add Tunnel** → **Import tunnel(s) from file** → pick your `client.conf`.", type: "try" },
+      { title: "Or paste manually", text: "Click **Add Tunnel** → **Add empty tunnel** → paste your config content in the text field.", type: "code" },
+      { chapter: "Activate", title: "Connect", text: "Click **Activate** next to your tunnel. The menu bar icon changes to show you're connected.", type: "try" },
+      { title: "Verify", text: "Open Safari → visit `https://ifconfig.me`. Your IP should be your server's IP.", code: "https://ifconfig.me", type: "try" },
+      { chapter: "On-Demand", title: "Auto-connect on untrusted WiFi", text: "In WireGuard → your tunnel → **Edit** → **On-Demand** → add rules like \"activate on untrusted WiFi, deactivate on trusted\". Useful for coffee shops and airports.", type: "tip" },
+      { title: "Multiple tunnels", text: "You can add multiple tunnels (work, home, VPS) and switch between them. Only one active at a time.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Before you start", title: "Server first", text: "You need a WireGuard server. Follow the **Linux** tab on a VPS. Then come back with your `client.conf`.", type: "read" },
+      { chapter: "Install", title: "Download the installer", text: "Official WireGuard for Windows. Free, no ads.", code: "https://www.wireguard.com/install/", type: "code" },
+      { title: "Run the installer", text: "Double-click the `.msi` file → follow the wizard. May ask for admin rights.", type: "read" },
+      { chapter: "Import tunnel", title: "Add tunnel from file", text: "Open WireGuard → click **Add Tunnel** → **Import tunnel(s) from file** → select your `.conf`.", type: "try" },
+      { title: "Or paste manually", text: "Click **Add Tunnel** → **Add empty tunnel** → paste config → **Save**.", type: "code" },
+      { chapter: "Connect", title: "Activate", text: "Click **Activate** next to the tunnel. It turns green/blue when active.", type: "try" },
+      { title: "Verify", text: "Open PowerShell and run:", code: "curl ifconfig.me", output: "Your server's IP (not your home IP)", type: "try" },
+      { chapter: "Advanced", title: "Pin to taskbar", text: "Right-click the WireGuard taskbar icon → **Pin to taskbar** for quick access.", type: "tip" },
+      { title: "Start on boot", text: "WireGuard launches on boot by default. It does **not** auto-connect unless you enable it in the tunnel's settings.", type: "read" }
+    ],
+    ios: [
+      { chapter: "Before you start", title: "Server first", text: "You need a WireGuard server. Follow the **Linux** tab on a VPS to set one up. Then come back with your `client.conf`.", type: "read" },
+      { chapter: "Install", title: "Install from the App Store", text: "**WireGuard** by WireGuard Development Team. Free, no ads.", code: "https://apps.apple.com/app/wireguard/id1441195209", type: "code" },
+      { chapter: "Import tunnel", title: "Scan QR code (easiest)", text: "On your server, display the QR code:", code: "qrencode -t ansiutf8 < client.conf", type: "code" },
+      { title: "Scan it", text: "Open WireGuard → tap **+** → **Create from QR code** → point at the QR.", type: "try" },
+      { title: "Or paste config", text: "Open WireGuard → tap **+** → **Create from file or archive** → or **Create empty tunnel** and paste.", type: "read" },
+      { chapter: "Connect", title: "Toggle the tunnel", text: "Tap the toggle next to the tunnel name. iOS will ask permission for a VPN configuration the first time — tap **Allow**.", type: "try" },
+      { title: "Verify", text: "Open Safari → visit `https://ifconfig.me` → your IP should be the server's.", code: "https://ifconfig.me", type: "try" },
+      { chapter: "On-Demand", title: "Auto-connect", text: "Settings app → VPN → tap the (i) next to WireGuard → **Connect On Demand** → configure rules like \"Always\" or \"Only on WiFi\".", type: "code" },
+      { title: "Per-app VPN", text: "iOS doesn't support per-app VPN from WireGuard — it's all-or-nothing. If you need that, use **Tailscale** (based on WireGuard).", type: "warn" }
+    ]
   },
+  repo: { url: "https://www.wireguard.com/quickstart/", label: "WireGuard" }
+},
 
   {
     id: "nextcloud", title: "Self-Host Your Own Cloud", category: "Networking",
