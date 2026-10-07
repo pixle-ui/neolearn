@@ -1249,6 +1249,166 @@ window.TUTORIALS = [
       ]
     },
     repo: { url: "https://brew.sh/", label: "Homebrew" }
-  }
+  },
+
+{
+  id: "termux-beginner", title: "Termux: Complete Beginner Guide", category: "Hacking",
+  difficulty: "beginner", time: "15 min",
+  summary: "What Termux is, how to install it, and what you can actually do with it.",
+  intro: "Termux is a free Android app that gives you a real Linux terminal on your phone — no root, no computer needed. It runs thousands of Linux tools. This is the starting point for everything else.",
+  tags: ["termux", "android", "beginner"], platforms: ["android"],
+  steps: {
+    android: [
+      { title: "What is Termux?", text: "A terminal emulator + Linux environment for Android. Runs Bash, Python, Node, Git, SSH, and 2000+ Linux packages. No root needed." },
+      { title: "⚠️ Install from F-Droid", text: "The Play Store version is abandoned and broken. Get it from F-Droid — the open-source app store.", note: { type: "warn", text: "F-Droid version only." } },
+      { title: "Download F-Droid", text: "From f-droid.org — install the APK, allow unknown sources, done.", code: "https://f-droid.org", lang: "text" },
+      { title: "Install Termux from F-Droid", text: "Search 'Termux' in F-Droid → Install. Total size ~90MB." },
+      { title: "First commands", text: "Open Termux. Try these to get oriented.", code: "whoami\npwd\nls\nuname -a", lang: "bash" },
+      { title: "Update everything", text: "Always the first thing to do.", code: "pkg update && pkg upgrade -y", lang: "bash" },
+      { title: "Grant storage access", text: "Lets Termux see your phone's files.", code: "termux-setup-storage", lang: "bash" },
+      { title: "Install essential tools", text: "Git, Python, Node, editors — one command.", code: "pkg install git python nodejs nano curl wget -y", lang: "bash" },
+      { title: "What you can do", text: "• Run Python scripts\n• SSH into servers\n• Download videos with yt-dlp\n• Serve a website locally\n• Scan your own network with nmap\n• Run full Linux with proot-distro\n• Automate phone tasks with cron\n• Practice coding anywhere" },
+      { title: "Next steps", text: "See our other tutorials: 'Essential Termux Setup', 'Run Full Linux on Android', '10 Cool Things to Do in Termux'." }
+    ]
+  },
+  repo: { url: "https://wiki.termux.com/wiki/Main_Page", label: "Termux Wiki" }
+},
+
+{
+  id: "html-css-basics", title: "Build Your First Website (HTML + CSS)", category: "Coding",
+  difficulty: "beginner", time: "25 min",
+  summary: "Learn HTML and CSS by building a real page from scratch. No frameworks.",
+  intro: "HTML is the structure of every website. CSS makes it look good. This tutorial builds a real page step by step — the same way NeoLearn itself was built.",
+  tags: ["html", "css", "web"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  steps: {
+    linux: [
+      { title: "What you need", text: "A text editor (any) and a web browser. That's it. No install, no accounts." },
+      { title: "Create index.html", text: "Make a new folder and create a file.", code: "mkdir my-site\ncd my-site\nnano index.html", lang: "bash" },
+      { title: "HTML skeleton", text: "Every page starts with this.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n</head>\n<body>\n  <h1>Hello, world!</h1>\n  <p>My first website.</p>\n</body>\n</html>", lang: "html" },
+      { title: "Open it in your browser", text: "Just double-click the file, or:" },
+      { title: "Add more elements", text: "Headings, lists, links, images.", code: "<h1>Big heading</h1>\n<h2>Smaller heading</h2>\n<p>A paragraph.</p>\n<ul>\n  <li>List item</li>\n</ul>\n<a href=\"https://example.com\">A link</a>\n<img src=\"photo.jpg\" alt=\"Photo\">", lang: "html" },
+      { title: "Now style it — create style.css", text: "CSS goes in a separate file.", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n}\nh1 {\n  color: #ff2fb9;\n}", lang: "css" },
+      { title: "Link the CSS", text: "Add this inside <head> in index.html.", code: "<link rel=\"stylesheet\" href=\"style.css\">", lang: "html" },
+      { title: "Make it interactive", text: "Add a script.js file.", code: "document.querySelector('h1').onclick = () => {\n  alert('You clicked the heading!');\n};", lang: "javascript" },
+      { title: "Link the JS", text: "Add this before </body>.", code: "<script src=\"script.js\"></script>", lang: "html" },
+      { title: "You built a website", text: "That's it. You now know the exact same basics NeoLearn uses. Everything else is just more of this." }
+    ],
+    android: [
+      { title: "Install Acode", text: "Free code editor from Play Store. Makes writing HTML on phone easier." },
+      { title: "Create the folder", text: "In Acode, tap + → New folder → my-site. Inside, tap + → New file → index.html." },
+      { title: "Paste the HTML skeleton", text: "Same code as on Linux.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello!</h1>\n</body>\n</html>", lang: "html" },
+      { title: "Preview", text: "Tap the ▶ button in Acode to preview." },
+      { title: "Style it", text: "Create style.css with the same content." },
+      { title: "Or edit live in Kiwi Browser", text: "Open any site → menu → Dev tools → you can change HTML/CSS live to learn." }
+    ],
+    mac: [
+      { title: "Get a code editor", text: "VS Code is free.", code: "brew install --cask visual-studio-code", lang: "bash" },
+      { title: "Create the files", text: "Make index.html and style.css in a folder. Same code as Linux tab." }
+    ],
+    windows: [
+      { title: "Get a code editor", text: "VS Code from code.visualstudio.com — free." },
+      { title: "Create the files", text: "Make index.html and style.css. Same code as Linux tab." }
+    ],
+    ios: [
+      { title: "Use a text editor", text: "Textastic, Koder, or even a-Shell with vim." },
+      { title: "Write HTML", text: "Create index.html in the Files app. Same code as Linux tab." },
+      { title: "Preview", text: "Open the file in Safari." }
+    ]
+  },
+  repo: { url: "https://developer.mozilla.org/en-US/docs/Learn", label: "MDN Web Docs" }
+},
+
+{
+  id: "phone-backup", title: "Back Up Your Android Phone Properly", category: "Android",
+  difficulty: "beginner", time: "15 min",
+  summary: "Never lose photos, contacts, or app data again.",
+  intro: "Most people only back up when it's too late. This walks through a complete backup that takes 15 minutes and protects everything.",
+  tags: ["android", "backup"], platforms: ["android"],
+  steps: {
+    android: [
+      { title: "What to back up", text: "• Photos and videos\n• Contacts\n• WhatsApp chats\n• App data (saved games, settings)\n• Documents\n• Authenticator codes (very important)" },
+      { title: "Photos: Google Photos", text: "Open Google Photos → profile picture → Backup → ON. Uploads in the background. Free tier = 15GB shared with Gmail." },
+      { title: "Alternative: use your own storage", text: "For unlimited: turn on Google Photos with 'Storage saver' quality — still good enough for most." },
+      { title: "Contacts: Google account", text: "Settings → Accounts → Google → make sure Contacts is synced. Then they're safe." },
+      { title: "WhatsApp backup", text: "WhatsApp → Settings → Chats → Chat backup → Back up to Google Drive → set frequency to Daily." },
+      { title: "App data: Google backup", text: "Settings → System → Backup → Back up to Google Drive → ON. Restores apps and many settings on a new phone." },
+      { title: "Authenticator codes", text: "CRITICAL — if you lose these, you lose access to accounts. Google Authenticator: settings → Transfer accounts. Authy, Aegis, or 2FAS: use their export feature." },
+      { title: "Full manual backup (advanced)", text: "For everything including files — use Termux to tar your storage.", code: "pkg install tar -y\ntermux-setup-storage\ntar -czf ~/storage/shared/backup-$(date +%F).tar.gz ~/storage/shared/DCIM", lang: "bash" },
+      { title: "Test your restore", text: "A backup you've never restored is not a backup. If you have an old phone, restore it once. That's how you know it works." }
+    ]
+  },
+  repo: { url: "https://support.google.com/android/answer/2819582", label: "Google Backup Guide" }
+},
+
+{
+  id: "file-transfer", title: "Transfer Files Between Phone and PC", category: "Android",
+  difficulty: "beginner", time: "12 min",
+  summary: "Every way to move files between your phone and computer — cable, WiFi, Bluetooth, apps.",
+  intro: "The most common question people ask. Here are all the ways, ranked from easiest to best.",
+  tags: ["android", "files"], platforms: ["android", "linux", "mac", "windows"],
+  steps: {
+    android: [
+      { title: "Option 1: USB cable (fastest)", text: "Plug phone into PC. Swipe down on phone → tap the USB notification → select 'File transfer' (not 'Charging only'). Then browse files from your PC." },
+      { title: "Option 2: Google Drive (easy, needs internet)", text: "Upload from phone → download on PC. Free 15GB. Good for a few files." },
+      { title: "Option 3: Snapdrop / PairDrop (WiFi only)", text: "Open pairdrop.net on BOTH phone and PC (same WiFi). They find each other automatically. Drag files between. No install." },
+      { title: "Option 4: LocalSend (best overall)", text: "Install LocalSend on both phone and PC (from localsend.org). Same WiFi → send files instantly. No account, no internet needed." },
+      { title: "Option 5: Bluetooth (slow, works anywhere)", text: "Pair phone and PC → send file. Only useful for tiny files. Skip unless WiFi isn't available." },
+      { title: "Option 6: ADB over USB (advanced)", text: "From PC, pull files from phone.", code: "adb pull /sdcard/DCIM/Camera ~/phone-photos", lang: "bash" },
+      { title: "Option 7: Termux as a file server", text: "Serve your phone files over WiFi.", code: "# On phone in Termux:\npkg install python -y\ntermux-setup-storage\ncd ~/storage/shared\npython -m http.server 8080\n# Then open http://phone-ip:8080 in your PC browser", lang: "bash" },
+      { title: "Recommended setup", text: "Install LocalSend on both. It's fast, private, works offline, and takes 2 minutes to set up. That's the one to remember." }
+    ],
+    linux: [
+      { title: "USB transfer on Linux", text: "Plug phone in, select 'File transfer'. Your file manager shows the phone automatically." },
+      { title: "ADB pull", text: "For any file from phone.", code: "adb pull /sdcard/DCIM/Camera ~/phone-photos", lang: "bash" },
+      { title: "LocalSend", text: "Download from localsend.org.", code: "https://localsend.org", lang: "text" }
+    ],
+    mac: [
+      { title: "USB transfer on Mac", text: "Plug phone in → open Android File Transfer or use OpenMTP (free, from openmtp.ganeshrvel.com)." },
+      { title: "LocalSend for Mac", text: "Download from localsend.org.", code: "https://localsend.org", lang: "text" }
+    ],
+    windows: [
+      { title: "USB transfer on Windows", text: "Plug phone in → select 'File transfer' → open Explorer → your phone appears under 'This PC'." },
+      { title: "LocalSend", text: "Download from localsend.org.", code: "https://localsend.org", lang: "text" }
+    ]
+  },
+  repo: { url: "https://localsend.org", label: "LocalSend" }
+},
+
+{
+  id: "free-games", title: "Play Games for Free (Legally)", category: "Streaming",
+  difficulty: "beginner", time: "15 min",
+  summary: "Free PC and Android games that don't require pirating anything.",
+  intro: "You don't need cracked games. There are hundreds of legal free games — some are amazing. Here's where to find them and how to play.",
+  tags: ["games", "free"], platforms: ["linux", "android", "mac", "windows"],
+  steps: {
+    linux: [
+      { title: "Epic Games Store (free games weekly)", text: "Every Thursday, Epic gives 1–2 games free. Keep them forever. Website or Heroic Launcher on Linux.", code: "https://store.epicgames.com/free-games", lang: "text" },
+      { title: "Install Heroic Launcher (Epic/GOG on Linux)", text: "Open source launcher for Epic and GOG.", code: "https://heroicgameslauncher.com", lang: "text" },
+      { title: "Steam Free-to-Play", text: "Filter Steam by Free to Play. Includes: CS2, Dota 2, Warframe, Path of Exile, Destiny 2, hundreds more.", code: "https://store.steampowered.com/genre/Free%20to%20Play/", lang: "text" },
+      { title: "GOG free games", text: "GOG gives away games occasionally + has a free section.", code: "https://www.gog.com/games?priceRange=0,0", lang: "text" },
+      { title: "Itch.io (indie goldmine)", text: "Thousands of free indie games. Filter by price.", code: "https://itch.io/games/free", lang: "text" },
+      { title: "Open-source games (best-kept secret)", text: "0 A.D. (Age of Empires style), SuperTuxKart, Xonotic, OpenTTD, Battle for Wesnoth. Full quality, completely free." },
+      { title: "SuperTuxKart install (Linux)", text: "Mario Kart style, free.", code: "sudo apt install supertuxkart -y", lang: "bash" },
+      { title: "0 A.D. install", text: "Historical RTS, gorgeous.", code: "sudo apt install 0ad -y", lang: "bash" }
+    ],
+    android: [
+      { title: "Epic Games on Android", text: "Install the Epic Games app → free games section. Also available from epicgames.com on mobile browser." },
+      { title: "Google Play free games", text: "Play Store → Games → filter → Free. Real quality games: Genshin Impact, Call of Duty Mobile, PUBG, Asphalt, hundreds more." },
+      { title: "Open-source Android games", text: "F-Droid has amazing free games: Shattered Pixel Dungeon, Anuto TD, Minetest (Minecraft clone), SuperTuxKart." },
+      { title: "Emulators (retro games you own)", text: "RetroArch, Dolphin, PPSSPP, AetherSX2. These let you play games from consoles you own — legal if you have the originals.", code: "https://www.retroarch.com", lang: "text" },
+      { title: "Humble Bundle", text: "Pay a small amount, get many games. Often $1 for 5-10 games.", code: "https://www.humblebundle.com", lang: "text" }
+    ],
+    mac: [
+      { title: "Epic + Steam + GOG", text: "All have macOS versions. Same free games apply.", code: "https://store.epicgames.com/free-games", lang: "text" },
+      { title: "Whisky (run Windows games on Mac)", text: "Free Wine wrapper. For games that don't have Mac versions.", code: "https://getwhisky.app", lang: "text" }
+    ],
+    windows: [
+      { title: "Epic Games Store", text: "Weekly free games. Keep them forever.", code: "https://store.epicgames.com/free-games", lang: "text" },
+      { title: "Steam free-to-play", text: "Huge library, no cost.", code: "https://store.steampowered.com/genre/Free%20to%20Play/", lang: "text" },
+      { title: "GOG free section", text: "Classic games, no DRM.", code: "https://www.gog.com/games?priceRange=0,0", lang: "text" }
+    ]
+  },
+  repo: { url: "https://www.pcgamingwiki.com/wiki/Freeware_games", label: "PCGamingWiki Free Games" }
+}
 
 ];
