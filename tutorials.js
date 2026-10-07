@@ -850,43 +850,90 @@ window.TUTORIALS = [
     repo: { url: "https://github.com/emanuelef/PCAPdroid", label: "PCAPdroid" }
   },
 
-  // ===== CODING =====
   {
-    id: "js-basics", title: "JavaScript in 20 Minutes", category: "Coding",
-    difficulty: "beginner", time: "20 min",
-    summary: "The language that runs the web.",
-    intro: "JavaScript powers every website. Learn variables, functions, arrays, DOM.",
-    tags: ["javascript"], platforms: ["linux", "android", "mac", "windows", "ios"],
-    steps: {
-      linux: [
-        { title: "Open DevTools", text: "F12 in any browser → Console tab." },
-        { title: "Variables", text: "let/const.", code: "let name = \"Neo\";\nconst age = 42;\nconsole.log(name, age);", lang: "javascript" },
-        { title: "Functions", text: "Arrow functions.", code: "const add = (a, b) => a + b;\nconsole.log(add(2, 3));", lang: "javascript" },
-        { title: "Arrays", text: "List data.", code: "const colors = [\"red\", \"blue\"];\ncolors.push(\"green\");\nconsole.log(colors.length);", lang: "javascript" },
-        { title: "Objects", text: "Key-value.", code: "const user = { name: \"Neo\", age: 42 };\nconsole.log(user.name);", lang: "javascript" },
-        { title: "DOM", text: "Manipulate page.", code: "document.body.style.background = \"black\";\ndocument.title = \"Changed!\";", lang: "javascript" },
-        { title: "Events", text: "Respond to clicks.", code: "document.addEventListener(\"click\", () => alert(\"Clicked!\"));", lang: "javascript" }
-      ],
-      android: [
-        { title: "Kiwi Browser", text: "Full dev tools on Android." },
-        { title: "Console", text: "Menu → Dev tools → Console." },
-        { title: "Try it", text: "Same examples.", code: "let name = \"Neo\";\nconsole.log(name);", lang: "javascript" }
-      ],
-      mac: [
-        { title: "Safari DevTools", text: "Safari → Develop → Show JavaScript Console." },
-        { title: "Try basics", text: "Same code.", code: "const x = [1,2,3].map(n => n * 2);\nconsole.log(x);", lang: "javascript" }
-      ],
-      windows: [
-        { title: "DevTools", text: "F12 → Console." },
-        { title: "Try basics", text: "Same code.", code: "console.log(\"hello world\");", lang: "javascript" }
-      ],
-      ios: [
-        { title: "Safari Web Inspector", text: "Enable in Settings → Safari → Advanced → Web Inspector." },
-        { title: "Or Play.js", text: "Real JS editor for iOS." }
-      ]
-    },
-    repo: { url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN JavaScript" }
+  id: "js-basics", title: "JavaScript in 20 Minutes", category: "Coding",
+  difficulty: "beginner", time: "20 min",
+  summary: "The language that runs the web — learn it by typing in your browser console.",
+  intro: "JavaScript powers every website you visit. Instead of reading theory, you'll type real code into your browser console and see it work immediately. Nothing to install.",
+  tags: ["javascript", "web", "beginner"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Open the browser console (no setup needed)",
+    "Store data with variables",
+    "Write functions that do things",
+    "Work with lists (arrays) and objects",
+    "Change a webpage with code"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Open the console", text: "Press **F12** in any browser → click the **Console** tab. That's your playground. Every line you type runs instantly.", type: "read" },
+      { title: "Try your first line", text: "Type this and hit Enter:", code: "console.log(\"Hello, world!\");", output: "Hello, world!", type: "try" },
+
+      { chapter: "Variables", title: "What is a variable?", text: "A variable is a **container for a value**. Use `let` for values that change, `const` for values that stay the same.", type: "read" },
+      { title: "Create one", text: "Try this:", code: "let name = \"Neo\";\nconsole.log(name);", output: "Neo", type: "try" },
+      { title: "Change it", text: "`let` values can be reassigned. `const` values cannot.", code: "let age = 20;\nage = 21;\nconsole.log(age);", output: "21", type: "try" },
+      { title: "Why this matters", text: "Variables are how your code remembers things — a username, a score, a list of items. Everything else builds on this.", type: "read" },
+
+      { chapter: "Functions", title: "What is a function?", text: "A function is a **reusable block of code**. You give it a name, and run it whenever you want.", type: "read" },
+      { title: "Simple function", text: "Try this:", code: "function greet() {\n  console.log(\"Hi there!\");\n}\ngreet();", output: "Hi there!", type: "try" },
+      { title: "Function with a value", text: "Functions can take input and return output. This is called an **arrow function**.", code: "const add = (a, b) => a + b;\nconsole.log(add(5, 3));", output: "8", type: "try" },
+
+      { chapter: "Arrays — lists of things", title: "What is an array?", text: "An array is a **list**. Items are stored in order, starting at index 0.", type: "read" },
+      { title: "Create a list", text: "Try this:", code: "const fruits = [\"apple\", \"banana\", \"cherry\"];\nconsole.log(fruits[0]);\nconsole.log(fruits.length);", output: "apple\n3", type: "try" },
+      { title: "Add and loop", text: "Push adds to the end. `forEach` runs a function for each item.", code: "fruits.push(\"orange\");\nfruits.forEach(f => console.log(f));", output: "apple\nbanana\ncherry\norange", type: "try" },
+
+      { chapter: "Objects — labeled data", title: "What is an object?", text: "An object stores **key-value pairs**. Like a labeled box with named compartments.", type: "read" },
+      { title: "Create one", text: "Try this:", code: "const user = { name: \"Neo\", age: 42 };\nconsole.log(user.name);", output: "Neo", type: "try" },
+
+      { chapter: "Change the page", title: "JavaScript's real power", text: "JavaScript can modify any part of a webpage live. This is called the **DOM** (Document Object Model).", type: "read" },
+      { title: "Change the background", text: "Open any website → console → try this. **Watch the page change instantly.**", code: "document.body.style.background = \"black\";", type: "try" },
+      { title: "React to clicks", text: "Add an event listener — a function that runs when something happens.", code: "document.addEventListener(\"click\", () => alert(\"You clicked!\"));", type: "try" },
+
+      { chapter: "Where to go from here", title: "You know the basics", text: "Variables, functions, arrays, objects, and DOM. That's the core of every JavaScript app — including big frameworks like React. Everything else is a variation of these.", type: "read" },
+      { title: "Next step", text: "Practice by changing a real webpage. Open any site, use the console to modify it. Or take our **React in 15 Minutes** tutorial next.", type: "tip" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install Kiwi Browser", text: "Kiwi Browser is Chrome with **full developer tools on mobile** — essential for JavaScript. Download from Play Store.", type: "read" },
+      { title: "Open the console", text: "In Kiwi: tap the ⋮ menu → **Dev tools** → **Console** tab. This is your playground.", type: "read" },
+      { title: "Try your first line", text: "Type this and hit Enter:", code: "console.log(\"Hello from Android!\");", output: "Hello from Android!", type: "try" },
+
+      { chapter: "Variables and functions", title: "Variables", text: "Containers for values.", code: "let name = \"Neo\";\nconsole.log(name);", output: "Neo", type: "try" },
+      { title: "Functions", text: "Reusable code blocks.", code: "const add = (a, b) => a + b;\nconsole.log(add(5, 3));", output: "8", type: "try" },
+
+      { chapter: "Modify a real page", title: "The fun part", text: "Open any website in Kiwi → console → type this. Watch it change live.", code: "document.body.style.background = \"black\";\ndocument.body.style.color = \"neonpink\";", type: "try" },
+      { title: "Or take a screenshot mod", text: "You can even change text:", code: "document.querySelector(\"h1\").textContent = \"HACKED (just for fun)\";", type: "try" },
+      { title: "Note", text: "These changes are only in your browser. Refresh the page and everything resets. Nothing is saved — you're just experimenting.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Open Safari DevTools", text: "Safari → **Develop** menu → **Show JavaScript Console**. If you don't see Develop: Safari → Settings → Advanced → tick **Show features for web developers**.", type: "read" },
+      { title: "Or use Chrome (easier)", text: "Download Chrome → press **F12** → Console tab.", type: "tip" },
+      { title: "First line", text: "Try this:", code: "console.log(\"Hello, world!\");", output: "Hello, world!", type: "try" },
+
+      { chapter: "Core concepts", title: "Variables", text: "Containers for values.", code: "let name = \"Neo\";\nconst age = 42;\nconsole.log(name, age);", output: "Neo 42", type: "try" },
+      { title: "Functions", text: "Reusable code.", code: "const add = (a, b) => a + b;\nconsole.log(add(2, 3));", output: "5", type: "try" },
+      { title: "Arrays", text: "Lists.", code: "const x = [1, 2, 3].map(n => n * 2);\nconsole.log(x);", output: "[2, 4, 6]", type: "try" },
+
+      { chapter: "Change a webpage", title: "The DOM", text: "JavaScript can modify the page you're looking at.", code: "document.body.style.background = \"black\";", type: "try" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Open DevTools", text: "Press **F12** in any browser (Chrome, Edge, Firefox) → click the **Console** tab.", type: "read" },
+      { title: "First line", text: "Try this:", code: "console.log(\"Hello, world!\");", output: "Hello, world!", type: "try" },
+
+      { chapter: "Core concepts", title: "Variables", text: "Containers for values.", code: "let name = \"Neo\";\nconsole.log(name);", output: "Neo", type: "try" },
+      { title: "Functions", text: "Reusable code.", code: "const add = (a, b) => a + b;\nconsole.log(add(5, 3));", output: "8", type: "try" },
+      { title: "Arrays", text: "Lists.", code: "const fruits = [\"apple\", \"banana\"];\nconsole.log(fruits.length);", output: "2", type: "try" },
+
+      { chapter: "Change a webpage", title: "The DOM", text: "Modify the current page live.", code: "document.body.style.background = \"black\";", type: "try" }
+    ],
+    ios: [
+      { chapter: "Setup", title: "Two options", text: "iOS Safari doesn't show a console easily. Use one of these instead:\n\n1. **Play.js** — real JavaScript editor + console for iOS (App Store)\n2. **Safari Web Inspector** — needs a Mac connected (skip if you don't have one)", type: "read" },
+      { title: "Recommended: Play.js", text: "Free app, gives you a proper JS editor and console. Install it, then open a new file.", type: "tip" },
+      { title: "First line", text: "In Play.js:", code: "console.log(\"Hello from iOS!\");", output: "Hello from iOS!", type: "try" },
+      { chapter: "Core concepts", title: "Variables", text: "Containers for values.", code: "let name = \"Neo\";\nconsole.log(name);", output: "Neo", type: "try" },
+      { title: "Functions", text: "Reusable code.", code: "const add = (a, b) => a + b;\nconsole.log(add(5, 3));", output: "8", type: "try" }
+    ]
   },
+  repo: { url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", label: "MDN JavaScript" }
+},
 
   {
     id: "react-basics", title: "React in 15 Minutes", category: "Coding",
@@ -1254,65 +1301,125 @@ window.TUTORIALS = [
 {
   id: "termux-beginner", title: "Termux: Complete Beginner Guide", category: "Hacking",
   difficulty: "beginner", time: "15 min",
-  summary: "What Termux is, how to install it, and what you can actually do with it.",
+  summary: "What Termux is, how to install it properly, and what you can actually do with it.",
   intro: "Termux is a free Android app that gives you a real Linux terminal on your phone — no root, no computer needed. It runs thousands of Linux tools. This is the starting point for everything else.",
   tags: ["termux", "android", "beginner"], platforms: ["android"],
+  learnList: [
+    "Install Termux the right way (F-Droid, not Play Store)",
+    "Run your first Linux commands",
+    "Grant storage access",
+    "Install essential tools",
+    "Understand what you can actually do with it"
+  ],
   steps: {
     android: [
-      { title: "What is Termux?", text: "A terminal emulator + Linux environment for Android. Runs Bash, Python, Node, Git, SSH, and 2000+ Linux packages. No root needed." },
-      { title: "⚠️ Install from F-Droid", text: "The Play Store version is abandoned and broken. Get it from F-Droid — the open-source app store.", note: { type: "warn", text: "F-Droid version only." } },
-      { title: "Download F-Droid", text: "From f-droid.org — install the APK, allow unknown sources, done.", code: "https://f-droid.org", lang: "text" },
-      { title: "Install Termux from F-Droid", text: "Search 'Termux' in F-Droid → Install. Total size ~90MB." },
-      { title: "First commands", text: "Open Termux. Try these to get oriented.", code: "whoami\npwd\nls\nuname -a", lang: "bash" },
-      { title: "Update everything", text: "Always the first thing to do.", code: "pkg update && pkg upgrade -y", lang: "bash" },
-      { title: "Grant storage access", text: "Lets Termux see your phone's files.", code: "termux-setup-storage", lang: "bash" },
-      { title: "Install essential tools", text: "Git, Python, Node, editors — one command.", code: "pkg install git python nodejs nano curl wget -y", lang: "bash" },
-      { title: "What you can do", text: "• Run Python scripts\n• SSH into servers\n• Download videos with yt-dlp\n• Serve a website locally\n• Scan your own network with nmap\n• Run full Linux with proot-distro\n• Automate phone tasks with cron\n• Practice coding anywhere" },
-      { title: "Next steps", text: "See our other tutorials: 'Essential Termux Setup', 'Run Full Linux on Android', '10 Cool Things to Do in Termux'." }
+      { chapter: "What is Termux?", title: "A real Linux terminal on your phone", text: "Termux is a terminal emulator **plus** a Linux environment for Android. It runs **Bash**, **Python**, **Node.js**, **Git**, **SSH**, and thousands of Linux packages — all on your phone, no root, no computer.", type: "read" },
+      { title: "Why it matters", text: "Every command in the rest of our tutorials works here. It turns your phone into a portable Linux workstation. People use it for coding, downloading videos, running servers, automating tasks, and cybersecurity practice.", type: "read" },
+
+      { chapter: "Install the right way", title: "⚠️ Don't use Play Store", text: "The Play Store version of Termux is **abandoned and broken**. It hasn't been updated since 2020 and many packages fail to install.", note: { type: "warn", text: "F-Droid version is the only one that works properly." }, type: "warn" },
+      { title: "Download F-Droid", text: "F-Droid is a free app store for open-source Android apps. Download the APK from f-droid.org. Your phone will warn you about installing from an unknown source — that's expected, tap Allow.", code: "https://f-droid.org", lang: "text", type: "code" },
+      { title: "Install Termux from F-Droid", text: "Open F-Droid → search **Termux** → Install. Total download is about 90 MB.", type: "try" },
+
+      { chapter: "First commands", title: "Open Termux", text: "You'll see a black screen with a `$` prompt. That's the terminal — a text interface where you type commands and press Enter.", type: "read" },
+      { title: "Try a few basics", text: "These tell you about your environment.", code: "whoami\npwd\nuname -a", output: "u0_a123\n/data/data/com.termux/files/home\nLinux localhost 5.10.xxx aarch64 Android", type: "try" },
+      { title: "What those mean", text: "**whoami** = your username inside Termux\n**pwd** = current folder (print working directory)\n**uname -a** = kernel info\n\nYou'll use these commands forever.", type: "read" },
+
+      { chapter: "Update everything", title: "Update packages first", text: "Always do this on a new install. Downloads the latest versions of every installed package.", code: "pkg update && pkg upgrade -y", type: "code" },
+      { title: "Why this matters", text: "Termux packages are downloaded from a repository. If you don't update first, some installs fail with confusing errors.", type: "tip" },
+
+      { chapter: "Access your files", title: "Grant storage access", text: "By default Termux can't see your phone's photos, downloads, or other apps. This command asks Android for permission.", code: "termux-setup-storage", output: "A permission dialog appears — tap Allow.", type: "code" },
+      { title: "What you get", text: "After allowing, a `storage` folder appears in your home directory. It links to your phone's real folders.", code: "ls ~/storage", output: "dcim  downloads  movies  music  pictures  shared", type: "try" },
+      { title: "This is huge", text: "Now any file you download in Termux (videos, scripts, code) can be saved where you can actually see it in your file manager.", type: "read" },
+
+      { chapter: "Install useful tools", title: "Essentials in one command", text: "Git for version control, Python for scripting, Node for JS, nano for editing, curl/wget for downloads.", code: "pkg install git python nodejs nano curl wget -y", type: "code" },
+      { title: "Verify it worked", text: "Check Python and Git versions.", code: "python --version\ngit --version", output: "Python 3.12.1\ngit version 2.45.0", type: "try" },
+
+      { chapter: "What can you actually do?", title: "Eight real use cases", text: "• **Download videos** with yt-dlp (YouTube, TikTok, 1000+ sites)\n• **SSH into servers** using the same tools as on a PC\n• **Run Python scripts** without needing a computer\n• **Serve files over WiFi** — turn your phone into a mini web server\n• **Scan your own network** with nmap\n• **Run full Linux** (Ubuntu, Debian, Arch) using proot-distro\n• **Automate tasks** with cron jobs\n• **Practice coding** anywhere, offline", type: "read" },
+      { title: "What's next", text: "You now have a working Linux environment. The next step is making it yours — a nice prompt, backup habits, and the tools you'll actually use.\n\nSee our **Essential Termux Setup** tutorial next.", type: "tip" }
     ]
   },
   repo: { url: "https://wiki.termux.com/wiki/Main_Page", label: "Termux Wiki" }
 },
-
 {
   id: "html-css-basics", title: "Build Your First Website (HTML + CSS)", category: "Coding",
   difficulty: "beginner", time: "25 min",
-  summary: "Learn HTML and CSS by building a real page from scratch. No frameworks.",
+  summary: "Learn HTML and CSS by building a real page from scratch. No frameworks, no installs.",
   intro: "HTML is the structure of every website. CSS makes it look good. This tutorial builds a real page step by step — the same way NeoLearn itself was built.",
-  tags: ["html", "css", "web"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  tags: ["html", "css", "web", "beginner"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Create your first HTML page",
+    "Add headings, paragraphs, links, and images",
+    "Style pages with CSS",
+    "Link CSS and JavaScript to your HTML",
+    "Preview and share your site"
+  ],
   steps: {
     linux: [
-      { title: "What you need", text: "A text editor (any) and a web browser. That's it. No install, no accounts." },
-      { title: "Create index.html", text: "Make a new folder and create a file.", code: "mkdir my-site\ncd my-site\nnano index.html", lang: "bash" },
-      { title: "HTML skeleton", text: "Every page starts with this.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n</head>\n<body>\n  <h1>Hello, world!</h1>\n  <p>My first website.</p>\n</body>\n</html>", lang: "html" },
-      { title: "Open it in your browser", text: "Just double-click the file, or:" },
-      { title: "Add more elements", text: "Headings, lists, links, images.", code: "<h1>Big heading</h1>\n<h2>Smaller heading</h2>\n<p>A paragraph.</p>\n<ul>\n  <li>List item</li>\n</ul>\n<a href=\"https://example.com\">A link</a>\n<img src=\"photo.jpg\" alt=\"Photo\">", lang: "html" },
-      { title: "Now style it — create style.css", text: "CSS goes in a separate file.", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n}\nh1 {\n  color: #ff2fb9;\n}", lang: "css" },
-      { title: "Link the CSS", text: "Add this inside <head> in index.html.", code: "<link rel=\"stylesheet\" href=\"style.css\">", lang: "html" },
-      { title: "Make it interactive", text: "Add a script.js file.", code: "document.querySelector('h1').onclick = () => {\n  alert('You clicked the heading!');\n};", lang: "javascript" },
-      { title: "Link the JS", text: "Add this before </body>.", code: "<script src=\"script.js\"></script>", lang: "html" },
-      { title: "You built a website", text: "That's it. You now know the exact same basics NeoLearn uses. Everything else is just more of this." }
+      { chapter: "Setup", title: "What you need", text: "A text editor and any web browser. That's it. No installs, no accounts, no build tools.", type: "read" },
+      { title: "Create your project folder", text: "Make a new folder and enter it.", code: "mkdir my-site\ncd my-site", type: "code" },
+
+      { chapter: "Your first HTML file", title: "Create index.html", text: "Every website needs a file called `index.html` — that's the first thing browsers look for.", code: "nano index.html", type: "code" },
+      { title: "HTML skeleton", text: "Every HTML page starts with this structure. Copy it exactly — everything else goes between `<body>` tags.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n</head>\n<body>\n  <h1>Hello, world!</h1>\n  <p>My first website.</p>\n</body>\n</html>", lang: "html", type: "code" },
+      { title: "Open it in your browser", text: "Double-click the file (or drag it into a browser window). **You should see \"Hello, world!\" on the page.**", type: "try" },
+
+      { chapter: "More HTML elements", title: "Headings and paragraphs", text: "There are 6 heading sizes: `<h1>` (biggest) to `<h6>` (smallest). Paragraphs use `<p>`.", code: "<h1>Big heading</h1>\n<h2>Smaller heading</h2>\n<p>A paragraph of text.</p>", lang: "html", type: "code" },
+      { title: "Lists", text: "Use `<ul>` for bullet lists, `<ol>` for numbered. Each item is an `<li>`.", code: "<ul>\n  <li>First item</li>\n  <li>Second item</li>\n</ul>", lang: "html", type: "code" },
+      { title: "Links and images", text: "`<a>` creates links (href = destination). `<img>` shows images (src = file).", code: "<a href=\"https://example.com\">Click me</a>\n<img src=\"photo.jpg\" alt=\"My photo\">", lang: "html", type: "code" },
+      { title: "Add them to your page", text: "Paste a few of these inside `<body>` in your `index.html`. Save, refresh the browser, and watch them appear.", type: "try" },
+
+      { chapter: "Make it look good with CSS", title: "Create style.css", text: "CSS goes in a **separate file**. Create it next to your HTML.", code: "nano style.css", type: "code" },
+      { title: "Your first CSS", text: "CSS rules look like: `selector { property: value; }`. The `body` selector styles the whole page.", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n  line-height: 1.6;\n}\n\nh1 {\n  color: #ff2fb9;\n  font-size: 48px;\n}", lang: "css", type: "code" },
+      { title: "Link the CSS to your HTML", text: "Add this line inside `<head>` (before `</head>`):", code: "<link rel=\"stylesheet\" href=\"style.css\">", lang: "html", type: "code" },
+      { title: "Refresh and see the magic", text: "Save both files. Refresh your browser. **The page should now be dark with a pink heading.**", type: "try" },
+      { title: "Why this matters", text: "Everything you see on NeoLearn right now — the dark background, the glowing buttons, the layout — is just CSS like this. Once you understand the pattern, you can build any look.", type: "read" },
+
+      { chapter: "Add interactivity (optional)", title: "Create script.js", text: "JavaScript makes pages do things. Same pattern as CSS — separate file, linked from HTML.", code: "nano script.js", type: "code" },
+      { title: "A tiny script", text: "This runs when the page loads.", code: "document.querySelector('h1').onclick = () => {\n  alert('You clicked the heading!');\n};", lang: "javascript", type: "code" },
+      { title: "Link it (before </body>)", text: "Add this at the bottom of your HTML file, right before `</body>`.", code: "<script src=\"script.js\"></script>", lang: "html", type: "code" },
+      { title: "Test it", text: "Click the heading on your page. An alert should appear.", type: "try" },
+
+      { chapter: "Next steps", title: "You built a website", text: "That's the entire foundation. **HTML = structure. CSS = look. JavaScript = behavior.** Everything else in web development is more of the same patterns.", type: "read" },
+      { title: "Share it online (free)", text: "See our **Host a Website Free (GitHub Pages)** tutorial to put this live on the internet in 5 minutes.", type: "tip" }
     ],
     android: [
-      { title: "Install Acode", text: "Free code editor from Play Store. Makes writing HTML on phone easier." },
-      { title: "Create the folder", text: "In Acode, tap + → New folder → my-site. Inside, tap + → New file → index.html." },
-      { title: "Paste the HTML skeleton", text: "Same code as on Linux.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello!</h1>\n</body>\n</html>", lang: "html" },
-      { title: "Preview", text: "Tap the ▶ button in Acode to preview." },
-      { title: "Style it", text: "Create style.css with the same content." },
-      { title: "Or edit live in Kiwi Browser", text: "Open any site → menu → Dev tools → you can change HTML/CSS live to learn." }
+      { chapter: "Setup", title: "Install Acode", text: "Acode is a free code editor for Android — makes writing HTML on your phone actually pleasant. Get it from Play Store.", type: "read" },
+      { title: "Create your project", text: "In Acode: tap **+** → **New folder** → name it `my-site`. Open it.", type: "code" },
+      { title: "Create index.html", text: "Tap **+** → **New file** → name it `index.html` (lowercase!).", type: "code" },
+
+      { chapter: "Your first HTML", title: "Paste this skeleton", text: "Everything in HTML goes between `<body>` tags.", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello from my phone!</h1>\n  <p>Built with Acode.</p>\n</body>\n</html>", lang: "html", type: "code" },
+      { title: "Preview it", text: "In Acode, tap the ▶ (play) button at the bottom. Your page appears. **That's a real webpage.**", type: "try" },
+      { title: "Add more elements", text: "Try adding a list and a link inside `<body>`.", code: "<ul>\n  <li>First item</li>\n  <li>Second item</li>\n</ul>\n<a href=\"https://neolearn-a09.pages.dev\">NeoLearn</a>", lang: "html", type: "code" },
+
+      { chapter: "Style with CSS", title: "Create style.css", text: "Same folder as index.html. Tap **+** → **New file** → `style.css`.", type: "code" },
+      { title: "Paste this", text: "The `body` rule styles the whole page. `h1` styles the heading.", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 30px;\n}\n\nh1 {\n  color: #ff2fb9;\n}", lang: "css", type: "code" },
+      { title: "Preview again", text: "Save and preview. The page should now be dark with a pink heading.", type: "try" },
+
+      { chapter: "Next steps", title: "You built a website on your phone", text: "Seriously — you built a real webpage without a computer. That's a superpower.", type: "read" },
+      { title: "Host it online", text: "See our **Host a Website Free (GitHub Pages)** tutorial to put this live on the internet.", type: "tip" }
     ],
     mac: [
-      { title: "Get a code editor", text: "VS Code is free.", code: "brew install --cask visual-studio-code", lang: "bash" },
-      { title: "Create the files", text: "Make index.html and style.css in a folder. Same code as Linux tab." }
+      { chapter: "Setup", title: "Install VS Code", text: "Free, professional editor.", code: "brew install --cask visual-studio-code", type: "code" },
+      { title: "Create your project", text: "Open VS Code → File → Open Folder → create a new folder called `my-site`.", type: "read" },
+      { chapter: "Your first HTML", title: "Create index.html", text: "Click the **New File** icon → name it `index.html`. Paste this:", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello, world!</h1>\n  <p>My first website.</p>\n</body>\n</html>", lang: "html", type: "code" },
+      { title: "Preview", text: "Right-click the file → **Open in Browser**. Or double-click it in Finder.", type: "try" },
+      { chapter: "Style it", title: "Create style.css", text: "Same folder. Paste this:", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n}\nh1 { color: #ff2fb9; }", lang: "css", type: "code" },
+      { title: "Refresh and see", text: "Save both. Refresh browser. Dark page with pink heading.", type: "try" }
     ],
     windows: [
-      { title: "Get a code editor", text: "VS Code from code.visualstudio.com — free." },
-      { title: "Create the files", text: "Make index.html and style.css. Same code as Linux tab." }
+      { chapter: "Setup", title: "Install VS Code", text: "Download from code.visualstudio.com — free. Or use Notepad if you prefer.", type: "read" },
+      { title: "Create your project", text: "Make a new folder called `my-site` on your Desktop. Open VS Code → File → Open Folder.", type: "read" },
+      { chapter: "Your first HTML", title: "Create index.html", text: "New file → save as `index.html` inside `my-site`. Paste:", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello, world!</h1>\n  <p>My first website.</p>\n</body>\n</html>", lang: "html", type: "code" },
+      { title: "Preview", text: "Double-click `index.html` in Explorer. It opens in your browser.", type: "try" },
+      { chapter: "Style it", title: "Create style.css", text: "New file in the same folder. Paste:", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n}\nh1 { color: #ff2fb9; }", lang: "css", type: "code" },
+      { title: "Refresh", text: "Save. Refresh browser. Dark page with pink heading.", type: "try" }
     ],
     ios: [
-      { title: "Use a text editor", text: "Textastic, Koder, or even a-Shell with vim." },
-      { title: "Write HTML", text: "Create index.html in the Files app. Same code as Linux tab." },
-      { title: "Preview", text: "Open the file in Safari." }
+      { chapter: "Setup", title: "Install Textastic or Koder", text: "Both are free code editors for iPhone/iPad. Textastic is polished; Koder is minimal. Pick either.", type: "read" },
+      { title: "Create your project", text: "In the Files app, create a folder called `my-site` in **On My iPhone**.", type: "read" },
+      { chapter: "Your first HTML", title: "Create index.html", text: "Open your editor, create a new file called `index.html` inside `my-site`. Paste:", code: "<!DOCTYPE html>\n<html>\n<head>\n  <title>My Site</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>Hello from iOS!</h1>\n  <p>Built on my iPhone.</p>\n</body>\n</html>", lang: "html", type: "code" },
+      { title: "Preview in Safari", text: "Open the Files app → tap `index.html` → Share → **Open in Safari**. Your page loads.", type: "try" },
+      { chapter: "Style it", title: "Create style.css", text: "Same folder. Paste:", code: "body {\n  font-family: sans-serif;\n  background: #111;\n  color: white;\n  padding: 40px;\n}\nh1 { color: #ff2fb9; }", lang: "css", type: "code" },
+      { title: "Refresh Safari", text: "Save in your editor. Swipe down in Safari to reload. Dark page with pink heading.", type: "try" }
     ]
   },
   repo: { url: "https://developer.mozilla.org/en-US/docs/Learn", label: "MDN Web Docs" }
