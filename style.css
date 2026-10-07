@@ -1954,3 +1954,9 @@ body::before {
     height: 42px;
   }
 }
+
+
+/* Hide top platform bar when inside a tutorial */
+body.on-tutorial .platform-bar {
+  display: none !important;
+}
