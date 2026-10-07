@@ -1,5 +1,5 @@
 // =============================================
-// APP.JS v3.0 — All platform, fuzzy search, hash routing
+// APP.JS v3.1 — advanced search + platform separation
 // =============================================
 (function () {
 
@@ -18,7 +18,55 @@
     return;
   }
 
-  console.log("✅ NeoLearn v3.0 — " + window.TUTORIALS.length + " tutorials");
+  console.log("✅ NeoLearn v3.1 — " + window.TUTORIALS.length + " tutorials");
+
+  // =============================================
+  // ABBREVIATION DICTIONARY
+  // =============================================
+  var ABBREVIATIONS = {
+    "js": "javascript",
+    "ts": "typescript",
+    "py": "python",
+    "py3": "python",
+    "nlp": "natural language",
+    "ai": "artificial intelligence",
+    "ml": "machine learning",
+    "llm": "large language model",
+    "db": "database",
+    "sql": "database",
+    "cli": "command line",
+    "gui": "graphical interface",
+    "os": "operating system",
+    "vm": "virtual machine",
+    "vps": "virtual private server",
+    "ssh": "secure shell",
+    "http": "web",
+    "https": "web",
+    "html5": "html",
+    "css3": "css",
+    "win": "windows",
+    "mac": "macos",
+    "termux": "termux",
+    "tx": "termux",
+    "nx": "nexus",
+    "kali": "kali linux",
+    "arch": "arch linux",
+    "ubu": "ubuntu",
+    "deb": "debian",
+    "apt": "apt",
+    "npm": "node package manager",
+    "git": "git",
+    "gh": "github",
+    "vpn": "vpn",
+    "wg": "wireguard",
+    "nc": "nextcloud",
+    "qbt": "qbittorrent",
+    "yt": "youtube",
+    "ytdl": "yt-dlp",
+    "ytdlp": "yt-dlp",
+    "omx": "omxplayer",
+    "mpv": "mpv"
+  };
 
   // =============================================
   // HELPERS
@@ -68,7 +116,7 @@
   }
 
   // =============================================
-  // FUZZY SEARCH
+  // ADVANCED SEARCH ENGINE
   // =============================================
   function levenshtein(a, b) {
     if (a.length === 0) return b.length;
@@ -85,63 +133,138 @@
     return matrix[b.length][a.length];
   }
 
-  function fuzzyMatch(query, text) {
-    if (!query || !text) return 0;
-    var q = query.toLowerCase().replace(/\s+/g, "");
-    var t = text.toLowerCase().replace(/\s+/g, "");
+  // Expand abbreviations in a query into additional terms
+  function expandQuery(query) {
+    var terms = [query];
+    var words = query.split(/\s+/).filter(Boolean);
+    var expansions = [];
 
-    // Exact substring
-    if (t.indexOf(q) !== -1) return 100;
+    // Whole-query abbreviation
+    if (ABBREVIATIONS[query]) expansions.push(ABBREVIATIONS[query]);
 
-    // Prefix match
-    if (t.indexOf(q) === 0) return 95;
-
-    // Subsequence match (all chars in order)
-    var qi = 0;
-    for (var i = 0; i < t.length && qi < q.length; i++) {
-      if (t[i] === q[qi]) qi++;
+    // Per-word abbreviation
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i].toLowerCase();
+      if (ABBREVIATIONS[w]) {
+        var copy = words.slice();
+        copy[i] = ABBREVIATIONS[w];
+        expansions.push(copy.join(" "));
+      }
     }
-    if (qi === q.length) return 60;
 
-    // Word-level fuzzy
-    var words = text.toLowerCase().split(/[\s\-_]+/);
-    for (var w = 0; w < words.length; w++) {
-      if (words[w].length > 2 && q.length > 2) {
-        var dist = levenshtein(q, words[w]);
-        var threshold = Math.max(2, Math.floor(q.length / 3));
-        if (dist <= threshold) return 40;
+    return terms.concat(expansions);
+  }
+
+  // Score a single text against a single search term
+  function scoreTerm(q, text) {
+    if (!q || !text) return 0;
+    var t = text.toLowerCase();
+    var ql = q.toLowerCase();
+
+    // Exact match
+    if (t === ql) return 100;
+
+    // Full substring
+    if (t.indexOf(ql) !== -1) {
+      // Bonus if it starts with the query
+      if (t.indexOf(ql) === 0) return 95;
+      // Bonus for word-start matches (e.g., "script" in "JavaScript")
+      var wordBoundaryRegex = new RegExp("\\b" + ql.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+      if (wordBoundaryRegex.test(t)) return 90;
+      return 75;
+    }
+
+    // Multi-word phrase: check each word individually
+    var words = t.split(/[\s\-_\.\/]+/);
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (!w) continue;
+
+      // Exact word match
+      if (w === ql) return 85;
+      // Word starts with query
+      if (w.indexOf(ql) === 0) return 80;
+      // Query starts with word (e.g., "javascript" query vs "java" word)
+      if (ql.indexOf(w) === 0 && w.length >= 3) return 70;
+    }
+
+    // Subsequence match (all query chars appear in order)
+    if (ql.length >= 2) {
+      var qi = 0;
+      for (var k = 0; k < t.length && qi < ql.length; k++) {
+        if (t[k] === ql[qi]) qi++;
+      }
+      if (qi === ql.length) return 55;
+    }
+
+    // Typo tolerance via Levenshtein (only for longer terms)
+    if (ql.length >= 4) {
+      for (var j = 0; j < words.length; j++) {
+        var wj = words[j];
+        if (wj.length < 3) continue;
+        var dist = levenshtein(ql, wj);
+        var threshold = ql.length <= 6 ? 1 : 2;
+        if (dist <= threshold) return 65 - dist * 5;
       }
     }
 
     return 0;
   }
 
+  // Score a tutorial against a full search query
   function searchScore(tut, query) {
     if (!query) return 1;
-    var q = query.toLowerCase().trim();
-    var score = 0;
 
-    score += fuzzyMatch(q, tut.title) * 3;
-    score += fuzzyMatch(q, tut.summary || "") * 1.5;
-    score += fuzzyMatch(q, (tut.tags || []).join(" ")) * 2;
-    score += fuzzyMatch(q, tut.category) * 2;
+    var expansions = expandQuery(query);
+    var best = 0;
 
-    // Search in step titles
-    var stepText = "";
-    for (var p in tut.steps) {
-      if (Array.isArray(tut.steps[p])) {
-        tut.steps[p].forEach(function (s) { stepText += " " + (s.title || ""); });
-      } else if (tut.steps[p]) {
-        stepText += " " + tut.steps[p];
+    for (var e = 0; e < expansions.length; e++) {
+      var q = expansions[e];
+      var score = 0;
+
+      // Title (highest weight)
+      score = Math.max(score, scoreTerm(q, tut.title) * 4);
+
+      // Tags
+      if (Array.isArray(tut.tags)) {
+        for (var t = 0; t < tut.tags.length; t++) {
+          score = Math.max(score, scoreTerm(q, tut.tags[t]) * 3);
+        }
       }
-    }
-    score += fuzzyMatch(q, stepText) * 0.8;
 
-    return score;
+      // Category
+      score = Math.max(score, scoreTerm(q, tut.category) * 2.5);
+
+      // Summary
+      score = Math.max(score, scoreTerm(q, tut.summary || "") * 1.5);
+
+      // Intro
+      score = Math.max(score, scoreTerm(q, tut.intro || "") * 1.2);
+
+      // Step titles + code
+      var stepText = "";
+      for (var p in tut.steps) {
+        if (Array.isArray(tut.steps[p])) {
+          tut.steps[p].forEach(function (s) {
+            stepText += " " + (s.title || "");
+            if (s.code) stepText += " " + s.code;
+          });
+        } else if (tut.steps[p]) {
+          stepText += " " + tut.steps[p];
+        }
+      }
+      if (stepText) {
+        score = Math.max(score, scoreTerm(q, stepText) * 0.7);
+      }
+
+      best = Math.max(best, score);
+    }
+
+    return best;
   }
 
   // =============================================
-  // PLATFORM BAR
+  // PLATFORM BAR INJECTION
   // =============================================
   if (!document.getElementById("platformBtns")) {
     var content = document.querySelector(".content");
@@ -181,8 +304,7 @@
 
   var missing = [];
   for (var k in el) if (!el[k]) missing.push(k);
-  if (missing.length) alert("Missing elements: " + missing.join(", "));
-  if (missing.length) return;
+  if (missing.length) { alert("Missing elements: " + missing.join(", ")); return; }
 
   // =============================================
   // STATE
@@ -291,6 +413,10 @@
     for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
     var t = document.getElementById(id);
     if (t) t.classList.add("active");
+
+    // Hide top platform bar when inside a tutorial
+    document.body.classList.toggle("on-tutorial", id === "tutorial");
+
     closeSide();
     window.scrollTo(0, 0);
   }
@@ -311,7 +437,6 @@
     });
   }
 
-  // Categories
   categories.forEach(function (cat) {
     var btn = document.createElement("button");
     btn.type = "button";
@@ -346,12 +471,10 @@
     });
   }
 
-  // Tutorial sidebar
   var sideSearchValue = "";
 
   function renderSidebarTutorials() {
     el.tutNav.innerHTML = "";
-
     var searchBox = document.createElement("input");
     searchBox.type = "text";
     searchBox.className = "side-search";
@@ -396,7 +519,6 @@
     });
   }
 
-  // Chips
   categories.forEach(function (cat) {
     var chip = document.createElement("button");
     chip.type = "button";
@@ -426,27 +548,22 @@
   };
 
   // =============================================
-  // RENDER GRID (with fuzzy search + All platform)
+  // RENDER GRID (advanced search)
   // =============================================
   function renderGrid() {
     var scored = [];
     for (var i = 0; i < window.TUTORIALS.length; i++) {
       var t = window.TUTORIALS[i];
 
-      // Platform filter
       if (currentPlatform !== "all" && getPlatforms(t).indexOf(currentPlatform) === -1) continue;
-
-      // Category filter
       if (currentCategory !== "all" && t.category !== currentCategory) continue;
 
-      // Search score
       var score = searchScore(t, currentSearch);
       if (score <= 0) continue;
 
       scored.push({ tut: t, score: score });
     }
 
-    // Sort by score descending
     scored.sort(function (a, b) { return b.score - a.score; });
 
     el.grid.innerHTML = "";
@@ -469,7 +586,6 @@
     });
     badgeHtml += '</div>';
 
-    // Step count — show for current platform or first available in "All" mode
     var stepCount;
     if (currentPlatform === "all") {
       var firstPlat = getPlatforms(tut)[0];
@@ -535,9 +651,7 @@
   // PROGRESS
   // =============================================
   function getProgressKey(tutId, platform) { return tutId + ":" + platform; }
-  function getProgress(tutId, platform) {
-    return progress[getProgressKey(tutId, platform)] || [];
-  }
+  function getProgress(tutId, platform) { return progress[getProgressKey(tutId, platform)] || []; }
   function toggleStep(tutId, platform, idx) {
     var key = getProgressKey(tutId, platform);
     if (!progress[key]) progress[key] = [];
@@ -550,20 +664,20 @@
   }
 
   // =============================================
-  // GET STEPS FOR VIEW (handles "All" mode)
+  // GET STEPS FOR VIEW
   // =============================================
   function getStepsForView(tut) {
     if (Array.isArray(tut.steps)) return { platform: null, steps: tut.steps };
     var tutPlats = getPlatforms(tut);
 
-    if (currentPlatform === "all") {
-      // Use detail platform if supported, else first available
-      var plat = currentDetailPlatform;
-      if (tutPlats.indexOf(plat) === -1) plat = tutPlats[0];
-      return { platform: plat, steps: tut.steps[plat] || [] };
-    } else {
-      return { platform: currentPlatform, steps: tut.steps[currentPlatform] || [] };
+    var plat = (currentPlatform === "all") ? currentDetailPlatform : currentPlatform;
+
+    if (tutPlats.indexOf(plat) === -1) {
+      plat = tutPlats[0];
+      currentDetailPlatform = plat;
     }
+
+    return { platform: plat, steps: tut.steps[plat] || [] };
   }
 
   // =============================================
@@ -579,7 +693,6 @@
     currentTutorialId = id;
     updatePageNavActive(null);
 
-    // Update URL hash for shareable link
     if (!skipHash && location.hash !== "#" + id) {
       history.pushState(null, "", "#" + id);
     }
@@ -603,8 +716,6 @@
     html += '<div class="tut-cat">' + tut.category + '</div>';
     html += '<h1>' + tut.title + '</h1>';
     html += '<p class="intro">' + tut.intro + '</p>';
-
-    // Share button
     html += '<button class="share-btn" type="button" data-share-id="' + tut.id + '">🔗 Copy link</button>';
 
     if (viewPlatform) {
@@ -624,11 +735,10 @@
       html += '</ul>';
       html += '</div>';
     }
-
     html += '</div>';
 
-    // Mini platform picker (only in "All" mode)
-    if (currentPlatform === "all" && !Array.isArray(tut.steps)) {
+    // In-tutorial platform picker
+    if (!Array.isArray(tut.steps)) {
       var tutPlats = getPlatforms(tut);
       if (tutPlats.length > 1) {
         html += '<div class="detail-platform-picker">';
@@ -732,7 +842,7 @@
       };
     }
 
-    // Wire mini platform picker
+    // Wire in-tutorial platform picker
     el.content.querySelectorAll(".detail-plat-btn").forEach(function (btn) {
       btn.onclick = function () {
         currentDetailPlatform = btn.getAttribute("data-detail-plat");
@@ -869,6 +979,10 @@
   // =============================================
   el.back.onclick = function () {
     currentTutorialId = null;
+    if (currentPlatform !== "all") {
+      currentDetailPlatform = currentPlatform;
+      localStorage.setItem("neoDetailPlatform", currentDetailPlatform);
+    }
     updatePageNavActive("home");
     if (location.hash) {
       history.pushState(null, "", location.pathname);
@@ -882,7 +996,6 @@
   function handleHash() {
     var hash = location.hash.replace("#", "");
     if (hash && hash.length > 0) {
-      // Check if it's a valid tutorial id
       for (var i = 0; i < window.TUTORIALS.length; i++) {
         if (window.TUTORIALS[i].id === hash) {
           openTutorial(hash, true);
@@ -890,7 +1003,6 @@
         }
       }
     }
-    // No valid hash — show home
     if (currentTutorialId) {
       currentTutorialId = null;
       updatePageNavActive("home");
@@ -909,9 +1021,7 @@
   topBtn.className = "scroll-top-btn";
   topBtn.setAttribute("aria-label", "Scroll to top");
   topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
-  topBtn.onclick = function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  topBtn.onclick = function () { window.scrollTo({ top: 0, behavior: "smooth" }); };
   document.body.appendChild(topBtn);
 
   window.addEventListener("scroll", function () {
@@ -944,8 +1054,6 @@
   renderGrid();
   updateCategoryCounts();
   renderSidebarTutorials();
-
-  // Handle initial hash
   handleHash();
 
   console.log("✅ NeoLearn ready. Platform: " + currentPlatform);
