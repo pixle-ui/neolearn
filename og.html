@@ -2,15 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OG Image Maker</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
+    html, body { width: 100vw; height: 100vh; overflow: hidden; }
     .card {
       width: 100vw;
       height: 100vh;
@@ -18,56 +13,57 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8vh 8vw;
+      align-items: center;
+      padding: 6vh 6vw;
       position: relative;
       overflow: hidden;
       font-family: 'Segoe UI', system-ui, sans-serif;
+      text-align: center;
     }
     .card::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 15% 20%, rgba(255,47,185,0.25), transparent 45%),
-        radial-gradient(circle at 85% 80%, rgba(0,240,255,0.20), transparent 45%);
+        radial-gradient(circle at 20% 15%, rgba(255,47,185,0.3), transparent 50%),
+        radial-gradient(circle at 80% 85%, rgba(0,240,255,0.25), transparent 50%);
       pointer-events: none;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
-      margin-bottom: 5vh;
+      gap: 12px;
+      margin-bottom: 4vh;
       position: relative;
       z-index: 1;
     }
     .brand-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #ff2fb9, #00f0ff);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 900;
       color: #05030d;
-      box-shadow: 0 0 30px rgba(255,47,185,0.6);
+      box-shadow: 0 0 25px rgba(255,47,185,0.6);
     }
     .brand-name {
-      font-size: 32px;
+      font-size: 26px;
       font-weight: 900;
       letter-spacing: 1px;
       color: #fff;
     }
     h1 {
-      font-size: 8vh;
+      font-size: 7vh;
       line-height: 1.1;
       color: #fff;
       font-weight: 900;
-      letter-spacing: -1.5px;
+      letter-spacing: -1px;
       position: relative;
       z-index: 1;
-      max-width: 900px;
     }
     h1 .grad {
       background: linear-gradient(135deg, #ff2fb9, #00f0ff);
@@ -77,41 +73,40 @@
     }
     .sub {
       margin-top: 3vh;
-      font-size: 3.2vh;
+      font-size: 2.4vh;
       color: #a49dc0;
       line-height: 1.5;
       position: relative;
       z-index: 1;
-      max-width: 900px;
-    }
-    .url {
-      position: absolute;
-      bottom: 5vh;
-      left: 8vw;
-      font-family: monospace;
-      font-size: 2.5vh;
-      color: #00f0ff;
-      letter-spacing: 1px;
-      z-index: 1;
-      font-weight: 700;
     }
     .tags {
-      position: absolute;
-      bottom: 5vh;
-      right: 8vw;
       display: flex;
-      gap: 10px;
+      gap: 8px;
+      margin-top: 4vh;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
       z-index: 1;
     }
     .tag {
       font-family: monospace;
-      font-size: 2vh;
-      padding: 6px 14px;
+      font-size: 1.7vh;
+      padding: 5px 12px;
       background: rgba(255,47,185,0.15);
       border: 1px solid rgba(255,47,185,0.4);
       border-radius: 50px;
       color: #ff2fb9;
       font-weight: 700;
+    }
+    .url {
+      margin-top: 4vh;
+      font-family: monospace;
+      font-size: 1.9vh;
+      color: #00f0ff;
+      letter-spacing: 1px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
@@ -122,14 +117,14 @@
       <div class="brand-name">NeoLearn</div>
     </div>
     <h1>Learn <span class="grad">cool tech.</span><br>Step by step.</h1>
-    <div class="sub">Free tutorials for Linux, Android, Mac, Windows, iOS.<br>37 tutorials. No signup. No ads.</div>
-    <div class="url">▸ neolearn-a09.pages.dev</div>
+    <div class="sub">Free tutorials for every device.<br>No signup. No ads. No tracking.</div>
     <div class="tags">
       <span class="tag">AI</span>
       <span class="tag">TERMUX</span>
       <span class="tag">LINUX</span>
       <span class="tag">SECURITY</span>
     </div>
+    <div class="url">▸ neolearn-a09.pages.dev</div>
   </div>
 </body>
 </html>
