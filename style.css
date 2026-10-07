@@ -1829,3 +1829,128 @@ body::before {
   .page-icon { width: 30px; height: 30px; }
   .about-header h1 { font-size: 26px; gap: 10px; }
 }
+
+
+/* ============ SHARE BUTTON ============ */
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: var(--neon-cyan);
+  border-radius: 50px;
+  font-size: 12px;
+  font-family: monospace;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 8px 0 14px;
+  transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+  background: rgba(0, 240, 255, 0.18);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* ============ DETAIL PLATFORM PICKER ============ */
+.detail-platform-picker {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(255, 47, 185, 0.05));
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 14px;
+}
+
+.detail-plat-label {
+  display: block;
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--neon-purple);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.detail-plat-btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.detail-plat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.detail-plat-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.detail-plat-btn:hover {
+  color: var(--text);
+  border-color: var(--neon-purple);
+}
+
+.detail-plat-btn.active {
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 12px rgba(255, 47, 185, 0.4);
+}
+
+/* ============ SCROLL-TO-TOP BUTTON ============ */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+  color: #05030d;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 30px rgba(0, 240, 255, 0.5);
+  z-index: 90;
+}
+
+.scroll-top-btn.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 240, 255, 0.7);
+}
+
+@media (max-width: 640px) {
+  .scroll-top-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+  }
+}
