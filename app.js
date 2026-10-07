@@ -1,9 +1,8 @@
 // =============================================
-// APP.JS v2.1 — premium step rendering
+// APP.JS v3.0 — All platform, fuzzy search, hash routing
 // =============================================
 (function () {
 
-  // ---- PLATFORMS fallback ----
   if (!window.PLATFORMS) {
     window.PLATFORMS = [
       { id: "linux",   label: "Linux" },
@@ -19,7 +18,7 @@
     return;
   }
 
-  console.log("✅ NeoLearn v2.1 — " + window.TUTORIALS.length + " tutorials");
+  console.log("✅ NeoLearn v3.0 — " + window.TUTORIALS.length + " tutorials");
 
   // =============================================
   // HELPERS
@@ -33,7 +32,6 @@
     return window.PLATFORMS.map(function (p) { return p.id; });
   }
 
-  // Auto-detect step type if not specified
   function detectStepType(step) {
     if (step.type) return step.type;
     if (step.note) {
@@ -57,25 +55,93 @@
     }
   }
 
-  // Render rich text: **bold**, `inline code`
   function rich(text) {
     if (!text) return "";
     var out = text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
-
-    // **bold**
     out = out.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
-    // `inline code`
     out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
-    // newlines
     out = out.replace(/\n/g, "<br>");
     return out;
   }
 
   // =============================================
-  // PLATFORM BAR INJECTION
+  // FUZZY SEARCH
+  // =============================================
+  function levenshtein(a, b) {
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+    var matrix = [];
+    for (var i = 0; i <= b.length; i++) matrix[i] = [i];
+    for (var j = 0; j <= a.length; j++) matrix[0][j] = j;
+    for (var i = 1; i <= b.length; i++) {
+      for (var j = 1; j <= a.length; j++) {
+        if (b[i - 1] === a[j - 1]) matrix[i][j] = matrix[i - 1][j - 1];
+        else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+      }
+    }
+    return matrix[b.length][a.length];
+  }
+
+  function fuzzyMatch(query, text) {
+    if (!query || !text) return 0;
+    var q = query.toLowerCase().replace(/\s+/g, "");
+    var t = text.toLowerCase().replace(/\s+/g, "");
+
+    // Exact substring
+    if (t.indexOf(q) !== -1) return 100;
+
+    // Prefix match
+    if (t.indexOf(q) === 0) return 95;
+
+    // Subsequence match (all chars in order)
+    var qi = 0;
+    for (var i = 0; i < t.length && qi < q.length; i++) {
+      if (t[i] === q[qi]) qi++;
+    }
+    if (qi === q.length) return 60;
+
+    // Word-level fuzzy
+    var words = text.toLowerCase().split(/[\s\-_]+/);
+    for (var w = 0; w < words.length; w++) {
+      if (words[w].length > 2 && q.length > 2) {
+        var dist = levenshtein(q, words[w]);
+        var threshold = Math.max(2, Math.floor(q.length / 3));
+        if (dist <= threshold) return 40;
+      }
+    }
+
+    return 0;
+  }
+
+  function searchScore(tut, query) {
+    if (!query) return 1;
+    var q = query.toLowerCase().trim();
+    var score = 0;
+
+    score += fuzzyMatch(q, tut.title) * 3;
+    score += fuzzyMatch(q, tut.summary || "") * 1.5;
+    score += fuzzyMatch(q, (tut.tags || []).join(" ")) * 2;
+    score += fuzzyMatch(q, tut.category) * 2;
+
+    // Search in step titles
+    var stepText = "";
+    for (var p in tut.steps) {
+      if (Array.isArray(tut.steps[p])) {
+        tut.steps[p].forEach(function (s) { stepText += " " + (s.title || ""); });
+      } else if (tut.steps[p]) {
+        stepText += " " + tut.steps[p];
+      }
+    }
+    score += fuzzyMatch(q, stepText) * 0.8;
+
+    return score;
+  }
+
+  // =============================================
+  // PLATFORM BAR
   // =============================================
   if (!document.getElementById("platformBtns")) {
     var content = document.querySelector(".content");
@@ -122,6 +188,7 @@
   // STATE
   // =============================================
   var currentPlatform = localStorage.getItem("neoPlatform") || "android";
+  var currentDetailPlatform = localStorage.getItem("neoDetailPlatform") || currentPlatform;
   var currentCategory = "all";
   var currentSearch = "";
   var currentTutorialId = null;
@@ -156,26 +223,42 @@
   }
 
   // =============================================
-  // PLATFORM BUTTONS
+  // PLATFORM BUTTONS (with "All")
   // =============================================
+  var allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "plat-btn" + (currentPlatform === "all" ? " active" : "");
+  allBtn.setAttribute("data-plat", "all");
+  allBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg><span>All</span>';
+  allBtn.onclick = function () { setPlatform("all"); };
+  el.platBtns.appendChild(allBtn);
+
   window.PLATFORMS.forEach(function (p) {
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "plat-btn" + (p.id === currentPlatform ? " active" : "");
     btn.setAttribute("data-plat", p.id);
     btn.innerHTML = (p.svg || "") + '<span>' + p.label + '</span>';
-    btn.onclick = function () {
-      if (currentPlatform === p.id) return;
-      currentPlatform = p.id;
-      localStorage.setItem("neoPlatform", p.id);
-      updatePlatBtns();
-      renderGrid();
-      renderSidebarList();
-      if (currentTutorialId) swapTutorial(currentTutorialId);
-      showToast("Switched to " + p.label);
-    };
+    btn.onclick = function () { setPlatform(p.id); };
     el.platBtns.appendChild(btn);
   });
+
+  function setPlatform(plat) {
+    if (currentPlatform === plat) return;
+    currentPlatform = plat;
+    localStorage.setItem("neoPlatform", plat);
+    if (plat !== "all") {
+      currentDetailPlatform = plat;
+      localStorage.setItem("neoDetailPlatform", plat);
+    }
+    updatePlatBtns();
+    renderGrid();
+    renderSidebarList();
+    updateCategoryCounts();
+    if (currentTutorialId) swapTutorial(currentTutorialId);
+    var label = plat === "all" ? "All platforms" : plat;
+    showToast("Switched to " + label);
+  }
 
   function updatePlatBtns() {
     var btns = document.querySelectorAll(".plat-btn");
@@ -212,7 +295,6 @@
     window.scrollTo(0, 0);
   }
 
-  // Page nav
   el.pageNav.querySelectorAll(".nav-btn").forEach(function (btn) {
     btn.onclick = function () {
       var p = btn.getAttribute("data-page");
@@ -235,12 +317,7 @@
     btn.type = "button";
     btn.className = "nav-btn" + (cat === "all" ? " active" : "");
     btn.setAttribute("data-cat", cat);
-
-    var count = cat === "all"
-      ? window.TUTORIALS.filter(function (t) { return getPlatforms(t).indexOf(currentPlatform) !== -1; }).length
-      : window.TUTORIALS.filter(function (t) { return t.category === cat && getPlatforms(t).indexOf(currentPlatform) !== -1; }).length;
-
-    btn.innerHTML = (cat === "all" ? "◇ All" : "◇ " + cat) + '<span class="count">' + count + '</span>';
+    btn.dataset.catKey = cat;
     btn.onclick = function () {
       currentCategory = cat;
       updateChips();
@@ -251,7 +328,25 @@
     el.catNav.appendChild(btn);
   });
 
-  // Tutorials sidebar with search
+  function updateCategoryCounts() {
+    el.catNav.querySelectorAll(".nav-btn").forEach(function (btn) {
+      var cat = btn.dataset.catKey;
+      var count;
+      if (currentPlatform === "all") {
+        count = cat === "all"
+          ? window.TUTORIALS.length
+          : window.TUTORIALS.filter(function (t) { return t.category === cat; }).length;
+      } else {
+        count = cat === "all"
+          ? window.TUTORIALS.filter(function (t) { return getPlatforms(t).indexOf(currentPlatform) !== -1; }).length
+          : window.TUTORIALS.filter(function (t) { return t.category === cat && getPlatforms(t).indexOf(currentPlatform) !== -1; }).length;
+      }
+      var label = cat === "all" ? "◇ All" : "◇ " + cat;
+      btn.innerHTML = label + '<span class="count">' + count + '</span>';
+    });
+  }
+
+  // Tutorial sidebar
   var sideSearchValue = "";
 
   function renderSidebarTutorials() {
@@ -280,7 +375,7 @@
     wrap.innerHTML = "";
 
     var list = window.TUTORIALS.filter(function (t) {
-      if (getPlatforms(t).indexOf(currentPlatform) === -1) return false;
+      if (currentPlatform !== "all" && getPlatforms(t).indexOf(currentPlatform) === -1) return false;
       if (sideSearchValue && t.title.toLowerCase().indexOf(sideSearchValue) === -1) return false;
       return true;
     });
@@ -301,7 +396,7 @@
     });
   }
 
-  // Filter chips
+  // Chips
   categories.forEach(function (cat) {
     var chip = document.createElement("button");
     chip.type = "button";
@@ -331,29 +426,38 @@
   };
 
   // =============================================
-  // RENDER GRID
+  // RENDER GRID (with fuzzy search + All platform)
   // =============================================
   function renderGrid() {
-    var filtered = window.TUTORIALS.filter(function (t) {
-      if (getPlatforms(t).indexOf(currentPlatform) === -1) return false;
-      var matchCat = currentCategory === "all" || t.category === currentCategory;
-      var matchSearch = !currentSearch ||
-        t.title.toLowerCase().indexOf(currentSearch) !== -1 ||
-        t.summary.toLowerCase().indexOf(currentSearch) !== -1 ||
-        (t.tags || []).some(function (tag) { return tag.toLowerCase().indexOf(currentSearch) !== -1; });
-      return matchCat && matchSearch;
-    });
+    var scored = [];
+    for (var i = 0; i < window.TUTORIALS.length; i++) {
+      var t = window.TUTORIALS[i];
+
+      // Platform filter
+      if (currentPlatform !== "all" && getPlatforms(t).indexOf(currentPlatform) === -1) continue;
+
+      // Category filter
+      if (currentCategory !== "all" && t.category !== currentCategory) continue;
+
+      // Search score
+      var score = searchScore(t, currentSearch);
+      if (score <= 0) continue;
+
+      scored.push({ tut: t, score: score });
+    }
+
+    // Sort by score descending
+    scored.sort(function (a, b) { return b.score - a.score; });
 
     el.grid.innerHTML = "";
-
-    if (filtered.length === 0) {
+    if (scored.length === 0) {
       el.empty.style.display = "block";
       return;
     }
     el.empty.style.display = "none";
 
-    filtered.forEach(function (tut) {
-      el.grid.appendChild(buildCard(tut));
+    scored.forEach(function (item) {
+      el.grid.appendChild(buildCard(item.tut));
     });
   }
 
@@ -365,7 +469,14 @@
     });
     badgeHtml += '</div>';
 
-    var stepCount = getSteps(tut, currentPlatform).length;
+    // Step count — show for current platform or first available in "All" mode
+    var stepCount;
+    if (currentPlatform === "all") {
+      var firstPlat = getPlatforms(tut)[0];
+      stepCount = getSteps(tut, firstPlat).length;
+    } else {
+      stepCount = getSteps(tut, currentPlatform).length;
+    }
 
     var card = document.createElement("div");
     card.className = "tut-card";
@@ -424,12 +535,9 @@
   // PROGRESS
   // =============================================
   function getProgressKey(tutId, platform) { return tutId + ":" + platform; }
-
   function getProgress(tutId, platform) {
-    var key = getProgressKey(tutId, platform);
-    return progress[key] || [];
+    return progress[getProgressKey(tutId, platform)] || [];
   }
-
   function toggleStep(tutId, platform, idx) {
     var key = getProgressKey(tutId, platform);
     if (!progress[key]) progress[key] = [];
@@ -442,9 +550,26 @@
   }
 
   // =============================================
-  // OPEN TUTORIAL — the big renderer
+  // GET STEPS FOR VIEW (handles "All" mode)
   // =============================================
-  function openTutorial(id) {
+  function getStepsForView(tut) {
+    if (Array.isArray(tut.steps)) return { platform: null, steps: tut.steps };
+    var tutPlats = getPlatforms(tut);
+
+    if (currentPlatform === "all") {
+      // Use detail platform if supported, else first available
+      var plat = currentDetailPlatform;
+      if (tutPlats.indexOf(plat) === -1) plat = tutPlats[0];
+      return { platform: plat, steps: tut.steps[plat] || [] };
+    } else {
+      return { platform: currentPlatform, steps: tut.steps[currentPlatform] || [] };
+    }
+  }
+
+  // =============================================
+  // OPEN TUTORIAL
+  // =============================================
+  function openTutorial(id, skipHash) {
     var tut = null;
     for (var i = 0; i < window.TUTORIALS.length; i++) {
       if (window.TUTORIALS[i].id === id) { tut = window.TUTORIALS[i]; break; }
@@ -454,78 +579,98 @@
     currentTutorialId = id;
     updatePageNavActive(null);
 
-    var steps = getSteps(tut, currentPlatform);
-    var platLabel = "";
-    for (var p = 0; p < window.PLATFORMS.length; p++) {
-      if (window.PLATFORMS[p].id === currentPlatform) platLabel = window.PLATFORMS[p].label;
+    // Update URL hash for shareable link
+    if (!skipHash && location.hash !== "#" + id) {
+      history.pushState(null, "", "#" + id);
     }
 
-    var done = getProgress(id, currentPlatform);
+    var view = getStepsForView(tut);
+    var steps = view.steps;
+    var viewPlatform = view.platform;
+
+    var platLabel = "";
+    if (viewPlatform) {
+      for (var p = 0; p < window.PLATFORMS.length; p++) {
+        if (window.PLATFORMS[p].id === viewPlatform) platLabel = window.PLATFORMS[p].label;
+      }
+    }
+
+    var done = viewPlatform ? getProgress(id, viewPlatform) : [];
     var pct = steps.length ? Math.round((done.length / steps.length) * 100) : 0;
 
-    // ---- HEADER ----
+    // Header
     var html = '<div class="tut-header">';
     html += '<div class="tut-cat">' + tut.category + '</div>';
     html += '<h1>' + tut.title + '</h1>';
     html += '<p class="intro">' + tut.intro + '</p>';
-    html += '<div class="current-plat">▸ ' + platLabel + '</div>';
+
+    // Share button
+    html += '<button class="share-btn" type="button" data-share-id="' + tut.id + '">🔗 Copy link</button>';
+
+    if (viewPlatform) {
+      html += '<div class="current-plat">▸ ' + platLabel + '</div>';
+    }
     html += '<div class="tut-tags">';
     html += '<span class="diff ' + tut.difficulty + '">' + tut.difficulty + '</span>';
     html += '<span class="tag">⏱ ' + tut.time + '</span>';
     html += '<span class="tag">' + steps.length + ' steps</span>';
     html += '</div>';
 
-    // "What you'll learn" list (optional — from tut.learnList)
     if (Array.isArray(tut.learnList) && tut.learnList.length) {
       html += '<div class="learn-list">';
       html += '<div class="learn-list-title">What you\'ll learn</div>';
       html += '<ul>';
-      tut.learnList.forEach(function (item) {
-        html += '<li>' + item + '</li>';
-      });
+      tut.learnList.forEach(function (item) { html += '<li>' + item + '</li>'; });
       html += '</ul>';
       html += '</div>';
     }
 
     html += '</div>';
 
-    // ---- PROGRESS BAR ----
-    if (steps.length > 0 && getPlatforms(tut).indexOf(currentPlatform) !== -1) {
+    // Mini platform picker (only in "All" mode)
+    if (currentPlatform === "all" && !Array.isArray(tut.steps)) {
+      var tutPlats = getPlatforms(tut);
+      if (tutPlats.length > 1) {
+        html += '<div class="detail-platform-picker">';
+        html += '<span class="detail-plat-label">▸ View steps for:</span>';
+        html += '<div class="detail-plat-btns">';
+        window.PLATFORMS.forEach(function (p) {
+          if (tutPlats.indexOf(p.id) === -1) return;
+          var isActive = p.id === viewPlatform;
+          html += '<button class="detail-plat-btn' + (isActive ? ' active' : '') + '" type="button" data-detail-plat="' + p.id + '">' + (p.svg || '') + '<span>' + p.label + '</span></button>';
+        });
+        html += '</div></div>';
+      }
+    }
+
+    // Progress bar
+    if (steps.length > 0 && viewPlatform) {
       html += '<div class="tut-progress">';
       html += '<div class="tut-progress-label"><span>PROGRESS</span><span>' + done.length + '/' + steps.length + ' · ' + pct + '%</span></div>';
       html += '<div class="tut-progress-bar"><div class="tut-progress-fill" id="progFill" style="width:' + pct + '%"></div></div>';
       html += '</div>';
     }
 
-    // ---- STEPS ----
-    if (getPlatforms(tut).indexOf(currentPlatform) === -1) {
-      html += '<div class="callout warn"><b>Not available for ' + platLabel + ' yet.</b></div>';
+    // Steps
+    if (!viewPlatform && !Array.isArray(tut.steps)) {
+      html += '<div class="callout warn"><b>No steps available.</b></div>';
     } else if (steps.length === 0) {
-      html += '<div class="callout warn">No steps for ' + platLabel + '.</div>';
+      html += '<div class="callout warn">No steps for this platform.</div>';
     } else {
       for (var s = 0; s < steps.length; s++) {
         var step = steps[s];
-
-        // Chapter divider
         if (step.chapter) {
           html += '<div class="chapter-divider"><span>' + step.chapter + '</span></div>';
         }
-
         var type = detectStepType(step);
         var isDone = done.indexOf(s) !== -1;
 
         html += '<div class="step step-' + type + (isDone ? ' done' : '') + '" data-step="' + s + '">';
-
-        // Header: checkbox + number badge + icon + title
         html += '<div class="step-header">';
         html += '<button class="step-check' + (isDone ? ' checked' : '') + '" type="button" data-idx="' + s + '">' + (isDone ? '✓' : '') + '</button>';
-        html += '<div class="step-meta">';
-        html += '<div class="step-num-badge">' + (s + 1) + '</div>';
-        html += '</div>';
+        html += '<div class="step-meta"><div class="step-num-badge">' + (s + 1) + '</div></div>';
         html += '<h3 class="step-title">' + getStepIcon(type) + ' ' + step.title + '</h3>';
         html += '</div>';
-
-        // Body
         html += '<div class="step-body">';
 
         var bodyClass = (type === "read") ? "step-read" : "step-text";
@@ -538,7 +683,6 @@
           html += '</div>';
         }
 
-        // Output block
         if (step.output) {
           html += '<div class="output-block">';
           html += '<div class="output-label">▸ Expected output</div>';
@@ -546,17 +690,14 @@
           html += '</div>';
         }
 
-        // Note callout
         if (step.note) {
           html += '<div class="callout ' + step.note.type + '">' + rich(step.note.text) + '</div>';
         }
 
-        html += '</div>'; // step-body
-        html += '</div>'; // step
+        html += '</div></div>';
       }
     }
 
-    // ---- REPO LINK ----
     html += '<div class="repo-box">';
     html += '<p>// source</p>';
     html += '<a class="repo-btn" href="' + tut.repo.url + '" target="_blank" rel="noopener">' + tut.repo.label + ' ↗</a>';
@@ -576,22 +717,47 @@
       };
     });
 
+    // Wire share button
+    var shareBtn = el.content.querySelector(".share-btn");
+    if (shareBtn) {
+      shareBtn.onclick = function () {
+        var url = location.origin + location.pathname + "#" + id;
+        if (navigator.share) {
+          navigator.share({ title: tut.title, url: url }).catch(function () {});
+        } else {
+          navigator.clipboard.writeText(url).then(function () {
+            showToast("🔗 Link copied");
+          });
+        }
+      };
+    }
+
+    // Wire mini platform picker
+    el.content.querySelectorAll(".detail-plat-btn").forEach(function (btn) {
+      btn.onclick = function () {
+        currentDetailPlatform = btn.getAttribute("data-detail-plat");
+        localStorage.setItem("neoDetailPlatform", currentDetailPlatform);
+        openTutorial(id, true);
+      };
+    });
+
     // Wire step checkboxes
     el.content.querySelectorAll(".step-check").forEach(function (btn) {
       btn.onclick = function () {
         var idx = parseInt(btn.getAttribute("data-idx"), 10);
-        toggleStep(id, currentPlatform, idx);
+        if (viewPlatform) {
+          toggleStep(id, viewPlatform, idx);
+          var newDone = getProgress(id, viewPlatform);
+          var newPct = steps.length ? Math.round((newDone.length / steps.length) * 100) : 0;
+          var fill = document.getElementById("progFill");
+          if (fill) fill.style.width = newPct + "%";
+          var label = el.content.querySelector(".tut-progress-label span:last-child");
+          if (label) label.textContent = newDone.length + "/" + steps.length + " · " + newPct + "%";
+        }
         var stepEl = btn.closest(".step");
         if (stepEl) stepEl.classList.toggle("done");
         btn.classList.toggle("checked");
         btn.textContent = btn.classList.contains("checked") ? "✓" : "";
-
-        var newDone = getProgress(id, currentPlatform);
-        var newPct = steps.length ? Math.round((newDone.length / steps.length) * 100) : 0;
-        var fill = document.getElementById("progFill");
-        if (fill) fill.style.width = newPct + "%";
-        var label = el.content.querySelector(".tut-progress-label span:last-child");
-        if (label) label.textContent = newDone.length + "/" + steps.length + " · " + newPct + "%";
       };
     });
 
@@ -609,9 +775,7 @@
       return;
     }
     el.favEmpty.style.display = "none";
-    favs.forEach(function (tut) {
-      el.favGrid.appendChild(buildCard(tut));
-    });
+    favs.forEach(function (tut) { el.favGrid.appendChild(buildCard(tut)); });
   }
 
   // =============================================
@@ -637,8 +801,8 @@
       if (!tut) return;
 
       var total = getSteps(tut, plat).length;
-      var done = progress[key].length;
-      var pct = total ? Math.round((done / total) * 100) : 0;
+      var doneCount = progress[key].length;
+      var pct = total ? Math.round((doneCount / total) * 100) : 0;
       var platLabel = plat;
       for (var j = 0; j < window.PLATFORMS.length; j++) {
         if (window.PLATFORMS[j].id === plat) platLabel = window.PLATFORMS[j].label;
@@ -650,7 +814,7 @@
         '<h4>' + tut.title + '</h4>' +
         '<div class="prog-bar-wrap"><div class="prog-bar" style="width:' + pct + '%"></div></div>' +
         '<div class="prog-meta">' +
-          '<span>' + platLabel + ' · ' + done + '/' + total + ' steps</span>' +
+          '<span>' + platLabel + ' · ' + doneCount + '/' + total + ' steps</span>' +
           '<span class="pct">' + pct + '%</span>' +
         '</div>' +
         '<button class="clear-btn" type="button">clear</button>';
@@ -663,11 +827,17 @@
           renderProgress();
           return;
         }
-        currentPlatform = plat;
-        localStorage.setItem("neoPlatform", plat);
-        updatePlatBtns();
-        renderGrid();
-        renderSidebarList();
+        if (currentPlatform === "all") {
+          currentDetailPlatform = plat;
+          localStorage.setItem("neoDetailPlatform", plat);
+        } else {
+          currentPlatform = plat;
+          localStorage.setItem("neoPlatform", plat);
+          currentDetailPlatform = plat;
+          updatePlatBtns();
+          renderGrid();
+          renderSidebarList();
+        }
         openTutorial(tutId);
       };
 
@@ -700,8 +870,54 @@
   el.back.onclick = function () {
     currentTutorialId = null;
     updatePageNavActive("home");
+    if (location.hash) {
+      history.pushState(null, "", location.pathname);
+    }
     showPage("home");
   };
+
+  // =============================================
+  // HASH ROUTING
+  // =============================================
+  function handleHash() {
+    var hash = location.hash.replace("#", "");
+    if (hash && hash.length > 0) {
+      // Check if it's a valid tutorial id
+      for (var i = 0; i < window.TUTORIALS.length; i++) {
+        if (window.TUTORIALS[i].id === hash) {
+          openTutorial(hash, true);
+          return;
+        }
+      }
+    }
+    // No valid hash — show home
+    if (currentTutorialId) {
+      currentTutorialId = null;
+      updatePageNavActive("home");
+      showPage("home");
+    }
+  }
+
+  window.addEventListener("hashchange", handleHash);
+  window.addEventListener("popstate", handleHash);
+
+  // =============================================
+  // SCROLL-TO-TOP BUTTON
+  // =============================================
+  var topBtn = document.createElement("button");
+  topBtn.type = "button";
+  topBtn.className = "scroll-top-btn";
+  topBtn.setAttribute("aria-label", "Scroll to top");
+  topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  topBtn.onclick = function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  document.body.appendChild(topBtn);
+
+  window.addEventListener("scroll", function () {
+    if (window.scrollY > 400) topBtn.classList.add("show");
+    else topBtn.classList.remove("show");
+  });
 
   // =============================================
   // SIDEBAR COLLAPSE
@@ -726,8 +942,12 @@
   // =============================================
   updatePageNavActive("home");
   renderGrid();
+  updateCategoryCounts();
   renderSidebarTutorials();
 
-  console.log("✅ NeoLearn ready. Favorites: " + favorites.length + ", Progress entries: " + Object.keys(progress).length);
+  // Handle initial hash
+  handleHash();
+
+  console.log("✅ NeoLearn ready. Platform: " + currentPlatform);
 
 })();
