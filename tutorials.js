@@ -1568,6 +1568,158 @@ window.TUTORIALS = [
     ]
   },
   repo: { url: "https://www.pcgamingwiki.com/wiki/Freeware_games", label: "PCGamingWiki Free Games" }
-}
+}, 
+{
+  id: "dns-adblock", title: "Block Ads Everywhere with DNS", category: "Networking",
+  difficulty: "beginner", time: "15 min",
+  summary: "Block ads on every device in your home — phone, tablet, TV, laptop — with one DNS change. No apps, no root.",
+  intro: "DNS is how your device looks up website addresses. Change which DNS server you use, and you can block ads network-wide — before they ever reach your device. Works on every app, every browser, every device. Even ads inside mobile games.",
+  tags: ["dns", "ads", "privacy", "network"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Understand what DNS is (in plain English)",
+    "Block ads on your phone with free DNS",
+    "Block ads on your whole home network",
+    "Choose between AdGuard, NextDNS, and self-hosted",
+    "Test that it's actually working"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Understanding", title: "What is DNS?", text: "When you type `google.com`, your device asks a **DNS server** for its IP address. Ads work the same way — they ask for `ads.example.com`. If your DNS server **refuses to answer** for ad domains, ads simply don't load.", type: "read" },
+      { title: "Why this beats ad-blocker apps", text: "Browser extensions only block ads in browsers. DNS blocking stops ads **everywhere** — apps, games, smart TVs, everything on your network.", type: "read" },
+
+      { chapter: "Option 1: Public ad-blocking DNS (easiest)", title: "AdGuard DNS", text: "Free, no signup. Blocks ads and trackers. Just change your DNS settings to:\n\n**IPv4:** `94.140.14.14` and `94.140.15.15`\n**IPv6:** `2a10:50c0::ad1:ff` and `2a10:50c0::ad2:ff`", type: "code" },
+      { title: "Alternative: Control D", text: "Also free. Blocks ads with `76.76.2.0` and `76.76.10.0`.", type: "tip" },
+
+      { chapter: "Option 2: NextDNS (free, customizable)", title: "Better control", text: "NextDNS gives you a **personal dashboard** — see what's being blocked, allowlist/denylist custom domains, per-device profiles. Free tier = 300,000 queries/month (plenty for personal use).", code: "https://nextdns.io", type: "code" },
+      { title: "Set it up", text: "Sign up → create a profile → you get a **custom DNS address** like `abcd12.dns.nextdns.io`. Use that as your DNS on any device." },
+
+      { chapter: "Option 3: Pi-hole (self-hosted, best)", title: "Your own DNS server", text: "Pi-hole runs on a Raspberry Pi (or any Linux box) in your home. Every device on your WiFi goes through it. Blocks ads network-wide, including smart TVs and consoles.", code: "https://pi-hole.net", type: "code" },
+      { title: "Quick install (on Debian/Ubuntu)", text: "One command installs and configures everything.", code: "curl -sSL https://install.pi-hole.net | bash", type: "code" },
+      { title: "Then set your router's DNS", text: "Point your router to the Pi-hole's IP. Now every device in the house is protected automatically.", note: { type: "tip", text: "You can also set it per-device if you don't control the router." } },
+
+      { chapter: "How to change DNS (Linux)", title: "System-wide DNS", text: "Edit resolved config or use NetworkManager. Simplest on NetworkManager systems:", code: "nmcli con mod \"Your WiFi\" ipv4.dns \"94.140.14.14 94.140.15.15\"\nnmcli con up \"Your WiFi\"", type: "code" },
+      { title: "Verify", text: "Query a known ad domain — should return nothing.", code: "nslookup ads.doubleclick.net\n# Should return NXDOMAIN or 0.0.0.0", type: "try" },
+      { title: "Or use systemd-resolved", text: "Edit /etc/systemd/resolved.conf and set `DNS=94.140.14.14 94.140.15.15`." },
+      { title: "Test ads blocked", text: "Open a site with lots of ads (news sites are perfect). Should feel cleaner and load faster.", type: "try" }
+    ],
+    android: [
+      { chapter: "Understanding", title: "What is DNS?", text: "DNS is how your phone finds websites. Change it, and you can block ads **in every app** — including games, Instagram, YouTube app. No root needed.", type: "read" },
+      { chapter: "Fastest method: Private DNS", title: "Android 9+ has built-in Private DNS", text: "Settings → Network & Internet → Private DNS → **Private DNS provider hostname**", type: "code" },
+      { title: "Enter AdGuard's address", text: "Type exactly:", code: "dns.adguard-dns.com", output: "Save. Done. Ads across all apps are now blocked.", type: "try" },
+      { title: "Or use NextDNS for more control", text: "If you made a NextDNS profile:", code: "abcd12.dns.nextdns.io", type: "code" },
+
+      { chapter: "Alternative: Local VPN apps", title: "If Private DNS isn't available", text: "Older Android (8 and below) — install **DNS66**, **Blokada**, or **Rethink DNS** from F-Droid. These create a local VPN that reroutes DNS. Free, no ads." },
+      { title: "Rethink DNS install", text: "Our favorite — flexible, open source, no telemetry.", code: "https://f-droid.org/packages/com.celzero.bravedns/", type: "code" },
+
+      { chapter: "Verify it's working", title: "Test", text: "Visit this URL — if it shows a blocked message, DNS is working:", code: "https://ads.doubleclick.net", type: "try" },
+      { title: "Check in the browser", text: "Open a news site. Ads should be missing. Pages should load noticeably faster.", type: "try" },
+
+      { chapter: "Bonus: block ads in games", title: "Even mobile games", text: "Ads in free games are served from the same ad networks. DNS blocking removes them without touching the game itself.", note: { type: "tip", text: "Some games check for blockers and may refuse to work. Just whitelist that domain in NextDNS if needed." } },
+      { title: "You're done", text: "Every app on your phone is now ad-free. Battery lasts longer, data usage drops, and pages load faster.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Understanding", title: "What is DNS?", text: "DNS is how your Mac looks up website addresses. Change your DNS server to one that blocks ads, and every app gets cleaner.", type: "read" },
+      { chapter: "Change DNS", title: "System Settings", text: "System Settings → Network → your WiFi → Details → **DNS** tab", type: "code" },
+      { title: "Add these servers", text: "Remove existing ones, add:\n\n**94.140.14.14**\n**94.140.15.15**", type: "code" },
+      { title: "Save + reapply", text: "Click **OK** → **Apply**. Then toggle WiFi off and on.", type: "try" },
+
+      { chapter: "Verify", title: "Test", text: "In Terminal:", code: "dig ads.doubleclick.net\n# Should return NXDOMAIN or 0.0.0.0", type: "try" },
+      { title: "Browse", text: "Open Safari or Chrome. Ads are gone from most sites.", type: "try" },
+
+      { chapter: "Optional: NextDNS app", title: "For more control", text: "NextDNS has a Mac app that works over your custom profile.", code: "https://nextdns.io", type: "code" }
+    ],
+    windows: [
+      { chapter: "Understanding", title: "What is DNS?", text: "Windows uses DNS to find websites. Change it to an ad-blocking server for system-wide blocking.", type: "read" },
+      { chapter: "Change DNS", title: "Settings", text: "Settings → Network & Internet → Ethernet (or WiFi) → **Edit** under DNS server assignment", type: "code" },
+      { title: "Enter these", text: "**Preferred:** `94.140.14.14`\n**Alternate:** `94.140.15.15`", type: "code" },
+      { title: "Save", text: "Click OK → close settings → reconnect WiFi.", type: "try" },
+
+      { chapter: "Verify", title: "Test in PowerShell", text: "Run this:", code: "nslookup ads.doubleclick.net", output: "Server:  UnKnown\nAddress:  94.140.14.14\n\nName: ads.doubleclick.net\n*** Can't find ads.doubleclick.net: No response from server", type: "try" },
+      { title: "Browse", text: "Open Edge or Chrome. Most ads should be missing.", type: "try" },
+
+      { chapter: "Bonus: NextDNS for granular control", title: "Custom rules per device", text: "Install the **NextDNS** app from nextdns.io. Lets you allowlist/blocklist domains and see stats.", code: "https://nextdns.io", type: "code" },
+      { title: "Tip", text: "Some apps like Discord and Steam break with ad-blocking DNS. Just switch back temporarily if something stops working.", type: "warn" }
+    ],
+    ios: [
+      { chapter: "Understanding", title: "What is DNS?", text: "iOS uses DNS to reach websites. Change it, and every app on your iPhone/iPad gets cleaner.", type: "read" },
+      { chapter: "Manual DNS change", title: "Settings", text: "Settings → Wi-Fi → tap the **(i)** next to your network → **Configure DNS** → Manual", type: "code" },
+      { title: "Remove existing, add these", text: "**94.140.14.14**\n**94.140.15.15**", type: "code" },
+      { title: "Save", text: "Tap **Save** (top right). WiFi reconnects automatically.", type: "try" },
+
+      { chapter: "Easier: Use an app", title: "AdGuard app", text: "The official AdGuard iOS app uses the same DNS servers, but works on cellular too (not just WiFi).", code: "https://apps.apple.com/app/adguard-adblock-privacy/id1047223162", type: "code" },
+      { title: "NextDNS app", text: "Or NextDNS if you want custom rules and stats.", code: "https://apps.apple.com/app/nextdns/id1463342498", type: "code" },
+      { title: "Why apps are better on iOS", text: "Manual DNS only works on WiFi. Apps use a VPN profile so it works on cellular too.", type: "tip" },
+
+      { chapter: "Verify", title: "Test", text: "Open Safari → visit `ads.doubleclick.net` — should show a blocked message or fail to load.", type: "try" },
+      { title: "Browse a news site", text: "Should feel cleaner. Ads missing, pages load faster.", type: "try" },
+      { title: "Done", text: "Every app on your iPhone is now ad-free.", type: "read" }
+    ]
+  },
+  repo: { url: "https://adguard-dns.io/", label: "AdGuard DNS" }
+},
+
+{
+  id: "dns-gaming", title: "Best DNS Servers for Gaming (Lower Ping)", category: "Networking",
+  difficulty: "beginner", time: "12 min",
+  summary: "DNS doesn't affect ping in-game, but it does affect matchmaking and downloads. Here are the best servers for gaming.",
+  intro: "DNS doesn't change your ping to the game server (that's your ISP route), but it **does** affect matchmaking speed, game downloads, update servers, and Store responsiveness. Choosing the right DNS can mean faster matches, faster downloads, and fewer errors.",
+  tags: ["dns", "gaming", "ping"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Understand what DNS actually affects for gaming",
+    "Best DNS servers for games in each region",
+    "How to change DNS on every device",
+    "How to test which is fastest for you"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Truth first", title: "DNS doesn't lower in-game ping", text: "Ping to the game server depends on your ISP's route, not on DNS. **Ignore anyone who says a DNS will give you 'lower ping in CS2'.** However...", type: "read" },
+      { title: "...it DOES affect these", text: "• Matchmaking queue times (finding players faster)\n• Game downloads and updates (Steam, Epic, PSN, Xbox)\n• Store loading speed\n• Login/authentication speed\n• Party/friend connections", type: "read" },
+
+      { chapter: "Best gaming DNS servers", title: "Cloudflare (fastest overall)", text: "The fastest public DNS in the world — lowest latency for most regions.", code: "1.1.1.1\n1.0.0.1", type: "code" },
+      { title: "Google DNS", text: "Second-fastest, very reliable. Slightly better for some regions.", code: "8.8.8.8\n8.8.4.4", type: "code" },
+      { title: "Quad9", text: "Privacy-focused, blocks malicious domains. Good for competitive gaming.", code: "9.9.9.9\n149.112.112.112", type: "code" },
+      { title: "For Nigerian / African users", text: "Cloudflare (1.1.1.1) usually wins because of its Lagos and Johannesburg PoPs. Google DNS is a close second.", note: { type: "tip", text: "Test both — 10 ms difference is meaningful." }, type: "tip" },
+
+      { chapter: "Change DNS (Linux)", title: "NetworkManager", text: "One command per connection.", code: "nmcli con mod \"Your WiFi\" ipv4.dns \"1.1.1.1 1.0.0.1\"\nnmcli con up \"Your WiFi\"", type: "code" },
+
+      { chapter: "Test which is fastest", title: "Simple benchmark", text: "Ping each DNS server to see which is fastest from your location.", code: "for dns in 1.1.1.1 8.8.8.8 9.9.9.9; do\n  echo \"=== $dns ===\"\n  ping -c 3 $dns\ndone", output: "=== 1.1.1.1 ===\nrtt min/avg/max = 12.4/13.1/14.2 ms\n\n=== 8.8.8.8 ===\nrtt min/avg/max = 18.2/19.5/21.0 ms\n\n=== 9.9.9.9 ===\nrtt min/avg/max = 15.0/16.2/17.8 ms", type: "try" },
+      { title: "Pick the lowest average", text: "Whichever shows the lowest average ms wins for you. Re-test monthly if your ISP changes.", type: "read" }
+    ],
+    android: [
+      { chapter: "Truth first", title: "DNS doesn't affect in-game ping", text: "Your match ping is decided by your ISP's route to the game server, not DNS. But it does affect **matchmaking speed** and **downloads**.", type: "read" },
+
+      { chapter: "Best servers", title: "Fastest options", text: "• **Cloudflare** — `1.1.1.1`, `1.0.0.1`\n• **Google** — `8.8.8.8`, `8.8.4.4`\n• **Quad9** — `9.9.9.9`", type: "code" },
+      { title: "Nigeria/Africa tip", text: "Cloudflare has a Lagos PoP, so `1.1.1.1` is usually best for us.", type: "tip" },
+
+      { chapter: "Change DNS", title: "Private DNS (Android 9+)", text: "Settings → Network → Private DNS → **Hostname**", type: "code" },
+      { title: "Enter Cloudflare", text: "Type exactly:", code: "one.one.one.one", type: "code" },
+      { title: "Save", text: "Now DNS goes through Cloudflare on WiFi and mobile data.", type: "try" },
+
+      { chapter: "Verify", title: "Check in the browser", text: "Visit:", code: "https://1.1.1.1/help", output: "Should say: 'Connected to 1.1.1.1 — Yes'", type: "try" }
+    ],
+    mac: [
+      { chapter: "Truth first", title: "DNS ≠ lower ping", text: "Ping to the game server doesn't change with DNS. Matchmaking and downloads do.", type: "read" },
+      { chapter: "Best servers", title: "Top three", text: "• Cloudflare: `1.1.1.1`, `1.0.0.1`\n• Google: `8.8.8.8`, `8.8.4.4`\n• Quad9: `9.9.9.9`", type: "code" },
+      { chapter: "Change DNS", title: "System Settings", text: "System Settings → Network → WiFi → Details → DNS", type: "code" },
+      { title: "Add servers", text: "Add `1.1.1.1` and `1.0.0.1`. Remove others.", type: "code" },
+      { chapter: "Test", title: "Speed test", text: "In Terminal:", code: "for dns in 1.1.1.1 8.8.8.8; do ping -c 3 $dns; done", type: "try" }
+    ],
+    windows: [
+      { chapter: "Truth first", title: "DNS ≠ lower ping", text: "Ping is set by your ISP route. DNS affects matchmaking and downloads.", type: "read" },
+      { chapter: "Best servers", title: "Top three", text: "• Cloudflare: `1.1.1.1`, `1.0.0.1`\n• Google: `8.8.8.8`, `8.8.4.4`\n• Quad9: `9.9.9.9`", type: "code" },
+      { chapter: "Change DNS", title: "Settings", text: "Settings → Network & Internet → WiFi (or Ethernet) → Edit DNS", type: "code" },
+      { title: "Add servers", text: "Preferred: `1.1.1.1`\nAlternate: `1.0.0.1`", type: "code" },
+      { chapter: "Test", title: "Benchmark", text: "In PowerShell:", code: "1.1.1.1, 8.8.8.8, 9.9.9.9 | ForEach-Object { Write-Host \"=== $_ ===\"; ping -n 3 $_ }", type: "try" }
+    ],
+    ios: [
+      { chapter: "Truth first", title: "DNS ≠ lower ping", text: "Game ping is your ISP's route. DNS affects downloads and matchmaking.", type: "read" },
+      { chapter: "Best servers", title: "Top three", text: "• Cloudflare: `1.1.1.1`, `1.0.0.1`\n• Google: `8.8.8.8`", type: "code" },
+      { chapter: "Easiest: Cloudflare app", title: "1.1.1.1 app", text: "The official Cloudflare app from the App Store. One tap to enable. Works on WiFi and cellular.", code: "https://apps.apple.com/app/1-1-1-1-faster-internet/id1423538627", type: "code" },
+      { title: "Or change manually", text: "Settings → WiFi → (i) icon → Configure DNS → Manual → add `1.1.1.1` and `1.0.0.1`", type: "code" },
+      { chapter: "Test", title: "Verify with Cloudflare", text: "Open Safari:", code: "https://1.1.1.1/help", output: "Should say 'Connected to 1.1.1.1 — Yes'", type: "try" }
+    ]
+  },
+  repo: { url: "https://one.one.one.one/", label: "Cloudflare 1.1.1.1" }
+},
 
 ];
