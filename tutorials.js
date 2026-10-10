@@ -3388,5 +3388,702 @@ window.TUTORIALS = [
   repo: { url: "https://www.openwall.com/john/", label: "John the Ripper" }
 }, 
 
+// ========== NETWORKING DEEP ==========
+{
+  id: "tailscale", title: "Tailscale: Instant Private Network", category: "Networking",
+  difficulty: "beginner", time: "15 min",
+  summary: "Connect all your devices privately — no port forwarding, no config.",
+  intro: "Tailscale creates a private mesh VPN between your devices. Unlike traditional VPNs, no port forwarding or server setup — just install and log in. Your phone, laptop, and home server become one private network.",
+  tags: ["tailscale", "vpn", "mesh"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Install Tailscale on every device",
+    "Get a private IP for each device",
+    "Access your home server from anywhere",
+    "Share a device with a friend"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Why Tailscale", title: "Different from WireGuard", text: "Traditional VPN: you run a server, forward ports, configure IPs.\n**Tailscale:** install app → log in → all your devices appear on one private network. Automatic NAT traversal. Free for personal use (up to 100 devices).", type: "read" },
+
+      { chapter: "Install", title: "One-line install", text: "Debian/Ubuntu.", code: "curl -fsSL https://tailscale.com/install.sh | sh", type: "code" },
+      { title: "Log in", text: "Authenticates via browser.", code: "sudo tailscale up", output: "To authenticate, visit: https://login.tailscale.com/a/abc123", type: "code" },
+      { title: "Check status", text: "See your Tailscale IP.", code: "tailscale status\ntailscale ip", output: "100.101.102.103", type: "try" },
+
+      { chapter: "Add devices", title: "Install on phone", text: "Download Tailscale from Play Store / App Store → log in with same account.", type: "read" },
+      { title: "Install on laptop", text: "Same process on Mac/Windows.", type: "read" },
+      { title: "See them all", text: "Every device appears on your private network.", code: "tailscale status", output: "100.101.102.103  my-desktop    neo@  linux  -\n100.101.102.104  my-phone      neo@  android -\n100.101.102.105  my-macbook    neo@  macOS  -", type: "try" },
+
+      { chapter: "Use it", title: "SSH into your home PC from anywhere", text: "From your phone or another device:", code: "ssh neo@100.101.102.103", type: "code" },
+      { title: "Access home services", text: "Run a Nextcloud on your home PC? Access it remotely:", code: "https://100.101.102.103:8080", type: "try" },
+
+      { chapter: "Magic DNS", title: "Use names instead of IPs", text: "Enable MagicDNS in the admin panel. Then use device names:", code: "ssh neo@my-desktop", type: "code" },
+
+      { chapter: "Share a device", title: "Give a friend access", text: "Admin panel → Machines → select device → Share → enter their email. They can access only what you share.", type: "code" },
+
+      { chapter: "Exit node (route all traffic)", title: "Use home internet from anywhere", text: "Set up a device as exit node and route all your traffic through it.", code: "sudo tailscale up --advertise-exit-node", type: "code" },
+      { title: "Then on other devices", text: "Select the exit node in the app — all your traffic now exits from home IP.", type: "tip" },
+
+      { chapter: "Free tier", title: "What you get", text: "• Up to **100 devices**\n• **3 users**\n• Unlimited bandwidth\n• MagicDNS, ACLs, exit nodes\n• **Zero config**", type: "read" },
+
+      { title: "Done", text: "You now have a private network spanning all your devices.", type: "read" }
+    ],
+    android: [
+      { chapter: "Install", title: "From Play Store", text: "Search Tailscale. Install. Log in with same account.", code: "https://play.google.com/store/apps/details?id=com.tailscale.ipn", type: "code" },
+      { title: "Enable VPN", text: "Tap Connect. Android asks for VPN permission — allow. Small key icon appears in status bar.", type: "try" },
+      { chapter: "Use it", title: "Access home devices", text: "From any other Tailscale device, SSH or browse to your phone.", code: "ssh -p 8022 u0_a123@100.101.102.104", type: "code" },
+      { title: "Share your phone's files", text: "Run an HTTP server in Termux → access it from any Tailscale device.", code: "pkg install python -y\ncd ~/storage/shared\npython -m http.server 8080", type: "code" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Mac App Store or Homebrew", text: "Download from tailscale.com or use the Store.", code: "brew install --cask tailscale", type: "code" },
+      { title: "Log in", text: "Click the menu bar icon → Log in. Same account as other devices.", type: "try" },
+      { title: "Menu bar features", text: "See all devices, connect, use exit nodes.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Download and install", text: "From tailscale.com.", code: "winget install tailscale.tailscale", lang: "powershell", type: "code" },
+      { title: "Log in", text: "Tray icon → Log in. Same account.", type: "try" }
+    ],
+    ios: [
+      { chapter: "Install", title: "From App Store", text: "Search Tailscale.", type: "code" },
+      { title: "Log in and connect", text: "Enable VPN permission when prompted.", type: "try" }
+    ]
+  },
+  repo: { url: "https://tailscale.com/", label: "Tailscale" }
+},
+
+{
+  id: "pihole", title: "Pi-hole: Network-Wide Ad Blocking", category: "Networking",
+  difficulty: "intermediate", time: "30 min",
+  summary: "Block ads on every device at home — including TVs and consoles.",
+  intro: "Pi-hole runs on a Raspberry Pi (or any Linux box). Set it as your home DNS server and every device on your WiFi gets ad-blocking — phones, TVs, consoles, everything.",
+  tags: ["pihole", "dns", "ads", "self-hosted"], platforms: ["linux"],
+  learnList: [
+    "Understand how Pi-hole fits in your network",
+    "Install Pi-hole in one command",
+    "Point your router to use it",
+    "Monitor blocked queries"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Hardware", title: "What runs Pi-hole?", text: "• **Raspberry Pi** — best option, ~$35, uses 3W\n• **Any spare PC** — works but power-hungry\n• **Old laptop** — perfect (built-in UPS = battery)\n• **VPS** — only blocks when on that network (less useful)", type: "read" },
+      { title: "Network position", text: "Pi-hole sits between your devices and your router. It answers DNS queries and blocks ads by returning nothing for ad domains.", type: "read" },
+
+      { chapter: "Install", title: "One-command install", text: "On Debian/Ubuntu/Raspberry Pi OS.", code: "curl -sSL https://install.pi-hole.net | bash", type: "code" },
+      { title: "Follow the wizard", text: "• Upstream DNS: choose Cloudflare (1.1.1.1)\n• Blocklists: keep default\n• Enable web admin: yes\n• Web password: choose one", type: "read" },
+      { title: "Note your Pi's IP", text: "You'll see it at the end of install — something like 192.168.1.50. **Write it down.**", type: "warn" },
+
+      { chapter: "Test it locally", title: "Open the admin panel", text: "In a browser on the Pi or another device:", code: "http://192.168.1.50/admin", type: "code" },
+      { title: "Log in", text: "Use the password from setup.", type: "read" },
+
+      { chapter: "Point devices to Pi-hole", title: "Option 1: Router-level (best)", text: "Log into your router → find DNS settings → set primary DNS to **192.168.1.50**. Every device now uses Pi-hole automatically.", type: "code" },
+      { title: "Option 2: Per-device", text: "If you can't change the router, set DNS on each device manually. Android: Private DNS → off, then WiFi → static IP → DNS = Pi's IP.", type: "read" },
+
+      { chapter: "Verify it works", title: "Check dashboard", text: "Back in Pi-hole admin → Dashboard. You should see:\n• **Total queries** climbing\n• **Queries blocked** (10–30% is normal)\n• **Top blocked domains**", type: "try" },
+      { title: "Test on a device", text: "Open a news site on your phone. Should feel cleaner and faster. Then check the dashboard — new queries appeared.", type: "try" },
+
+      { chapter: "Customize", title: "Add blocklists", text: "Admin → Group Management → Adlists. Add more (they grow over time):", code: "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts", type: "code" },
+      { title: "Whitelist a site", text: "If Pi-hole blocks something you need — Admin → Whitelist → add the domain.", type: "code" },
+
+      { chapter: "Maintenance", title: "Keep it updated", text: "Pi-hole updates occasionally.", code: "pihole -up", type: "code" },
+      { title: "Backup config", text: "Admin → Settings → Teleporter → Backup. Save the zip somewhere safe.", type: "tip" },
+
+      { title: "Done", text: "Every device in your home is now ad-free. Including your smart TV.", type: "read" }
+    ]
+  },
+  repo: { url: "https://pi-hole.net", label: "Pi-hole" }
+},
+
+{
+  id: "caddy-proxy", title: "Reverse Proxy with Caddy (Auto HTTPS)", category: "Networking",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Run multiple self-hosted services on one server with free HTTPS.",
+  intro: "Caddy is a reverse proxy that gives you automatic HTTPS with Let's Encrypt. Point multiple subdomains at services running on different ports — all with valid certificates, zero config.",
+  tags: ["caddy", "proxy", "https", "self-hosted"], platforms: ["linux"],
+  learnList: [
+    "Understand what a reverse proxy does",
+    "Install Caddy",
+    "Serve multiple services under one domain",
+    "Get automatic HTTPS for free"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Why Caddy", title: "vs Nginx / Apache", text: "• **Automatic HTTPS** — no manual certbot\n• **Simpler config** — 3 lines vs 30\n• **HTTP/3 + HTTP/2 by default**\n• **Just works**", type: "read" },
+      { title: "What a reverse proxy does", text: "One server, many services. Caddy listens on port 80/443 and routes `app1.example.com` → port 3000, `app2.example.com` → port 8080. Handles HTTPS for all of them.", type: "read" },
+
+      { chapter: "Prerequisites", title: "You need a domain", text: "Buy one (~$10/year from Namecheap, Porkbun, or Cloudflare). Point an A record at your server's IP.", type: "read" },
+      { title: "And a server", text: "VPS or home server with public IP. Ports 80 and 443 open. See our WireGuard tutorial for server setup basics.", type: "read" },
+
+      { chapter: "Install", title: "Debian/Ubuntu", text: "Official repo.", code: "sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https\ncurl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg\ncurl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list\nsudo apt update\nsudo apt install caddy -y", type: "code" },
+      { title: "Verify", text: "Check version.", code: "caddy version", output: "v2.7.6", type: "try" },
+
+      { chapter: "Simple config", title: "Edit Caddyfile", text: "The config file lives at `/etc/caddy/Caddyfile`.", code: "sudo nano /etc/caddy/Caddyfile", type: "code" },
+      { title: "Minimal reverse proxy", text: "Point a domain at a local service. Caddy auto-fetches HTTPS.", code: "app.example.com {\n  reverse_proxy localhost:3000\n}", lang: "text", type: "code" },
+      { title: "Reload", text: "Apply changes.", code: "sudo systemctl reload caddy", type: "code" },
+      { title: "Visit it", text: "Open https://app.example.com — should work with valid HTTPS cert. Zero further steps.", type: "try" },
+
+      { chapter: "Multiple services", title: "Route many subdomains", text: "Each block routes to a different backend.", code: "nextcloud.example.com {\n  reverse_proxy localhost:8080\n}\n\njellyfin.example.com {\n  reverse_proxy localhost:8096\n}\n\ngrafana.example.com {\n  reverse_proxy localhost:3001\n}\n\nblog.example.com {\n  root * /var/www/blog\n  file_server\n}", type: "code" },
+
+      { chapter: "Advanced", title: "Load balance + health checks", text: "Multiple backends for high availability.", code: "app.example.com {\n  reverse_proxy localhost:3000 localhost:3001 {\n    lb_policy round_robin\n    health_uri /health\n    health_interval 30s\n  }\n}", type: "code" },
+      { title: "Basic auth", text: "Password-protect a site.", code: "admin.example.com {\n  basicauth {\n    neo $2a$14$hash_of_password\n  }\n  reverse_proxy localhost:9090\n}", type: "code" },
+      { title: "Generate password hash", text: "Use Caddy's built-in tool.", code: "caddy hash-password --plaintext 'yourpassword'", type: "code" },
+
+      { chapter: "Zero-config HTTPS", title: "How it works", text: "Caddy:\n1. Sees a new domain in the config\n2. Requests cert from Let's Encrypt\n3. Verifies via HTTP-01 challenge\n4. Installs cert automatically\n5. **Renews 30 days before expiry, forever**\n\nYou never touch certificates again.", type: "read" },
+
+      { title: "Done", text: "You now have a proper self-hosting setup.", type: "read" }
+    ]
+  },
+  repo: { url: "https://caddyserver.com/", label: "Caddy" }
+},
+
+{
+  id: "torrenting", title: "Torrenting Safely and Legally", category: "Networking",
+  difficulty: "beginner", time: "20 min",
+  summary: "Understand BitTorrent, do it safely, and use it for legal content.",
+  intro: "BitTorrent is a legitimate technology used by Linux distros, Internet Archive, and legal content creators. This tutorial teaches you how it works and how to use it safely and legally.",
+  tags: ["torrent", "bittorrent", "p2p"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Understand how BitTorrent actually works",
+    "Legal uses of torrenting",
+    "Install a good client",
+    "Stay safe on public trackers"
+  ],
+  steps: {
+    linux: [
+      { chapter: "How it works", title: "Peers, seeds, swarms", text: "• **Peer** — someone downloading/uploading a file\n• **Seed** — someone with the complete file\n• **Leecher** — someone still downloading\n• **Swarm** — all peers on one torrent\n• **Tracker** — server that coordinates the swarm\n\nYou download pieces from many peers simultaneously — faster than one server.", type: "read" },
+
+      { chapter: "Legal uses", title: "Legitimate torrents", text: "• **Linux distros** — Ubuntu, Debian, Arch (official torrents)\n• **Internet Archive** — public domain films, books, music\n• **Blender Open Movies** — free films\n• **Creative Commons music** — many artists distribute this way\n• **Free games** — 0 A.D., SuperTuxKart\n• **Wikipedia dumps** — full offline copy", type: "read" },
+
+      { chapter: "Legal warning", title: "What NOT to torrent", text: "Copyrighted films, TV, music, games, software you don't own — illegal in most countries. Fines exist. ISP warnings exist. Don't risk it.", note: { type: "danger", text: "Know your local laws." }, type: "warn" },
+
+      { chapter: "Install a client", title: "Best options", text: "• **qBittorrent** — free, no ads, open source, best UI\n• **Transmission** — minimal, great for servers\n• **Deluge** — plugin-based\n\n**Avoid:** uTorrent (ads, shady history), BitTorrent (same company)", type: "read" },
+      { title: "Install qBittorrent", text: "Debian/Ubuntu.", code: "sudo apt install qbittorrent -y", type: "code" },
+      { title: "Or via Flatpak", text: "Latest version.", code: "flatpak install flathub org.qbittorrent.qBittorrent", type: "code" },
+
+      { chapter: "Use it", title: "Download a legal torrent", text: "Grab Ubuntu's torrent:", code: "https://ubuntu.com/download/alternative-downloads", type: "code" },
+      { title: "Open in qBittorrent", text: "File → Add torrent → paste URL or open .torrent file → choose save location → Start.", type: "try" },
+      { title: "Watch it work", text: "Peers appear, download progresses. Speed depends on seeders.", type: "read" },
+
+      { chapter: "Safe practices", title: "Avoid sketchy torrents", text: "• **Read comments** on torrent sites — malware gets flagged fast\n• **Check file types** — .exe files in \"movie\" torrents are viruses\n• **Use a VPN** for any P2P if your ISP throttles\n• **Use legal sources** whenever possible", type: "warn" },
+
+      { chapter: "VPN for torrenting", title: "Which VPNs work", text: "• **Mullvad** — €5/mo, anonymous payment\n• **ProtonVPN** — free tier works, paid has P2P\n• **IVPN** — privacy-focused\n\n**Do NOT use:** free VPNs (they sell your data).", type: "code" },
+      { title: "Or self-host", text: "Use your own WireGuard server (see WireGuard tutorial). Route qBittorrent traffic through it via qBittorrent's network binding.", type: "tip" },
+
+      { chapter: "Ratio and seeding", title: "Be a good citizen", text: "After download, keep seeding (uploading) at least to ratio 1.0. This keeps torrents alive. In qBittorrent, set a ratio limit to auto-stop.", code: "Tools → Options → BitTorrent → Seeding limits → ratio 1.0", type: "code" },
+
+      { title: "Done", text: "You understand torrenting — used it safely, legally.", type: "read" }
+    ],
+    android: [
+      { chapter: "Apps", title: "Best Android clients", text: "• **libretorrent** — open source, on F-Droid\n• **FrostWire** — has built-in search (avoid)\n• **Flud** — polished but ad-supported\n\n**libretorrent** is best — no ads, open source.", code: "https://f-droid.org/packages/org.proninyaroslav.libretorrent/", type: "code" },
+      { chapter: "Use it", title: "Same principles", text: "Add torrent URL or file → pick folder → start.", type: "read" },
+      { title: "VPN on Android", text: "If using public trackers, always run a VPN. Mullvad app is easy.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Transmission (best on Mac)", text: "Or qBittorrent.", code: "brew install --cask transmission", type: "code" },
+      { title: "Same usage", text: "Add torrent, choose folder, start.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "qBittorrent", text: "Skip uTorrent (has ads).", code: "winget install qBittorrent.qBittorrent", lang: "powershell", type: "code" },
+      { title: "Same usage", text: "Add torrent → choose folder → start.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.qbittorrent.org/", label: "qBittorrent" }
+},
+
+// ========== STREAMING DEEP ==========
+{
+  id: "jellyfin", title: "Jellyfin: Your Own Netflix", category: "Streaming",
+  difficulty: "intermediate", time: "30 min",
+  summary: "Stream your own media library to any device — phone, TV, laptop.",
+  intro: "Jellyfin is a free, open-source media server. Point it at your movies, TV shows, and music — watch them on any device, anywhere. No subscription, no ads, no tracking.",
+  tags: ["jellyfin", "media", "self-hosted"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Install Jellyfin on your server or PC",
+    "Organize your media library",
+    "Install client apps on every device",
+    "Access it remotely and securely"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Overview", title: "What Jellyfin does", text: "You point Jellyfin at your media folders. It scans them, fetches cover art, subtitles, and metadata, then serves them over HTTP. Any device with a browser or app can stream.", type: "read" },
+      { title: "Hardware", text: "• **Old PC** — best, fast, upgradeable\n• **Raspberry Pi 4** — works for 1-2 streams\n• **Home server** — ideal\n• **Any Linux box** — even a VM", type: "read" },
+
+      { chapter: "Install", title: "Debian/Ubuntu", text: "Official install script.", code: "curl https://repo.jellyfin.org/install-debuntu.sh | sudo bash", type: "code" },
+      { title: "Or Docker (recommended)", text: "Isolated, easy to update.", code: "docker run -d \\\n  --name jellyfin \\\n  -p 8096:8096 \\\n  -v /path/to/config:/config \\\n  -v /path/to/media:/media \\\n  --restart unless-stopped \\\n  jellyfin/jellyfin", type: "code" },
+      { title: "Or via Homebrew (Mac)", text: "Not as polished but works.", code: "brew install --cask jellyfin", type: "code" },
+
+      { chapter: "First run", title: "Open the setup wizard", text: "In a browser on the same machine:", code: "http://localhost:8096", type: "code" },
+      { title: "Follow the wizard", text: "• Choose language\n• Create admin account\n• Add media libraries (see next step)\n• Configure remote access", type: "read" },
+
+      { chapter: "Organize media", title: "Naming conventions", text: "Jellyfin matches files against online databases (TMDB, TVDB). Correct naming = perfect metadata.\n\n**Movies:**\n```\nMovies/Inception (2010)/Inception (2010).mkv\n```\n\n**TV:**\n```\nTV/Breaking Bad/Season 01/Breaking Bad S01E01.mkv\n```", type: "code" },
+      { title: "Add libraries", text: "Dashboard → Libraries → Add Media Library → pick type (Movies/TV/Music) → point to your folder.", type: "try" },
+      { title: "Wait for scan", text: "Jellyfin scans and fetches metadata. For large libraries this takes a while.", type: "read" },
+
+      { chapter: "Client apps", title: "Watch on anything", text: "• **Android** — Jellyfin app (F-Droid or Play)\n• **iOS** — Swiftfin or Jellyfin Mobile\n• **Smart TV** — Samsung, LG, Android TV\n• **Fire TV** — Fire Stick app\n• **Roku** — official app\n• **Kodi** — via Jellyfin addon\n• **Web browser** — anywhere", type: "code" },
+
+      { chapter: "Remote access", title: "Option 1: Tailscale (easiest, safest)", text: "Install Tailscale on server + clients. No port forwarding. Access via the Tailscale IP.", code: "https://100.101.102.103:8096", type: "code" },
+      { title: "Option 2: Reverse proxy + domain", text: "Expose via Caddy with HTTPS on a subdomain.", code: "jellyfin.example.com {\n  reverse_proxy localhost:8096\n}", type: "code" },
+
+      { chapter: "Hardware transcoding", title: "GPU acceleration (optional)", text: "If your server has a GPU, enable hardware transcoding so playback works on weak clients.\n\nDashboard → Playback → Transcoding → pick your GPU.", type: "tip" },
+      { title: "Without GPU", text: "Software transcoding works but CPU-heavy. Direct play (no transcoding) is best — use compatible formats.", type: "read" },
+
+      { title: "Done", text: "You now have your own streaming service.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Homebrew", text: "One command.", code: "brew install --cask jellyfin", type: "code" },
+      { title: "Open it", text: "Launch Jellyfin.app → access at http://localhost:8096.", type: "try" },
+      { chapter: "Same workflow", text: "Follow the Linux tab from 'First run' onwards.", type: "read" },
+      { title: "Better on Mac", text: "If you have a Mac Mini or Mac Studio, it's an excellent Jellyfin server — especially with the M-series chips.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Download installer", text: "From jellyfin.org. Auto-installs and runs as a service.", code: "https://jellyfin.org/downloads/", type: "code" },
+      { title: "Or winget", text: "Silent install.", code: "winget install Jellyfin.Server", lang: "powershell", type: "code" },
+      { chapter: "Same workflow", text: "Follow Linux tab from 'First run'.", type: "read" }
+    ]
+  },
+  repo: { url: "https://jellyfin.org", label: "Jellyfin" }
+},
+
+{
+  id: "spotify-alternatives", title: "Free Music Streaming Alternatives", category: "Streaming",
+  difficulty: "beginner", time: "15 min",
+  summary: "Legal free music — no ads, no premium, no compromise.",
+  intro: "You don't need Spotify Premium. There are legal, free alternatives with huge libraries. Here's what actually works in 2026.",
+  tags: ["music", "streaming", "free"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "The best legal free music apps",
+    "Self-hosted music streaming",
+    "Offline playback options",
+    "Ad-free listening that isn't piracy"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Free legal options", title: "YouTube Music (free tier)", text: "Free with ads. Install as PWA for app-like experience.", code: "https://music.youtube.com", type: "code" },
+      { title: "Spotify free tier", text: "Free with ads, shuffle-only on mobile. Works.", code: "https://open.spotify.com", type: "code" },
+      { title: "SoundCloud", text: "Tons of free music from indie artists. No account needed.", code: "https://soundcloud.com", type: "code" },
+
+      { chapter: "Self-hosted", title: "Navidrome (best self-hosted)", text: "If you have MP3s, Navidrome streams them like Spotify.", code: "docker run -d \\\n  --name navidrome \\\n  -p 4533:4533 \\\n  -v /path/to/music:/music \\\n  -v /path/to/data:/data \\\n  deluan/navidrome", type: "code" },
+      { title: "Client apps", text: "• **Sonixd** — desktop client\n• **substreamer** — mobile\n• **Symfonium** — Android, polished\n• **play:Sub** — iOS", type: "read" },
+      { title: "Jellyfin also does music", text: "If you already run Jellyfin, it serves music too. Add a music library.", type: "tip" },
+
+      { chapter: "Free music sources", title: "Legal downloads", text: "• **Free Music Archive** — curated, Creative Commons\n• **Bandcamp** — many artists offer free/pay-what-you-want\n• **Jamendo** — 600k+ CC tracks\n• **ccMixter** — remixes under CC\n• **Internet Archive** — public domain + CC", code: "https://freemusicarchive.org", type: "code" },
+
+      { chapter: "YouTube Music PWA", title: "Install as app", text: "Chrome → Menu → Install app. Works offline-ish, no separate app.", type: "try" },
+      { title: "uBlock Origin", text: "With uBlock Origin, YouTube Music free = ad-free experience in the browser.", type: "tip" },
+
+      { chapter: "Radio", title: "Free radio apps", text: "• **Radio Garden** — explore world radio (fun)\n• **TuneIn** — every major station\n• **SomaFM** — commercial-free, curated stations", type: "code" },
+
+      { chapter: "Podcasts", title: "Instead of music", text: "• **AntennaPod** — Android, open source\n• **Pocket Casts** — cross-platform\n• **Overcast** — iOS, free\n• **Spotify Podcasts** — free tier works", type: "read" },
+
+      { title: "Done", text: "You have multiple legal, free options for music.", type: "read" }
+    ],
+    android: [
+      { chapter: "Apps", title: "Best free apps", text: "• **YouTube Music** — Vanced alternative: YT Music ReVanced\n• **Spotify** — free with ads\n• **SoundCloud** — free\n• **Navidrome + substreamer** — if you self-host\n• **AntennaPod** — podcasts", type: "read" },
+      { title: "ReVanced for YouTube Music", text: "See our ReVanced tutorial — you can patch YouTube Music too, removing ads and enabling background play.", type: "tip" },
+      { chapter: "Offline", title: "Free offline options", text: "• Download Creative Commons music from Bandcamp/FMA\n• Store on phone via files\n• Play with **VLC** or **Musicolet**", code: "https://f-droid.org/packages/com.kabouzeid.gramophone/", type: "code" }
+    ],
+    mac: [
+      { chapter: "Apps", title: "Same as Linux", text: "Browser-based options work identically. Navidrome via Sonixd (Homebrew).", code: "brew install --cask sonixd", type: "code" },
+      { title: "Music.app + local library", text: "Import your own MP3s into Apple Music.app. Free.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Apps", title: "Browser + desktop", text: "Same web options. Or Foobar2000 for local music.", code: "winget install PeterPawlowski.foobar2000", lang: "powershell", type: "code" },
+      { title: "Navidrome client", text: "Sonixd or Feishin for desktop.", code: "https://github.com/jeffvli/feishin", type: "code" }
+    ],
+    ios: [
+      { chapter: "Apps", title: "Best on iOS", text: "• **YouTube Music** — free with ads\n• **Spotify** — free with ads\n• **SoundCloud** — free\n• **AntennaPod** not on iOS — use Overcast for podcasts", type: "read" },
+      { title: "Navidrome client", text: "**play:Sub** or **substreamer** — one-time purchase, worth it.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://www.navidrome.org/", label: "Navidrome" }
+},
+
+{
+  id: "streaming-setup", title: "IPTV and Live TV Streaming Setup", category: "Streaming",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Watch live TV channels legally — free and paid options.",
+  intro: "Live TV without cable. Free legal IPTV options, paid legitimate services, and how to play them on any device. Skip the piracy; there are better options.",
+  tags: ["iptv", "live-tv", "streaming"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Legal free IPTV sources",
+    "Paid alternatives to cable",
+    "Best players for IPTV",
+    "Set up and stream legally"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Legal reality", title: "Free IPTV is mostly piracy", text: "Most \"free IPTV\" lists are pirated streams. They break, get shut down, and often carry malware. **Legitimate options exist** and are better.", type: "warn" },
+
+      { chapter: "Legal free IPTV", title: "Public broadcasters", text: "Many broadcasters stream free worldwide:\n• **BBC iPlayer** (UK, VPN needed)\n• **ABC iview** (Australia)\n• **CBC Gem** (Canada)\n• **PBS** (US)\n• **Deutsche Welle** (Germany, no geo-lock)\n• **France 24** (French + English)", type: "read" },
+      { title: "Free live news", text: "• Al Jazeera English\n• Sky News (YouTube)\n• Bloomberg TV\n• Euronews\n• CNA (Singapore)", type: "code" },
+
+      { chapter: "Paid legit IPTV", title: "Better than cable", text: "• **Sling TV** — $40/mo, US\n• **YouTube TV** — $73/mo, US\n• **Philo** — $25/mo, US\n• **FuboTV** — sports, ~$75/mo\n• **DAZN** — sports, various regions\n\n**Nigeria-specific:** see DStv Now, Showmax, or iROKOtv.", type: "read" },
+
+      { chapter: "Best player", title: "VLC (any playlist)", text: "VLC plays M3U playlists natively. Install.", code: "sudo apt install vlc -y", type: "code" },
+      { title: "Open M3U in VLC", text: "Media → Open Network Stream → paste M3U URL.", type: "try" },
+      { title: "Or Kodi with IPTV Simple Client", text: "More powerful for channel lists with EPG.", code: "sudo apt install kodi -y", type: "code" },
+
+      { chapter: "Free legally-available channels", title: "Public domain / CC streams", text: "Search for these legit sources:\n• **Pluto TV** — free, ad-supported, US/UK\n• **Tubi** — free, ad-supported\n• **Plex Live TV** — free with Plex account\n• **Samsung TV Plus** — free with Samsung device or web\n• **Stirr** — free", type: "code" },
+      { title: "For Nigerian content", text: "• **iROKOtv** — Nollywood, cheap\n• **Showmax** — African content\n• **DStv Now** — for DStv subscribers\n• **Channels TV** — free on YouTube Live", type: "read" },
+
+      { chapter: "Public M3U lists", title: "Free legal streams", text: "Some public lists aggregate free legal streams. Search:\n\n**iptv-org** — thousands of public channels with proper licensing.", code: "https://github.com/iptv-org/iptv", type: "code" },
+      { title: "Add to VLC", text: "Download the playlist, open in VLC. Hundreds of legit free channels.", type: "try" },
+
+      { chapter: "Setup on TV", title: "Android TV / Fire Stick", text: "Install **TiviMate** (best IPTV app) → add M3U URL → enjoy EPG.", code: "https://tivimate.com", type: "code" },
+
+      { title: "Done", text: "You have live TV without piracy.", type: "read" }
+    ],
+    android: [
+      { chapter: "Players", title: "Best Android IPTV apps", text: "• **TiviMate** — best UI, EPG\n• **IPTV Smarters Pro** — free\n• **VLC** — plays M3U\n• **Kodi** — powerful", type: "code" },
+      { chapter: "Free legal sources", title: "Pluto TV", text: "Free, legal, has Nigerian content. Install from Play Store.", type: "read" },
+      { title: "Public broadcaster apps", text: "Search Play Store for:\n• Al Jazeera\n• DW\n• France 24\n• Sky News\n• CNA", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Player", title: "VLC or IINA", text: "IINA is a modern Mac VLC alternative.", code: "brew install --cask iina", type: "code" },
+      { chapter: "Same legal sources", title: "Follow Linux tab", text: "Same stream URLs work.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Player", title: "VLC or Kodi", text: "Both work great on Windows.", code: "winget install VideoLAN.VLC", lang: "powershell", type: "code" },
+      { chapter: "Same sources", title: "Follow Linux tab", text: "Same legal streams.", type: "read" }
+    ],
+    ios: [
+      { chapter: "Player", title: "VLC for iOS", text: "Free, plays M3U.", type: "code" },
+      { chapter: "Legal apps", title: "Pluto, Tubi, Plex", text: "All on App Store. Free with ads.", type: "read" },
+      { title: "Best iOS IPTV app", text: "**IPTVX** — paid but polished. Or **Smarters Player Lite** — free.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://github.com/iptv-org/iptv", label: "iptv-org" }
+},
+
+// ========== AI DEEP ==========
+{
+  id: "langchain-basics", title: "Build AI Apps with LangChain", category: "AI",
+  difficulty: "advanced", time: "30 min",
+  summary: "The Python framework for building LLM-powered apps.",
+  intro: "LangChain is the standard framework for building AI applications. Chains, agents, tools, memory — this tutorial gets you from zero to a working AI app that can search the web and remember conversations.",
+  tags: ["ai", "langchain", "python"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Understand chains, agents, tools, memory",
+    "Build your first LLM chain",
+    "Give it internet access via tools",
+    "Add conversation memory"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Install Python + pip", text: "Prerequisites.", code: "sudo apt install python3 python3-pip -y", type: "code" },
+      { title: "Create a project", text: "Virtual environment.", code: "mkdir my-langchain-app\ncd my-langchain-app\npython3 -m venv .venv\nsource .venv/bin/activate", type: "code" },
+      { title: "Install LangChain", text: "Core + OpenAI (or use Ollama).", code: "pip install langchain langchain-community langchain-openai python-dotenv", type: "code" },
+      { title: "For local models (free)", text: "Skip OpenAI, use Ollama instead.", code: "pip install langchain-ollama", type: "code" },
+
+      { chapter: "Your first chain", title: "Basic LLM call", text: "Simple prompt → response.", code: "from langchain_ollama import ChatOllama\n\nllm = ChatOllama(model=\"llama3.2\")\n\nresponse = llm.invoke(\"Explain quantum computing in one sentence\")\nprint(response.content)", lang: "python", type: "code" },
+      { title: "Run it", text: "Save as `basic.py` and run.", code: "python basic.py", output: "Quantum computing uses quantum bits that can be in multiple states at once, enabling certain calculations exponentially faster than classical computers.", type: "try" },
+
+      { chapter: "Prompt templates", title: "Reusable prompts", text: "Format prompts with variables.", code: "from langchain_core.prompts import ChatPromptTemplate\nfrom langchain_ollama import ChatOllama\n\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are a helpful {role}.\"),\n    (\"user\", \"{question}\")\n])\n\nllm = ChatOllama(model=\"llama3.2\")\nchain = prompt | llm\n\nresult = chain.invoke({\n    \"role\": \"Python tutor\",\n    \"question\": \"What is a list comprehension?\"\n})\nprint(result.content)", lang: "python", type: "code" },
+      { title: "The pipe operator", text: "`prompt | llm` is LangChain's chain syntax. Output of prompt feeds into llm.", type: "tip" },
+
+      { chapter: "Tools and agents", title: "Give the AI superpowers", text: "Agents decide which tools to use.", code: "from langchain_community.tools import DuckDuckGoSearchRun\nfrom langchain_ollama import ChatOllama\nfrom langchain.agents import AgentExecutor, create_react_agent\nfrom langchain_core.prompts import PromptTemplate\n\nsearch = DuckDuckGoSearchRun()\ntools = [search]\n\nllm = ChatOllama(model=\"llama3.2\")\n\nprompt = PromptTemplate.from_template(\"\"\"\nAnswer the question. You have access to: {tools}\n\nUse this format:\nQuestion: the input\nThought: what to do\nAction: tool name\nAction Input: input to tool\nObservation: result\n... (repeat as needed)\nThought: I know the answer\nFinal Answer: the answer\n\nQuestion: {input}\n{agent_scratchpad}\n\"\"\")\n\nagent = create_react_agent(llm, tools, prompt)\nexecutor = AgentExecutor(agent=agent, tools=tools, verbose=True)\n\nresult = executor.invoke({\"input\": \"What's the current time in Lagos?\"})\nprint(result[\"output\"])", lang: "python", type: "code" },
+      { title: "Watch it think", text: "verbose=True shows the AI's reasoning steps. It decides when to search, reads results, then answers.", type: "read" },
+
+      { chapter: "Conversation memory", title: "Remember the chat", text: "Add memory so the AI remembers context.", code: "from langchain_ollama import ChatOllama\nfrom langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder\nfrom langchain_core.messages import HumanMessage, AIMessage\n\nllm = ChatOllama(model=\"llama3.2\")\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", \"You are a helpful assistant.\"),\n    MessagesPlaceholder(variable_name=\"history\"),\n    (\"user\", \"{input}\")\n])\n\nchain = prompt | llm\nhistory = []\n\ndef chat(user_input):\n    response = chain.invoke({\"history\": history, \"input\": user_input})\n    history.append(HumanMessage(content=user_input))\n    history.append(AIMessage(content=response.content))\n    return response.content\n\nprint(chat(\"My name is Neo\"))\nprint(chat(\"What's my name?\"))", lang: "python", type: "code" },
+      { title: "It remembers", text: "Second call knows you're Neo because history is passed each time.", type: "try" },
+
+      { chapter: "Real app", title: "Combine everything", text: "Tools + memory + custom logic = a real AI assistant. This is how you build:\n• AI chatbots for websites\n• Document Q&A\n• Email assistants\n• Code reviewers", type: "read" },
+
+      { title: "Next steps", text: "• **LangGraph** — for complex multi-agent systems\n• **LangSmith** — debugging and monitoring\n• **Streamlit** — web UI for LangChain apps", type: "tip" },
+
+      { title: "Done", text: "You can build real AI apps now.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Homebrew Python", text: "Prereq.", code: "brew install python", type: "code" },
+      { title: "Follow Linux tab", text: "Same workflow with python3.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Install Python", text: "Via winget.", code: "winget install Python.Python.3.12", lang: "powershell", type: "code" },
+      { title: "Follow Linux tab", text: "Same commands (use python instead of python3 on Windows).", type: "read" }
+    ]
+  },
+  repo: { url: "https://python.langchain.com/", label: "LangChain Docs" }
+},
+
+{
+  id: "open-webui", title: "Open WebUI: ChatGPT Interface for Ollama", category: "AI",
+  difficulty: "beginner", time: "15 min",
+  summary: "The best UI for local LLMs — chat, documents, images, all in one.",
+  intro: "Open WebUI is a self-hosted ChatGPT alternative. Runs against Ollama or any API. Beautiful interface, supports RAG, image generation, multi-user, and works on phone too.",
+  tags: ["ai", "ollama", "openwebui"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Install Open WebUI via Docker",
+    "Connect it to Ollama",
+    "Use RAG with your documents",
+    "Access from phone with HTTPS"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Prerequisites", title: "Install Docker", text: "And Ollama.", code: "curl -fsSL https://get.docker.com | sh\ncurl -fsSL https://ollama.com/install.sh | sh", type: "code" },
+      { title: "Pull at least one model", text: "Open WebUI needs something to talk to.", code: "ollama pull llama3.2", type: "code" },
+
+      { chapter: "Install Open WebUI", title: "Run via Docker", text: "One command starts everything.", code: "docker run -d \\\n  -p 3000:8080 \\\n  --add-host=host.docker.internal:host-gateway \\\n  -v open-webui:/app/backend/data \\\n  --name open-webui \\\n  --restart always \\\n  ghcr.io/open-webui/open-webui:main", type: "code" },
+      { title: "Open it", text: "In a browser:", code: "http://localhost:3000", type: "code" },
+      { title: "First user = admin", text: "The first account you create is the admin. Others can be invited.", type: "warn" },
+
+      { chapter: "Connect to Ollama", title: "Automatic if Docker", text: "If Ollama is on the same machine, it connects automatically. If not, set OLLAMA_BASE_URL in Docker env.", code: "-e OLLAMA_BASE_URL=http://host.docker.internal:11434", type: "code" },
+      { title: "Select a model", text: "Top-left dropdown → pick your model (e.g. llama3.2). Start chatting.", type: "try" },
+
+      { chapter: "Features", title: "RAG with documents", text: "Drag a PDF into the chat → ask questions about it. Works locally with Ollama embeddings.", type: "code" },
+      { title: "Image generation", text: "Connect to Stable Diffusion (Automatic1111 or ComfyUI) in Settings → Images. Generate images from chat.", type: "tip" },
+      { title: "Web search", text: "Enable in Settings → Web Search. Choose a backend (SearXNG, DuckDuckGo).", type: "code" },
+      { title: "Voice input/output", text: "Built-in speech-to-text and text-to-speech. Works on mobile too.", type: "tip" },
+      { title: "Multi-user", text: "Invite others with email addresses. Each gets their own chat history.", type: "read" },
+
+      { chapter: "Access from phone", title: "Local network", text: "Find your server IP:", code: "ip a | grep inet", type: "code" },
+      { title: "Then on phone", text: "Visit http://your-server-ip:3000 on your phone's browser. Works like an app.", type: "try" },
+      { title: "HTTPS (optional)", text: "Use Caddy to add HTTPS if exposing to internet. See our Caddy tutorial.", type: "tip" },
+
+      { chapter: "Updates", title: "Keep it current", text: "New versions have new features.", code: "docker pull ghcr.io/open-webui/open-webui:main\ndocker restart open-webui", type: "code" },
+
+      { chapter: "Backups", title: "Save your chats", text: "Data lives in the `open-webui` Docker volume. Back it up.", code: "docker run --rm -v open-webui:/data -v $(pwd):/backup alpine tar czf /backup/openwebui-$(date +%F).tar.gz -C /data .", type: "code" },
+
+      { title: "Done", text: "You now have your own ChatGPT — private, free, unlimited.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Docker Desktop", text: "Install, then same Docker command as Linux.", code: "https://www.docker.com/products/docker-desktop/", type: "code" },
+      { title: "Ollama on Mac", text: "Homebrew install.", code: "brew install ollama", type: "code" },
+      { chapter: "Same workflow", text: "Follow Linux tab from 'Run via Docker'.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Docker Desktop (WSL2)", text: "Requires WSL2.", code: "https://www.docker.com/products/docker-desktop/", type: "code" },
+      { title: "Ollama", text: "Windows installer.", code: "https://ollama.com/download", type: "code" },
+      { chapter: "Same workflow", text: "Follow Linux tab.", type: "read" }
+    ]
+  },
+  repo: { url: "https://github.com/open-webui/open-webui", label: "Open WebUI" }
+},
+
+// ========== PROGRAMMING DEEP ==========
+{
+  id: "sql-basics", title: "SQL in 25 Minutes", category: "Programming",
+  difficulty: "beginner", time: "25 min",
+  summary: "Query databases — the language behind every app.",
+  intro: "SQL is how you talk to databases. Every app with data uses it — social media, banking, e-commerce, everything. Learn the 8 commands that cover 90% of real work.",
+  tags: ["sql", "database", "programming"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Create tables and insert data",
+    "SELECT with WHERE conditions",
+    "Sort and limit results",
+    "Join tables together"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Install SQLite", text: "Simplest way to practice — no server needed.", code: "sudo apt install sqlite3 -y", type: "code" },
+      { title: "Open the shell", text: "Create a test database.", code: "sqlite3 test.db", output: "SQLite version 3.45.0\nEnter \".help\" for usage hints.\nsqlite>", type: "code" },
+
+      { chapter: "Create tables", title: "First table", text: "Users table with id, name, and email.", code: "CREATE TABLE users (\n  id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  email TEXT UNIQUE,\n  age INTEGER\n);", type: "code" },
+      { title: "Second table", text: "Posts table with a foreign key to users.", code: "CREATE TABLE posts (\n  id INTEGER PRIMARY KEY,\n  user_id INTEGER,\n  title TEXT,\n  body TEXT,\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (user_id) REFERENCES users(id)\n);", type: "code" },
+
+      { chapter: "Insert data", title: "Add users", text: "Note: strings use single quotes.", code: "INSERT INTO users (name, email, age) VALUES\n  ('Neo', 'neo@example.com', 25),\n  ('Alice', 'alice@example.com', 30),\n  ('Bob', 'bob@example.com', 22);", type: "code" },
+      { title: "Add posts", text: "More rows.", code: "INSERT INTO posts (user_id, title, body) VALUES\n  (1, 'First post', 'Hello world!'),\n  (1, 'Second post', 'Learning SQL'),\n  (2, 'Alice writes', 'Hi everyone');", type: "code" },
+
+      { chapter: "SELECT basics", title: "Get everything", text: "The most-used command.", code: "SELECT * FROM users;", output: "1|Neo|neo@example.com|25\n2|Alice|alice@example.com|30\n3|Bob|bob@example.com|22", type: "try" },
+      { title: "Specific columns", text: "Only what you need.", code: "SELECT name, email FROM users;", output: "Neo|neo@example.com\nAlice|alice@example.com\nBob|bob@example.com", type: "try" },
+
+      { chapter: "WHERE — filter", title: "Conditional", text: "Filter rows.", code: "SELECT * FROM users WHERE age > 23;", output: "1|Neo|neo@example.com|25\n2|Alice|alice@example.com|30", type: "try" },
+      { title: "Multiple conditions", text: "AND / OR.", code: "SELECT * FROM users WHERE age >= 25 AND name != 'Alice';", output: "1|Neo|neo@example.com|25", type: "try" },
+      { title: "Pattern matching", text: "LIKE for text.", code: "SELECT * FROM users WHERE email LIKE '%example%';", type: "try" },
+
+      { chapter: "Sorting and limits", title: "ORDER BY", text: "Sort results.", code: "SELECT * FROM users ORDER BY age DESC;", output: "2|Alice|alice@example.com|30\n1|Neo|neo@example.com|25\n3|Bob|bob@example.com|22", type: "try" },
+      { title: "LIMIT", text: "Only N rows.", code: "SELECT * FROM users ORDER BY age DESC LIMIT 2;", type: "try" },
+
+      { chapter: "UPDATE and DELETE", title: "Change data", text: "Update a row.", code: "UPDATE users SET age = 26 WHERE name = 'Neo';", type: "code" },
+      { title: "Remove a row", text: "Delete carefully — no undo.", code: "DELETE FROM users WHERE name = 'Bob';", type: "code" },
+      { title: "⚠️ No WHERE = everything", text: "`DELETE FROM users;` deletes ALL rows. `UPDATE users SET age = 0;` updates all rows. Always use WHERE.", note: { type: "danger", text: "No WHERE clause = all rows affected." }, type: "warn" },
+
+      { chapter: "Joins", title: "Combine tables", text: "Get posts with their author's name.", code: "SELECT users.name, posts.title\nFROM posts\nJOIN users ON posts.user_id = users.id;", output: "Neo|First post\nNeo|Second post\nAlice|Alice writes", type: "try" },
+      { title: "Left join", text: "Includes users with no posts.", code: "SELECT users.name, posts.title\nFROM users\nLEFT JOIN posts ON posts.user_id = users.id;", output: "Neo|First post\nNeo|Second post\nAlice|Alice writes", type: "try" },
+
+      { chapter: "Aggregation", title: "COUNT, SUM, AVG", text: "Summarize data.", code: "SELECT COUNT(*) FROM users;\nSELECT AVG(age) FROM users;\nSELECT COUNT(*), user_id FROM posts GROUP BY user_id;", output: "2\n28.0\n2|1\n1|2", type: "try" },
+
+      { chapter: "Practice", title: "More databases", text: "Try these free interactive SQL lessons:\n• **sqlbolt.com** — interactive\n• **sqlzoo.net** — exercises\n• **pgexercises.com** — PostgreSQL", type: "tip" },
+
+      { title: "Done", text: "You know SQL. That's a real job skill.", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install SQLite in Termux", text: "Works perfectly.", code: "pkg install sqlite -y\nsqlite3 test.db", type: "code" },
+      { chapter: "Same commands", title: "Everything works", text: "Follow the Linux tab — identical syntax.", type: "read" },
+      { title: "Mobile tip", text: "Use a Bluetooth keyboard for comfortable typing. Or practice on **sqlbolt.com** in your browser.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "SQLite is pre-installed", text: "No install needed on macOS.", code: "sqlite3 test.db", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Install SQLite", text: "Via winget or download.", code: "winget install SQLite.SQLite", lang: "powershell", type: "code" },
+      { title: "Or use DB Browser", text: "GUI tool, easier for beginners.", code: "https://sqlitebrowser.org", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ]
+  },
+  repo: { url: "https://sqlbolt.com", label: "SQLBolt (interactive)" }
+},
+
+{
+  id: "docker-compose", title: "Docker Compose: Multi-Container Apps", category: "Programming",
+  difficulty: "intermediate", time: "25 min",
+  summary: "Run full stacks with one command — databases, APIs, reverse proxies.",
+  intro: "Real apps need multiple containers: database, backend, frontend, cache. Docker Compose defines them all in one YAML file — `docker compose up` starts everything.",
+  tags: ["docker", "compose", "containers", "devops"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Write a docker-compose.yml",
+    "Run a multi-container stack",
+    "Manage volumes and networks",
+    "Deploy real apps (Nextcloud, WordPress)"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Install", title: "Docker + Compose", text: "Compose is now built into Docker.", code: "curl -fsSL https://get.docker.com | sh\ndocker compose version", output: "Docker Compose version v2.24.0", type: "try" },
+
+      { chapter: "Basic compose", title: "Create a project", text: "New folder with compose file.", code: "mkdir my-stack\ncd my-stack\nnano docker-compose.yml", type: "code" },
+      { title: "Simplest compose", text: "One service.", code: "services:\n  web:\n    image: nginx:latest\n    ports:\n      - \"8080:80\"", lang: "yaml", type: "code" },
+      { title: "Run it", text: "Detached mode.", code: "docker compose up -d", output: "[+] Running 2/2\n ✔ Network my-stack_default  Created\n ✔ Container my-stack-web-1  Started", type: "try" },
+      { title: "Visit it", text: "Open http://localhost:8080 — Nginx welcome page.", type: "try" },
+      { title: "Stop it", text: "Clean stop.", code: "docker compose down", type: "code" },
+
+      { chapter: "Multi-container", title: "Web + database", text: "Two services that talk to each other.", code: "services:\n  web:\n    image: nginx:latest\n    ports:\n      - \"8080:80\"\n    depends_on:\n      - db\n\n  db:\n    image: postgres:16\n    environment:\n      POSTGRES_PASSWORD: secret\n      POSTGRES_DB: myapp\n    volumes:\n      - db-data:/var/lib/postgresql/data\n\nvolumes:\n  db-data:", lang: "yaml", type: "code" },
+      { title: "Networking is automatic", text: "Each container can reach others by service name. From `web`, `db` resolves to the database container.", type: "tip" },
+      { title: "Persistent volumes", text: "`db-data` volume survives container restarts — your database data stays even if you `docker compose down`.", type: "read" },
+
+      { chapter: "Real app: Nextcloud", title: "Complete Nextcloud stack", text: "What our Nextcloud tutorial should have used.", code: "services:\n  db:\n    image: mariadb:11\n    restart: always\n    environment:\n      MYSQL_ROOT_PASSWORD: rootpass\n      MYSQL_DATABASE: nextcloud\n      MYSQL_USER: nextcloud\n      MYSQL_PASSWORD: strongpass\n    volumes:\n      - db:/var/lib/mysql\n\n  redis:\n    image: redis:alpine\n    restart: always\n\n  app:\n    image: nextcloud:latest\n    restart: always\n    ports:\n      - \"8080:80\"\n    depends_on:\n      - db\n      - redis\n    environment:\n      MYSQL_HOST: db\n      MYSQL_DATABASE: nextcloud\n      MYSQL_USER: nextcloud\n      MYSQL_PASSWORD: strongpass\n      REDIS_HOST: redis\n    volumes:\n      - nextcloud:/var/www/html\n\nvolumes:\n  db:\n  nextcloud:", lang: "yaml", type: "code" },
+      { title: "Run it", text: "This is a full Nextcloud.", code: "docker compose up -d\ndocker compose logs -f app", type: "try" },
+
+      { chapter: "Common commands", title: "Daily workflow", text: "Essential Compose commands.", code: "docker compose up -d           # start everything\ndocker compose down            # stop\nocker compose restart          # restart\ndocker compose logs -f         # follow logs\ndocker compose ps              # list services\ndocker compose pull            # get new images\ndocker compose exec web bash   # shell into service", type: "code" },
+
+      { chapter: "Environment files", title: "Secrets in .env", text: "Don't hardcode passwords. Use `.env`: ", code: "# .env\nDB_PASSWORD=supersecret\nWEB_PORT=8080\n\n# docker-compose.yml uses them:\nservices:\n  db:\n    environment:\n      POSTGRES_PASSWORD: ${DB_PASSWORD}\n  web:\n    ports:\n      - \"${WEB_PORT}:80\"", lang: "yaml", type: "code" },
+      { title: "Add .env to gitignore", text: "Never commit `.env` files.", type: "warn" },
+
+      { chapter: "Reverse proxy", title: "Caddy + services", text: "Add HTTPS front-end with one more service.", code: "services:\n  caddy:\n    image: caddy:latest\n    ports:\n      - \"80:80\"\n      - \"443:443\"\n    volumes:\n      - ./Caddyfile:/etc/caddy/Caddyfile\n      - caddy-data:/data\n    restart: always\n\nvolumes:\n  caddy-data:", lang: "yaml", type: "code" },
+
+      { title: "Done", text: "You can now run production stacks with one command.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Docker Desktop", text: "Includes Compose.", code: "brew install --cask docker", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical workflow.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Docker Desktop (WSL2)", text: "Includes Compose.", code: "winget install Docker.DockerDesktop", lang: "powershell", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ]
+  },
+  repo: { url: "https://docs.docker.com/compose/", label: "Docker Compose" }
+},
+
+{
+  id: "typescript-basics", title: "TypeScript in 20 Minutes", category: "Programming",
+  difficulty: "intermediate", time: "20 min",
+  summary: "JavaScript with types — catch bugs before they happen.",
+  intro: "TypeScript is JavaScript with type safety. It catches errors at write-time instead of runtime. Every major codebase uses it now — this is the fastest way to learn it.",
+  tags: ["typescript", "javascript", "programming"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Install and run TypeScript",
+    "Add types to variables and functions",
+    "Use interfaces and generics",
+    "Understand how it compiles to JavaScript"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Install Node.js", text: "Prereq.", code: "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -\nsudo apt install nodejs -y", type: "code" },
+      { title: "Install TypeScript", text: "Global command.", code: "sudo npm install -g typescript\ntsc --version", output: "Version 5.4.2", type: "try" },
+
+      { chapter: "First file", title: "Create hello.ts", text: "TypeScript files use `.ts`.", code: "function greet(name: string): string {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet(\"Neo\"));\nconsole.log(greet(42));  // ← this will error", lang: "typescript", type: "code" },
+      { title: "Compile it", text: "Compiles to plain JavaScript.", code: "tsc hello.ts\ncat hello.js", output: "function greet(name) {\n  return `Hello, ${name}!`;\n}\nconsole.log(greet(\"Neo\"));", type: "try" },
+      { title: "The error", text: "Before compiling, TypeScript catches `greet(42)` — argument type mismatch. **This is why it exists.**", type: "read" },
+
+      { chapter: "Basic types", title: "String, number, boolean", text: "Explicit types.", code: "let name: string = \"Neo\";\nlet age: number = 42;\nlet active: boolean = true;\nlet nothing: null = null;\nlet undef: undefined = undefined;", lang: "typescript", type: "code" },
+      { title: "Arrays and tuples", text: "Typed arrays.", code: "let names: string[] = [\"a\", \"b\"];\nlet coords: [number, number] = [10, 20];\nlet ids: Array<number> = [1, 2, 3];", lang: "typescript", type: "code" },
+
+      { chapter: "Functions", title: "Parameter types", text: "Every parameter and return value.", code: "function add(a: number, b: number): number {\n  return a + b;\n}\n\nconst multiply = (a: number, b: number): number => a * b;", lang: "typescript", type: "code" },
+      { title: "Optional params", text: "`?` makes optional.", code: "function greet(name: string, title?: string): string {\n  return title ? `${title} ${name}` : name;\n}", lang: "typescript", type: "code" },
+
+      { chapter: "Interfaces", title: "Shape of objects", text: "Define what an object should look like.", code: "interface User {\n  id: number;\n  name: string;\n  email: string;\n  age?: number;\n}\n\nconst neo: User = {\n  id: 1,\n  name: \"Neo\",\n  email: \"neo@example.com\"\n};", lang: "typescript", type: "code" },
+      { title: "Why it matters", text: "In VS Code, typing `neo.` shows autocomplete for id, name, email. Typos caught instantly.", type: "tip" },
+
+      { chapter: "Type aliases and unions", title: "Custom types", text: "Union types allow multiple options.", code: "type ID = string | number;\n\ntype Status = \"pending\" | \"active\" | \"done\";\n\nfunction processOrder(id: ID, status: Status) {\n  // id can be string or number\n  // status must be one of the three strings\n}", lang: "typescript", type: "code" },
+
+      { chapter: "Generics", title: "Reusable with types", text: "Generic functions work on any type.", code: "function first<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconst n = first([1, 2, 3]);      // n: number\nconst s = first([\"a\", \"b\"]);    // s: string", lang: "typescript", type: "code" },
+
+      { chapter: "tsconfig.json", title: "Project config", text: "Generate a config file for real projects.", code: "tsc --init", type: "code" },
+      { title: "Key settings", text: "```json\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"ESNext\",\n    \"strict\": true,\n    \"outDir\": \"./dist\"\n  }\n}\n```\n\n`strict: true` enables all safety checks. Always use it for new projects.", type: "code" },
+
+      { chapter: "Running TypeScript", title: "Without compiling", text: "Use `tsx` or `ts-node` for direct execution.", code: "npm install -g tsx\ntsx hello.ts", type: "code" },
+
+      { title: "Done", text: "You know TypeScript. Now every JS tutorial you read, you can make safer.", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Termux", text: "Node + TypeScript.", code: "pkg install nodejs -y\nnpm install -g typescript\ntsc --version", type: "code" },
+      { chapter: "Follow Linux", title: "Same workflow", text: "Identical commands.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Homebrew Node", text: "Prereq.", code: "brew install node", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Node via winget", text: "Prereq.", code: "winget install OpenJS.NodeJS", lang: "powershell", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical (npm commands may need `npm.cmd` on some setups).", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.typescriptlang.org/docs/handbook/intro.html", label: "TypeScript Handbook" }
+},
+
+{
+  id: "vim-basics", title: "Vim in 15 Minutes", category: "Programming",
+  difficulty: "beginner", time: "15 min",
+  summary: "The editor you can't exit — until now.",
+  intro: "Vim is on every Linux server. Learning the basics means you can edit files on any machine over SSH. This tutorial covers the 30% that gives you 90% of the power.",
+  tags: ["vim", "editor", "cli"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "The 3 modes of Vim",
+    "Navigate and edit without a mouse",
+    "Save, exit, quit-without-saving",
+    "Search and replace"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Modes", title: "The core concept", text: "Vim has three modes:\n• **Normal mode** — navigation and commands (default)\n• **Insert mode** — typing text\n• **Visual mode** — selecting text\n\nYou'll switch constantly. This is what makes Vim fast.", type: "read" },
+      { title: "Open Vim", text: "Any file — or new file.", code: "vim hello.txt", type: "code" },
+
+      { chapter: "The essentials", title: "Enter insert mode", text: "Press `i`. You'll see `-- INSERT --` at the bottom. Now type normally.", code: "Hello, this is my first Vim edit!", type: "try" },
+      { title: "Exit insert mode", text: "Press `Esc`. You're back in normal mode.", type: "read" },
+      { title: "Save and quit", text: "In normal mode, type `:wq` and Enter.", code: ":wq", output: "File saved. Back in terminal.", type: "try" },
+      { title: "Quit without saving", text: "Add `!` to force.", code: ":q!        # quit, discard changes\n:q          # quit if no changes\n:w          # save without quitting\n:wq         # save and quit", type: "code" },
+
+      { chapter: "Movement", title: "Don't use arrow keys", text: "Use `h j k l`:\n\n```\n  k  (up)\nh   l  (left, right)\n  j  (down)\n```", type: "code" },
+      { title: "Word movement", text: "Faster than character-by-character.", code: "w       # next word\nb       # previous word\ne       # end of word\n0       # start of line\n$       # end of line\ngg      # top of file\nG       # bottom of file", type: "code" },
+
+      { chapter: "Editing", title: "Common actions", text: "Delete, change, copy, paste.", code: "x       # delete character under cursor\ndd      # delete whole line\nyy      # copy (yank) line\np       # paste below\nyy then p    # duplicate line\ncc      # change whole line\nu       # undo\nCtrl+r  # redo", type: "code" },
+
+      { chapter: "Insert variations", title: "Beyond `i`", text: "Different ways to enter insert mode.", code: "i       # insert before cursor\na       # insert after cursor\nI       # insert at start of line\nA       # insert at end of line\no       # new line below\nu       # undo\nO       # new line above", type: "code" },
+
+      { chapter: "Search", title: "Find in file", text: "Search forward and backward.", code: "/hello         # search for 'hello'\nn              # next match\nN              # previous match", type: "code" },
+      { title: "Search and replace", text: "Across the file.", code: ":%s/old/new/g      # replace all in file\n:s/old/new/g       # replace in line", type: "code" },
+
+      { chapter: "Practical", title: "Real workflow", text: "Editing a config file over SSH:\n1. `vim /etc/config.conf`\n2. `/setting` to find the line\n3. `i` to insert, edit\n4. `Esc`, `:wq` to save", type: "code" },
+
+      { chapter: "Escaping Vim", title: "Forgot to sudo?", text: "Classic mistake. Save with sudo anyway:", code: ":w !sudo tee %\n# Then :q!", type: "code" },
+
+      { chapter: "Where to go next", title: "Games and practice", text: "• **vim-adventures.com** — game\n• **openvim.com** — interactive\n• **`:Tutor`** in Vim — built-in tutorial\n• Try **Neovim** when ready — modern fork", type: "tip" },
+
+      { title: "Done", text: "You can now survive on any Linux server. That's the point.", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install in Termux", text: "One command.", code: "pkg install vim -y", type: "code" },
+      { chapter: "Same as Linux", title: "Same commands", text: "All the same keys work.", type: "read" },
+      { title: "Mobile tip", text: "Install **Hacker's Keyboard** (F-Droid) for proper Esc, Ctrl, and Tab keys.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Pre-installed", text: "macOS has vim. Or upgrade to newer version.", code: "brew install vim", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Download or winget", text: "From vim.org.", code: "winget install vim.vim", lang: "powershell", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Identical.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.openvim.com/", label: "OpenVim (interactive)" }
+}, 
 
 ];
