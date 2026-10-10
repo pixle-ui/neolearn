@@ -1721,5 +1721,762 @@ window.TUTORIALS = [
   },
   repo: { url: "https://one.one.one.one/", label: "Cloudflare 1.1.1.1" }
 },
+// ========== WINDOWS ==========
+{
+  id: "wsl2", title: "Run Linux on Windows (WSL2)", category: "Windows",
+  difficulty: "beginner", time: "20 min",
+  summary: "Real Linux running inside Windows — no dual boot, no VM lag.",
+  intro: "WSL2 runs a real Linux kernel inside Windows. You get bash, apt, git, Docker, and thousands of Linux tools without leaving Windows. Perfect for developers who need both.",
+  tags: ["windows", "linux", "wsl", "dev"], platforms: ["windows"],
+  learnList: [
+    "Install WSL2 in one command",
+    "Pick a Linux distro",
+    "Access Windows files from Linux",
+    "Run GUI Linux apps on Windows",
+    "Use it with VS Code"
+  ],
+  steps: {
+    windows: [
+      { chapter: "Setup", title: "One-command install", text: "Open PowerShell as Administrator and run this. It installs WSL2 + Ubuntu automatically.", code: "wsl --install", output: "Installing: Virtual Machine Platform\nInstalling: Windows Subsystem for Linux\nDownloading: Ubuntu\n\nPlease reboot your computer to finish installation.", type: "code" },
+      { title: "Reboot", text: "Restart your PC. WSL2 needs the reboot to activate the virtual machine layer.", type: "read" },
+      { title: "Complete Ubuntu setup", text: "Open the new **Ubuntu** app from the Start menu. It asks for a username and password. **Pick something simple** — this is separate from your Windows login.", type: "try" },
 
+      { chapter: "Get oriented", title: "Update packages", text: "First thing inside Ubuntu.", code: "sudo apt update && sudo apt upgrade -y", type: "code" },
+      { title: "Where are you?", text: "You're in /home/yourname — a Linux filesystem. Your Windows files live elsewhere.", code: "pwd\nls", output: "/home/neo\n(some default files)", type: "try" },
+
+      { chapter: "Access Windows files", title: "Windows drives are mounted here", text: "Your C: drive is at /mnt/c.", code: "cd /mnt/c/Users/YourWindowsName/Desktop\nls", type: "code" },
+      { title: "Tip: open Explorer here", text: "From Windows Explorer, you can access Linux files by typing `\\\\wsl$\\Ubuntu\\home\\yourname` in the address bar.", type: "tip" },
+
+      { chapter: "Install dev tools", title: "Git, Python, Node", text: "All standard Linux packages.", code: "sudo apt install git python3 python3-pip nodejs npm -y", type: "code" },
+      { title: "Verify", text: "Check versions.", code: "git --version\npython3 --version\nnode --version", output: "git version 2.45.0\nPython 3.12.3\nv20.11.0", type: "try" },
+
+      { chapter: "GUI Linux apps", title: "WSLg (built-in on Windows 11)", text: "Windows 11 has WSLg — GUI Linux apps run natively. Try:", code: "sudo apt install gedit -y\ngedit", output: "A Linux text editor window opens on your Windows desktop.", type: "try" },
+
+      { chapter: "VS Code integration", title: "Best of both worlds", text: "Install VS Code on Windows → install the **WSL** extension → now you can edit Linux files with VS Code's full UI.", code: "code .", output: "VS Code opens with a 'WSL: Ubuntu' indicator in the bottom-left corner.", type: "try" },
+      { title: "This is the killer feature", text: "Windows UI + Linux terminal + full filesystem access. Developers use this daily.", type: "read" },
+
+      { chapter: "Managing distros", title: "See installed distros", text: "From PowerShell:", code: "wsl --list --verbose", output: "  NAME      STATE           VERSION\n* Ubuntu    Running         2", type: "try" },
+      { title: "Install more distros", text: "Debian, Kali, Alpine — all available.", code: "wsl --install -d kali-linux", type: "code" },
+      { title: "Shut down WSL", text: "When you need to free resources.", code: "wsl --shutdown", type: "code" },
+      { title: "You're done", text: "You now have full Linux running inside Windows.", type: "read" }
+    ]
+  },
+  repo: { url: "https://learn.microsoft.com/en-us/windows/wsl/", label: "Microsoft WSL Docs" }
+},
+
+{
+  id: "windows-terminal", title: "Level Up Windows Terminal", category: "Windows",
+  difficulty: "beginner", time: "12 min",
+  summary: "Transform your Windows terminal into a dev-ready powerhouse.",
+  intro: "Windows Terminal is free, modern, and faster than cmd.exe. With a few tweaks it becomes a serious development tool.",
+  tags: ["windows", "terminal", "dev"], platforms: ["windows"],
+  learnList: [
+    "Install and configure Windows Terminal",
+    "Add transparency and custom fonts",
+    "Set up Oh My Posh for a slick prompt",
+    "Create custom profiles and shortcuts"
+  ],
+  steps: {
+    windows: [
+      { chapter: "Install", title: "From Microsoft Store", text: "Search **Windows Terminal** in the Store. Install.", code: "winget install Microsoft.WindowsTerminal", type: "code" },
+      { title: "Or use winget", text: "If you have winget set up already.", type: "tip" },
+
+      { chapter: "First tweaks", title: "Open settings", text: "Ctrl+, or the dropdown → Settings. Edit `settings.json` for full control." },
+      { title: "Enable transparency", text: "Add to any profile's settings:", code: "\"useAcrylic\": true,\n\"acrylicOpacity\": 0.85,\n\"opacity\": 90", lang: "json", type: "code" },
+
+      { chapter: "Better fonts", title: "Install a Nerd Font", text: "Nerd Fonts include icons for prompts. Download Cascadia Code NF:", code: "winget install -e --id Microsoft.CascadiaCode", type: "code" },
+      { title: "Set it in Terminal", text: "Add to a profile:", code: "\"font\": {\n  \"face\": \"Cascadia Code NF\",\n  \"size\": 12\n}", lang: "json", type: "code" },
+
+      { chapter: "Oh My Posh", title: "A slick prompt", text: "Oh My Posh changes your prompt to show git status, time, folders, icons.", code: "winget install JanDeDobbeleer.OhMyPosh", type: "code" },
+      { title: "Set a theme", text: "Then pick a preset.", code: "oh-my-posh init pwsh --config \"$env:POSH_THEMES_PATH\\jandedobbeleer.omp.json\" | Invoke-Expression", type: "code" },
+      { title: "See all themes", text: "Browse them here:", code: "https://ohmyposh.dev/docs/themes", type: "code" },
+
+      { chapter: "Keyboard shortcuts", title: "Learn these", text: "• **Ctrl+Shift+T** — new tab\n• **Ctrl+Shift+W** — close tab\n• **Alt+Shift+D** — split pane\n• **Ctrl+Tab** — cycle tabs\n• **Ctrl+Shift+P** — command palette (run any action)", type: "read" },
+
+      { chapter: "Profiles", title: "Multiple shells in tabs", text: "You can open PowerShell, WSL Ubuntu, cmd, and Azure Cloud Shell all in tabs of the same window. Add them via Settings → Add a new profile.", type: "read" },
+      { title: "Default profile", text: "Set PowerShell 7 or WSL Ubuntu as your default for a better experience.", type: "tip" },
+      { title: "Done", text: "You now have a terminal that rivals macOS/Linux setups.", type: "read" }
+    ]
+  },
+  repo: { url: "https://ohmyposh.dev", label: "Oh My Posh" }
+},
+
+{
+  id: "win-debloat", title: "Speed Up Windows (Debloat Guide)", category: "Windows",
+  difficulty: "intermediate", time: "25 min",
+  summary: "Remove bloatware, disable trackers, and make Windows actually fast.",
+  intro: "Windows ships with dozens of apps you'll never use, telemetry you didn't ask for, and background services that eat resources. This tutorial removes all of it safely.",
+  tags: ["windows", "performance", "privacy"], platforms: ["windows"],
+  learnList: [
+    "Remove preinstalled bloatware safely",
+    "Disable telemetry and tracking",
+    "Turn off unneeded background services",
+    "Speed up startup and search"
+  ],
+  steps: {
+    windows: [
+      { chapter: "⚠️ Back up first", title: "Create a restore point", text: "Before any system change, make a restore point.", code: "Checkpoint-Computer -Description \"Before Debloat\" -RestorePointType \"MODIFY_SETTINGS\"", lang: "powershell", type: "code" },
+
+      { chapter: "Remove bloatware", title: "List installed apps", text: "See what's installed.", code: "Get-AppxPackage | Select Name", lang: "powershell", type: "code" },
+      { title: "Remove the worst offenders", text: "Safe to remove these:", code: "Get-AppxPackage *bing* | Remove-AppxPackage\nGet-AppxPackage *xbox* | Remove-AppxPackage\nGet-AppxPackage *zune* | Remove-AppxPackage\nGet-AppxPackage *skype* | Remove-AppxPackage\nGet-AppxPackage *solitaire* | Remove-AppxPackage", lang: "powershell", type: "code" },
+      { title: "Or use a GUI tool", text: "For a safer click-based approach, use **Winhance** or **Chris Titus Tech's Windows Utility** — both open source and vetted.", type: "tip" },
+
+      { chapter: "Disable telemetry", title: "Turn off tracking", text: "Settings → Privacy & Security → General → turn off all 4 options. Then Diagnostics → send optional data → OFF.", type: "code" },
+      { title: "Disable Advertising ID", text: "Same page → scroll down. Turn off \"Let apps show me personalized ads\".", type: "read" },
+
+      { chapter: "Reduce startup apps", title: "See what launches on boot", text: "Ctrl+Shift+Esc → Startup tab. Right-click → Disable for anything you don't need immediately.", type: "code" },
+      { title: "Common junk", text: "• OneDrive (if you don't use it)\n• Teams\n• Spotify\n• Adobe Creative Cloud\n• Steam (unless you game daily)", type: "read" },
+
+      { chapter: "Disable services", title: "Optional — advanced", text: "Warning: only disable these if you know what they do.", code: "services.msc", lang: "text", type: "code" },
+      { title: "Safe to disable", text: "• **SysMain** (if you have an SSD)\n• **Windows Search** (if you don't use search)\n• **Print Spooler** (if you never print)\n• **Xbox services** (if you don't game on Xbox)", type: "warn" },
+
+      { chapter: "Speed up search", title: "Rebuild search index", text: "Settings → Privacy & Security → Searching Windows → Advanced → Rebuild index.", type: "tip" },
+
+      { chapter: "Final speedup", title: "Set power plan to High Performance", text: "For desktops and plugged-in laptops:", code: "powercfg -setactive SCHEME_MIN", lang: "powershell", type: "code" },
+      { title: "Result", text: "You should see noticeably faster boots, less fan noise, more free RAM.", type: "read" }
+    ]
+  },
+  repo: { url: "https://christitus.com/windows-tool/", label: "Chris Titus Windows Tool" }
+},
+
+{
+  id: "win-backup", title: "Back Up Windows Properly", category: "Windows",
+  difficulty: "beginner", time: "15 min",
+  summary: "Never lose your files, programs, or Windows setup again.",
+  intro: "A dead drive can happen in seconds. Here's a complete backup plan that costs nothing and saves everything — files, apps, and full system images.",
+  tags: ["windows", "backup"], platforms: ["windows"],
+  learnList: [
+    "Back up files with File History",
+    "Create a full system image",
+    "Sync to cloud + external drive",
+    "Test that your backup actually works"
+  ],
+  steps: {
+    windows: [
+      { chapter: "What to back up", title: "Three layers", text: "• **Files** — documents, photos, projects\n• **System** — installed programs and settings\n• **Boot** — the ability to restore after a crash\n\nEach needs a different method.", type: "read" },
+
+      { chapter: "Layer 1: Files", title: "OneDrive (built-in)", text: "OneDrive syncs Desktop, Documents, and Pictures automatically. 5GB free.", code: "Settings → OneDrive → Sync folders", type: "code" },
+      { title: "For more space", text: "Use an external drive + File History.", code: "Settings → System → Storage → Advanced → Backup options", type: "code" },
+      { title: "Enable File History", text: "Pick an external drive. Windows backs up automatically every hour.", type: "try" },
+
+      { chapter: "Layer 2: System image", title: "Full system backup", text: "Creates a bootable copy of your entire Windows install. If your drive dies, this restores everything.", code: "Control Panel → System and Security → File History → System Image Backup", lang: "text", type: "code" },
+      { title: "Alternative: free imaging tools", text: "**Macrium Reflect Free** or **Veeam Agent Free** — both create bootable full-system images.", type: "tip" },
+
+      { chapter: "Layer 3: Recovery drive", title: "USB recovery drive", text: "If Windows won't boot, you need a bootable USB to restore from. Make one now.", code: "Start menu → search \"Recovery Drive\" → open → insert USB (16GB+) → follow wizard", type: "code" },
+      { title: "Test it works", text: "Boot from the USB once to verify it launches. A recovery drive you've never tested is not a recovery drive.", type: "warn" },
+
+      { chapter: "Cloud backup", title: "Free options", text: "• **Google Drive** — 15GB free\n• **Proton Drive** — 5GB free, encrypted\n• **Mega** — 20GB free\n• **Backblaze** — paid but unlimited (~$7/mo)", type: "read" },
+
+      { chapter: "Schedule it", title: "Automate", text: "Windows File History runs automatically after setup. For cloud backups, most services have auto-sync built in.", type: "tip" },
+      { title: "The 3-2-1 rule", text: "**3** copies of data\n**2** different media types\n**1** offsite\n\nIf you follow this, you're essentially bulletproof.", type: "read" },
+      { title: "Done", text: "You now have layers of protection. Sleep better.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.microsoft.com/en-us/windows/backup", label: "Windows Backup" }
+},
+
+{
+  id: "winlator", title: "Run Windows Apps on Android (Winlator)", category: "Windows",
+  difficulty: "advanced", time: "25 min",
+  summary: "Play PC games and run Windows software on your Android phone.",
+  intro: "Winlator is an app that runs Windows programs on Android using Wine and Box86/Box64. No root needed. Real PC games, real Windows apps — on your phone.",
+  tags: ["android", "windows", "gaming", "wine"], platforms: ["android"],
+  learnList: [
+    "Install Winlator correctly",
+    "Set up a container for Windows apps",
+    "Install a Windows program",
+    "Tune performance for games"
+  ],
+  steps: {
+    android: [
+      { chapter: "Before you start", title: "Requirements", text: "• Snapdragon 8xx or newer (Snapdragon 855+)\n• At least 6GB RAM\n• 10GB free storage\n• Android 11+\n\nOlder chips will run simple apps but not games.", type: "read" },
+      { title: "GPU note", text: "Adreno GPUs (Qualcomm) work best. Mali (MediaTek/Samsung) support is limited. Snapdragon is the ideal choice.", type: "warn" },
+
+      { chapter: "Install Winlator", title: "Download from GitHub", text: "Official releases only — avoid third-party sites.", code: "https://github.com/brunodev85/winlator/releases", type: "code" },
+      { title: "Install the APK", text: "Enable install from unknown sources if needed. Install like any APK.", type: "try" },
+      { title: "Also install OBB", text: "Some Winlator versions need an OBB file placed in `/Android/obb/com.winlator/`. Check the release notes.", type: "warn" },
+
+      { chapter: "First container", title: "Open Winlator", text: "Tap + to create a new container. This is like a mini Windows environment.", type: "try" },
+      { title: "Container settings", text: "Recommended for most phones:\n• **Screen size:** 1280×720\n• **Graphics driver:** Turnip (Adreno) or VirGL\n• **DX wrapper:** DXVK (for DirectX 9-11 games)\n• **Box86/64:** Box64\n• **CPU cores:** match your phone (6 or 8)", type: "code" },
+      { title: "Create it", text: "Tap the checkmark. Wait for setup (30 seconds).", type: "try" },
+
+      { chapter: "Install a Windows app", title: "Copy an .exe to your phone", text: "Put the Windows installer (.exe or .msi) in your Downloads folder.", type: "read" },
+      { title: "Inside the container", text: "Tap the container → it opens a Windows-like desktop with a file manager. Navigate to `D:` (your Downloads folder) → double-click the .exe.", type: "try" },
+      { title: "Install it", text: "Follow the Windows installer as normal. It installs inside the container.", type: "read" },
+
+      { chapter: "Performance tuning", title: "For games", text: "Edit the container → **Advanced** tab:\n• Enable **ESYNC** (better CPU usage)\n• Enable **Big Block** (faster)\n• Set **Video Memory Size** to 2048MB or 4096MB\n• Try different DX wrappers — DXVK 1.10.3 often works best", type: "code" },
+      { title: "Gamepad", text: "Connect a Bluetooth controller (Xbox, PS5, 8BitDo). Winlator recognizes them automatically.", type: "tip" },
+
+      { chapter: "What actually works", title: "Realistic games", text: "• **Older games** (2000–2015) — runs great\n• **Indie games** — often perfect\n• **Skyrim, GTA V, Witcher 3** — heavy but playable on flagship chips\n• **Modern AAA** — probably not", type: "read" },
+      { title: "Windows apps", text: "• **Notepad++, GIMP, Paint.NET** — works\n• **Microsoft Office** — works but slow\n• **Chrome, Firefox** — works\n• **Adobe Creative Suite** — no", type: "read" },
+
+      { chapter: "Troubleshooting", title: "App won't start", text: "Try a different DX wrapper. Try setting compatibility mode to Windows 7. Check the Winlator Discord for specific games.", type: "warn" },
+      { title: "You did it", text: "You're running Windows apps on Android. This is genuinely impressive tech.", type: "read" }
+    ]
+  },
+  repo: { url: "https://github.com/brunodev85/winlator", label: "Winlator on GitHub" }
+},
+
+{
+  id: "win-shortcuts", title: "Essential Windows Keyboard Shortcuts", category: "Windows",
+  difficulty: "beginner", time: "10 min",
+  summary: "Save hours every week with these shortcuts.",
+  intro: "Windows has hundreds of shortcuts. These 25 are the ones that save real time. Learn them and you'll never reach for the mouse for basic tasks again.",
+  tags: ["windows", "shortcuts", "productivity"], platforms: ["windows"],
+  learnList: [
+    "Master Windows key shortcuts",
+    "Window management shortcuts",
+    "Virtual desktops",
+    "Screen capture shortcuts"
+  ],
+  steps: {
+    windows: [
+      { chapter: "Windows key basics", title: "The essentials", text: "• **Win** — start menu\n• **Win + E** — File Explorer\n• **Win + I** — Settings\n• **Win + R** — Run dialog\n• **Win + L** — Lock screen\n• **Win + D** — Show desktop\n• **Win + S** — Search", type: "read" },
+
+      { chapter: "Window management", title: "Move windows like a pro", text: "• **Win + ←/→** — snap window left/right\n• **Win + ↑** — maximize\n• **Win + ↓** — minimize\n• **Win + Shift + ←/→** — move to other monitor\n• **Alt + Tab** — switch apps\n• **Win + Tab** — task view", type: "read" },
+
+      { chapter: "Virtual desktops", title: "Multiple screens, one monitor", text: "• **Win + Ctrl + D** — new desktop\n• **Win + Ctrl + →** — next desktop\n• **Win + Ctrl + ←** — previous desktop\n• **Win + Ctrl + F4** — close current desktop\n\nUseful for separating work/personal/hobby.", type: "read" },
+
+      { chapter: "Screenshot shortcuts", title: "Better than Print Screen", text: "• **Win + Shift + S** — screenshot a region (opens snipping tool)\n• **Win + PrtScn** — full screenshot saved to Pictures\n• **Win + Alt + PrtScn** — screenshot of active window (saved to Videos)", type: "read" },
+
+      { chapter: "File Explorer", title: "Speed through folders", text: "• **Ctrl + Shift + N** — new folder\n• **Alt + ↑** — go up a level\n• **Alt + ←** — back\n• **F2** — rename\n• **Shift + Delete** — delete permanently (no Recycle Bin)\n• **Ctrl + Shift + E** — expand folder tree", type: "read" },
+
+      { chapter: "Power user", title: "For advanced users", text: "• **Win + X** — power user menu (device manager, disk management, terminal)\n• **Win + V** — clipboard history\n• **Win + .** — emoji picker\n• **Win + P** — projector/second screen mode", type: "read" },
+
+      { chapter: "Practice", title: "Print this list", text: "Copy these onto a sticky note. Force yourself to use shortcuts for one day. By day 3 they're automatic.", type: "tip" },
+      { title: "Done", text: "You just became noticeably faster on Windows.", type: "read" }
+    ]
+  },
+  repo: { url: "https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows", label: "Microsoft Shortcuts" }
+},
+
+// ========== macOS ==========
+{
+  id: "mac-shortcuts", title: "Essential macOS Keyboard Shortcuts", category: "macOS",
+  difficulty: "beginner", time: "10 min",
+  summary: "Mac shortcuts are different from Windows. Learn the ones that matter.",
+  intro: "Mac users who come from Windows often miss keyboard shortcuts. Here are the ones that make a Mac feel fast.",
+  tags: ["mac", "shortcuts", "productivity"], platforms: ["mac"],
+  learnList: [
+    "Understand the ⌘ Cmd vs Ctrl difference",
+    "Master the 20 most useful shortcuts",
+    "Use Spotlight for everything",
+    "Screenshot like a pro"
+  ],
+  steps: {
+    mac: [
+      { chapter: "Key symbols", title: "The four modifier keys", text: "• **⌘ Cmd** — like Windows Ctrl (main modifier)\n• **⌥ Option/Alt** — alternative functions\n• **⌃ Ctrl** — rarely used alone on Mac\n• **⇧ Shift** — same as everywhere", type: "read" },
+      { title: "Print these symbols", text: "They appear in every menu bar. Learn to read them: ⌘ ⌥ ⌃ ⇧", type: "tip" },
+
+      { chapter: "The essentials", title: "Core shortcuts", text: "• **⌘ + Space** — Spotlight search (your best friend)\n• **⌘ + Tab** — switch apps\n• **⌘ + Q** — quit app\n• **⌘ + W** — close window\n• **⌘ + N** — new window\n• **⌘ + Z** — undo\n• **⌘ + Shift + Z** — redo", type: "read" },
+
+      { chapter: "Finder (Mac's File Explorer)", title: "Navigate files", text: "• **⌘ + Shift + N** — new folder\n• **⌘ + ↑** — go up a folder\n• **⌘ + ↓** — open file/folder\n• **⌘ + Delete** — move to Trash\n• **⌘ + Shift + Delete** — empty Trash\n• **Space** — Quick Look preview", type: "read" },
+      { title: "Shortcut to anywhere", text: "⌘ + Shift + G — go to a specific folder by path.", type: "tip" },
+
+      { chapter: "Screenshots", title: "Better than Windows", text: "• **⌘ + Shift + 3** — full screenshot\n• **⌘ + Shift + 4** — select region\n• **⌘ + Shift + 4 + Space** — screenshot a specific window\n• **⌘ + Shift + 5** — full screenshot toolbar (screen recording too)", type: "read" },
+
+      { chapter: "Text editing", title: "Works in any app", text: "• **⌘ + ←/→** — jump to start/end of line\n• **⌥ + ←/→** — jump word by word\n• **⌘ + Backspace** — delete whole line\n• **⌥ + Backspace** — delete whole word\n• **⌘ + A** — select all\n• **⌘ + F** — find", type: "read" },
+
+      { chapter: "Spotlight mastery", title: "⌘ + Space does everything", text: "Type math: `24 * 7` → answer appears\nType currency: `100 usd to ngn` → converts\nType app name → opens it\nType file name → finds it\nType `define word` → dictionary", type: "try" },
+
+      { chapter: "Hidden gems", title: "⌥ Option magic", text: "• **⌥ + click** WiFi icon → detailed network info\n• **⌥ + click** sound icon → output device switch\n• **⌥ + drag file** → copy instead of move\n• **⌥ + Cmd + Esc** → Force Quit window", type: "read" },
+
+      { title: "Done", text: "You just unlocked the speed of macOS.", type: "read" }
+    ]
+  },
+  repo: { url: "https://support.apple.com/en-us/HT201236", label: "Apple Shortcuts" }
+},
+
+{
+  id: "mac-raycast", title: "Raycast — The Mac Launcher You Need", category: "macOS",
+  difficulty: "beginner", time: "15 min",
+  summary: "Replace Spotlight and 10 other apps with one tool.",
+  intro: "Raycast is a super-powered launcher for macOS. Free, fast, and it replaces Spotlight, clipboard managers, window managers, and more — all in one app.",
+  tags: ["mac", "productivity", "raycast"], platforms: ["mac"],
+  learnList: [
+    "Install and set up Raycast",
+    "Use it to launch apps faster than Spotlight",
+    "Master the clipboard history",
+    "Install extensions for extra power"
+  ],
+  steps: {
+    mac: [
+      { chapter: "Install", title: "Download Raycast", text: "Free from raycast.com. Once installed, it takes over ⌘ + Space (replacing Spotlight).", code: "https://raycast.com", type: "code" },
+      { title: "Grant permissions", text: "Raycast needs Accessibility, Screen Recording, and Full Disk Access for some features. It'll walk you through each.", type: "read" },
+
+      { chapter: "Core features", title: "⌘ + Space — the launcher", text: "Type anything:\n• App name → opens it\n• File name → searches\n• Math → calculates\n• `define word` → dictionary\n• Just like Spotlight but faster", type: "try" },
+      { title: "Clipboard history", text: "Press ⌘ + Shift + V to see your clipboard history. Every text/image you've copied. Search, paste, done.", type: "code" },
+      { title: "Window management", text: "Type `left` → snaps active window left. `right`, `maximize`, `center`, `top half` — all built in. **Replaces Magnet and Rectangle.**", type: "try" },
+
+      { chapter: "Extensions", title: "Install extensions", text: "Open Raycast → type `store` → browse hundreds of extensions. Some useful ones:\n\n• **GitHub** — search repos and PRs\n• **Notion** — quick notes\n• **Spotify** — control playback\n• **Brew** — install Homebrew packages\n• **Kill Process** — force quit apps", type: "code" },
+      { title: "Browser extension", text: "Install the Raycast browser extension → control tabs from the launcher.", type: "tip" },
+
+      { chapter: "Custom aliases", title: "Speed up common actions", text: "Set aliases so `yt` opens YouTube, `g` opens GitHub. Preferences → Extensions → Aliases.", type: "code" },
+      { title: "Script commands", text: "Advanced: write shell scripts and run them from Raycast. `echo` anything into the launcher.", type: "tip" },
+
+      { chapter: "AI features", title: "Raycast AI (optional)", text: "There's an optional paid AI tier (or bring your own API key). Handy for quick questions without leaving your workflow. Free tier includes a few uses.", type: "read" },
+      { title: "Result", text: "You just replaced 4–5 separate apps with one free tool.", type: "read" }
+    ]
+  },
+  repo: { url: "https://raycast.com", label: "Raycast" }
+},
+
+{
+  id: "mac-timemachine", title: "Back Up Mac with Time Machine", category: "macOS",
+  difficulty: "beginner", time: "10 min",
+  summary: "The easiest full-system backup on any OS.",
+  intro: "Time Machine backs up your entire Mac automatically — files, apps, settings — and lets you restore anything from any point in time. Zero maintenance once set up.",
+  tags: ["mac", "backup", "timemachine"], platforms: ["mac"],
+  learnList: [
+    "Set up Time Machine with an external drive",
+    "Understand how hourly/daily backups work",
+    "Restore a single file or the whole system",
+    "Add a cloud backup as a second layer"
+  ],
+  steps: {
+    mac: [
+      { chapter: "Get a drive", title: "External drive options", text: "• **Any USB drive** — 1TB+ recommended\n• **Samsung T7 SSD** — fast, portable\n• **An old drive** — works fine if it's 2x your Mac's storage\n\nTime Machine uses the whole drive — don't store other files there.", type: "read" },
+
+      { chapter: "Set up", title: "Open System Settings", text: "Settings → General → Time Machine.", code: "System Settings → General → Time Machine", type: "code" },
+      { title: "Add backup disk", text: "Click **Add Backup Disk** → select your drive → optionally encrypt it (recommended).", type: "try" },
+      { title: "Done", text: "Time Machine now backs up:\n• Every hour (for the last 24 hours)\n• Every day (for the last month)\n• Every week (until the drive fills)", type: "read" },
+
+      { chapter: "How to use it", title: "Restore a single file", text: "Open the folder where the file lived → click the Time Machine icon in the menu bar → **Enter Time Machine** → navigate back in time → click **Restore**.", type: "try" },
+      { title: "Restore your whole Mac", text: "Boot from macOS Recovery (hold ⌘ + R at boot) → choose **Restore from Time Machine Backup** → select your drive → wait.", type: "warn" },
+
+      { chapter: "Second layer", title: "Cloud backup option", text: "Time Machine protects against drive failure but not theft or fire. Add a cloud layer:\n\n• **Backblaze** — $7/mo unlimited\n• **Arq** — bring your own cloud storage\n• **iCloud Drive** — free tier for documents", type: "read" },
+      { title: "3-2-1 rule", text: "3 copies, 2 media types, 1 offsite. Time Machine + Backblaze + iCloud = you're bulletproof.", type: "tip" },
+
+      { title: "Done", text: "Your Mac is now backed up automatically forever.", type: "read" }
+    ]
+  },
+  repo: { url: "https://support.apple.com/en-us/HT201250", label: "Apple Time Machine" }
+},
+
+{
+  id: "mac-privacy", title: "Lock Down macOS Privacy", category: "macOS",
+  difficulty: "beginner", time: "15 min",
+  summary: "Stop Apple and apps from tracking you. Real settings, real changes.",
+  intro: "macOS has decent privacy defaults, but there's a lot you can tighten. Here's everything in one pass — takes 15 minutes and lasts forever.",
+  tags: ["mac", "privacy", "security"], platforms: ["mac"],
+  learnList: [
+    "Disable Apple analytics and Siri data",
+    "Control per-app permissions",
+    "Enable FileVault encryption",
+    "Set up a firmware password"
+  ],
+  steps: {
+    mac: [
+      { chapter: "Apple tracking", title: "Disable analytics", text: "Settings → Privacy & Security → **Analytics & Improvements** → turn off everything.", type: "code" },
+      { title: "Turn off Siri data", text: "Settings → Privacy & Security → **Analytics** → turn off \"Improve Siri & Dictation\".", type: "read" },
+      { title: "Disable personalized ads", text: "Settings → Privacy & Security → **Apple Advertising** → turn off \"Personalized Ads\".", type: "code" },
+
+      { chapter: "App permissions", title: "Audit what has access", text: "Settings → Privacy & Security. Check each section:\n• **Location** — remove anything you don't need\n• **Microphone** — only apps that need it\n• **Camera** — same\n• **Files & Folders** — audit which apps see your files", type: "code" },
+      { title: "Revoke liberally", text: "If you haven't used an app in 3 months, revoke its permissions. You can always re-grant later.", type: "tip" },
+
+      { chapter: "Encryption", title: "Enable FileVault", text: "Full-disk encryption. If your Mac is stolen, nobody can read the drive.", code: "Settings → Privacy & Security → FileVault → Turn On", type: "code" },
+      { title: "Save the recovery key", text: "Apple generates a 24-character key. **Save it somewhere off your Mac** (paper, password manager, Proton Mail draft).", type: "warn" },
+
+      { chapter: "Firmware password", title: "Prevent boot tampering", text: "Advanced: prevents someone from booting your Mac from external media.", code: "Boot into Recovery (⌘ + R) → Utilities → Startup Security Utility → Turn On Firmware Password", type: "code" },
+
+      { chapter: "Network", title: "Use encrypted DNS", text: "Settings → Network → WiFi → Details → DNS → add Cloudflare (1.1.1.1) or use an ad-blocking DNS like AdGuard.", type: "tip" },
+      { title: "VPN for public WiFi", text: "Install WireGuard or Tailscale. Use them on any network you don't control.", type: "read" },
+
+      { chapter: "Browser privacy", title: "Safari or Firefox with uBlock", text: "• **Safari** — Settings → Privacy → enable cross-site tracking prevention\n• **Firefox + uBlock Origin** — best-in-class ad blocking\n• **Brave** — pre-configured for privacy", type: "read" },
+      { title: "Result", text: "Your Mac now leaks almost nothing.", type: "read" }
+    ]
+  },
+  repo: { url: "https://support.apple.com/guide/mac-help/security-welcome/mac", label: "Apple Security Guide" }
+},
+
+// ========== iOS ==========
+{
+  id: "ios-privacy", title: "Lock Down iOS Privacy", category: "iOS",
+  difficulty: "beginner", time: "15 min",
+  summary: "Turn off the tracking Apple enables by default.",
+  intro: "iOS is more private than Android, but Apple still tracks a lot. Here's what to turn off — one pass through Settings.",
+  tags: ["ios", "privacy", "security"], platforms: ["ios"],
+  learnList: [
+    "Stop Apple ad tracking",
+    "Control per-app permissions",
+    "Enable Lockdown Mode for high-security needs",
+    "Set up advanced data protection"
+  ],
+  steps: {
+    ios: [
+      { chapter: "Apple tracking", title: "Personalized ads", text: "Settings → Privacy & Security → **Apple Advertising** → turn off Personalized Ads.", type: "code" },
+      { title: "Analytics sharing", text: "Settings → Privacy & Security → **Analytics & Improvements** → turn off everything.", type: "read" },
+      { title: "Siri data", text: "Settings → Siri & Search → turn off \"Improve Siri & Dictation\" and all Siri suggestions toggles.", type: "code" },
+
+      { chapter: "App permissions", title: "Audit location tracking", text: "Settings → Privacy & Security → **Location Services** → go through each app:\n• **Never** — weather, social media\n• **While Using** — maps, food delivery\n• **Always** — almost nothing", type: "code" },
+      { title: "Precise location", text: "For each app, turn OFF \"Precise Location\" unless it's needed (Uber, food delivery).", type: "tip" },
+      { title: "Other permissions", text: "Same section → check:\n• Photos\n• Contacts\n• Microphone\n• Camera\n• Tracking (turn OFF \"Allow Apps to Request to Track\")", type: "code" },
+
+      { chapter: "Safari privacy", title: "Advanced protection", text: "Settings → Safari → Privacy & Security:\n• Enable **Prevent Cross-Site Tracking**\n• Enable **Hide IP Address**\n• Enable **Fraudulent Website Warning**", type: "code" },
+      { title: "Content blockers", text: "Install **1Blocker** or **AdGuard** for iOS. Free tier handles most ads.", type: "tip" },
+
+      { chapter: "High security", title: "Lockdown Mode", text: "For journalists, activists, or high-risk users. Blocks most advanced attacks at the cost of some features.", code: "Settings → Privacy & Security → Lockdown Mode → Turn On", type: "code" },
+
+      { chapter: "Advanced Data Protection", title: "End-to-end encrypted iCloud", text: "Normally Apple can decrypt your iCloud backups. With ADP, only you can.", code: "Settings → [your name] → iCloud → Advanced Data Protection → Turn On", type: "code" },
+      { title: "⚠️ Save recovery key", text: "If you lose your devices and recovery key, your data is gone forever. Store the key somewhere safe.", type: "warn" },
+
+      { chapter: "WiFi privacy", title: "Private WiFi address", text: "Settings → WiFi → tap (i) next to network → **Private WiFi Address** → Rotating.", type: "code" },
+      { title: "DNS", text: "Settings → General → VPN & Device Management → DNS → add a private DNS (AdGuard, NextDNS).", type: "tip" },
+
+      { title: "Result", text: "Your iPhone now leaks almost nothing about you.", type: "read" }
+    ]
+  },
+  repo: { url: "https://support.apple.com/guide/iphone/control-app-access-iph251e92810/ios", label: "Apple Privacy Guide" }
+},
+
+{
+  id: "ios-shortcuts-advanced", title: "Advanced iOS Shortcuts (Beyond Basics)", category: "iOS",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Automations that actually save time.",
+  intro: "You know the basics of Shortcuts. These 8 specific shortcuts will change how you use your iPhone every day.",
+  tags: ["ios", "shortcuts", "automation"], platforms: ["ios"],
+  learnList: [
+    "Create a morning routine automation",
+    "Auto-share location with family",
+    "Quick capture notes to Obsidian/Notion",
+    "WiFi-based automations that actually work"
+  ],
+  steps: {
+    ios: [
+      { chapter: "Setup", title: "Open Shortcuts", text: "Pre-installed on iOS. Tap the **Automation** tab at the bottom.", type: "read" },
+
+      { chapter: "Automation 1 — Morning routine", title: "Wake up smarter", text: "Automation → + → **Time of Day** → 7:00 AM, daily. Add actions:\n\n• Get weather forecast\n• Show the forecast\n• Play your morning playlist (Apple Music/Spotify)\n• Turn off Do Not Disturb\n\nResult: every morning, your phone briefs you.", type: "code" },
+      { title: "Bonus: run silently", text: "Toggle **Ask Before Running** off. Now it runs automatically.", type: "tip" },
+
+      { chapter: "Automation 2 — Arrive/leave home", title: "Location-based", text: "Automation → + → **Arrive** → your home address. Actions:\n\n• Send message to family: \"I'm home\"\n• Connect to home WiFi\n• Set Do Not Disturb on", type: "code" },
+
+      { chapter: "Automation 3 — Night mode", title: "Sleep automation", text: "Automation → + → **Time of Day** → 11:00 PM. Actions:\n\n• Set Low Power Mode ON\n• Turn off WiFi and Bluetooth\n• Enable Do Not Disturb until 7 AM\n• Show \"Good night\" notification", type: "code" },
+
+      { chapter: "Shortcut 4 — Quick note capture", title: "Notes to Obsidian/Notion", text: "New shortcut:\n\n• **Text** action → \"Quick note\"\n• **Ask for Input** → your note\n• **Append to Note** in Obsidian (or use Notion API)\n\nAssign to **Back Tap** (Settings → Accessibility → Touch → Back Tap → Double Tap → your shortcut).", type: "code" },
+      { title: "Result", text: "Double-tap the back of your phone → instantly capture a note anywhere.", type: "tip" },
+
+      { chapter: "Shortcut 5 — Share WiFi password", title: "No more typing passwords", text: "New shortcut:\n\n• **Get Text** → your WiFi password\n• **Copy to Clipboard**\n• **Show Notification** → \"Password copied\"\n\nAdd to home screen as an icon.", type: "code" },
+
+      { chapter: "Shortcut 6 — Save all links", title: "Clipboard → Notes", text: "Share sheet shortcut:\n\n• **Receive URLs from Share Sheet**\n• **Append to Note** → \"Reading List\" note\n\nNow: any link → share → \"Save to Reading List\".", type: "code" },
+
+      { chapter: "Shortcut 7 — Split expenses", title: "Tip calculator", text: "• **Ask for Input** (bill amount)\n• **Ask for Input** (number of people)\n• **Calculate** bill / people\n• **Show Result**\n\nAssign Siri phrase: \"Hey Siri, split bill\".", type: "code" },
+
+      { chapter: "Shortcut 8 — Auto backup photos", title: "To Nextcloud/Google Photos", text: "Automation → **When I open Photos app** → run shortcut that uploads new files. Complex but powerful.", type: "read" },
+      { title: "Result", text: "8 shortcuts that save you real minutes every day.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.icloud.com/shortcuts", label: "iCloud Shortcuts Gallery" }
+},
+
+// ========== Android ==========
+{
+  id: "android-debloat", title: "Debloat Your Android (Speed It Up)", category: "Android",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Remove bloatware without root. Faster phone, longer battery.",
+  intro: "Most Android phones come with 20-40 preinstalled apps you'll never use. Most can be removed safely using ADB — no root required.",
+  tags: ["android", "performance", "debloat"], platforms: ["android"],
+  learnList: [
+    "Set up ADB on your computer",
+    "List bloatware apps safely",
+    "Remove them without breaking the phone",
+    "Restore accidentally removed apps"
+  ],
+  steps: {
+    android: [
+      { chapter: "⚠️ Before you start", title: "Back up first", text: "Debloating can cause issues if you remove the wrong thing. **Back up your phone** and note what you remove so you can reinstall if needed.", type: "warn" },
+      { title: "You need a computer", text: "USB cable + computer with ADB installed. See our **ADB tutorial** if you haven't set it up.", type: "read" },
+
+      { chapter: "Setup", title: "Enable USB debugging", text: "On your phone: Settings → About Phone → tap Build Number 7× → back → System → Developer Options → USB Debugging ON.", type: "code" },
+      { title: "Connect phone to PC", text: "Plug in USB → phone asks to allow debugging → tap Allow.", type: "try" },
+      { title: "Verify connection", text: "From your computer's terminal:", code: "adb devices", output: "List of devices attached\nABCD1234EFGH    device", type: "try" },
+
+      { chapter: "List bloatware", title: "See what's installed", text: "This lists ALL packages. Scroll through — it's long.", code: "adb shell pm list packages", lang: "bash", type: "code" },
+      { title: "Filter for bloatware patterns", text: "Look for names like `com.samsung.`, `com.miui.`, `com.facebook.`, etc. These are common targets.", type: "tip" },
+
+      { chapter: "Remove safely", title: "Common safe removals", text: "⚠️ Research each package before removing. Here are commonly safe ones on Samsung/OnePlus/Xiaomi:", code: "# Facebook app (often preinstalled)\nadb shell pm uninstall --user 0 com.facebook.katana\n\n# Bixby (Samsung)\nadb shell pm uninstall --user 0 com.samsung.android.bixby.agent\n\n# Xbox (some devices)\nadb shell pm uninstall --user 0 com.microsoft.xboxone.smartglass\n\n# Duo/Meet if you don't use it\nadb shell pm uninstall --user 0 com.google.android.apps.tachyon", lang: "bash", type: "code" },
+      { title: "Note what you remove", text: "Keep a list! You'll want this if you need to restore anything.", type: "warn" },
+
+      { chapter: "Do NOT remove", title: "Leave these alone", text: "Never remove:\n• `com.android.systemui` (breaks UI)\n• `com.android.settings` (breaks settings)\n• `com.android.phone` (breaks calls)\n• Anything you don't recognize as third-party", type: "danger" },
+
+      { chapter: "Restore if needed", title: "Undo a removal", text: "Uninstalls are per-user, so you can restore:", code: "adb shell cmd package install-existing com.facebook.katana", lang: "bash", type: "code" },
+      { title: "Factory reset as nuclear option", text: "If something breaks badly, factory reset restores everything. This is why you back up first.", type: "read" },
+
+      { chapter: "Result", title: "Check performance", text: "After removing 20+ bloatware apps, expect:\n• ~15–25% less background CPU usage\n• Faster boot times\n• Better battery life", type: "read" },
+      { title: "Done", text: "Your phone is now leaner and faster.", type: "read" }
+    ]
+  },
+  repo: { url: "https://developer.android.com/tools/adb", label: "ADB Docs" }
+},
+
+{
+  id: "fdroid", title: "F-Droid: The Open-Source App Store", category: "Android",
+  difficulty: "beginner", time: "12 min",
+  summary: "Thousands of free, open-source, ad-free apps.",
+  intro: "F-Droid is an alternative app store that only hosts free and open-source software. No ads, no tracking, no telemetry — and apps you can't get on Play Store.",
+  tags: ["android", "fdroid", "open-source"], platforms: ["android"],
+  learnList: [
+    "Install F-Droid correctly",
+    "Find the best open-source apps",
+    "Add additional repos for more apps",
+    "Auto-update apps safely"
+  ],
+  steps: {
+    android: [
+      { chapter: "Install", title: "Download F-Droid", text: "From the official site — avoid mirrors.", code: "https://f-droid.org", type: "code" },
+      { title: "Enable installs", text: "Settings → Apps → Special access → Install unknown apps → allow for your browser.", type: "try" },
+      { title: "Install and open", text: "Once installed, open F-Droid. It'll check for updates.", type: "read" },
+
+      { chapter: "Essential apps to install", title: "Start with these", text: "• **NewPipe** — YouTube without ads\n• **Termux** — full Linux terminal\n• **Aurora Store** — Play Store without Google account\n• **AntennaPod** — podcast app\n• **OsmAnd~** — offline maps\n• **Fennec** — Firefox without tracking\n• **Bitwarden** — password manager\n• **Element** — Matrix chat", type: "code" },
+      { title: "Aegis", text: "2FA authenticator. Open source, encrypted backups.", type: "tip" },
+      { title: "VLC", text: "Plays literally any video format.", type: "tip" },
+      { title: "Sharik", text: "Share files between phone and PC over WiFi. No internet needed.", type: "tip" },
+
+      { chapter: "Add more repos", title: "Expand beyond default", text: "F-Droid only hosts apps that meet strict criteria. Add these additional repos for more:\n\n• **IzzyOnDroid** — quickly-updated apps\n• **Guardian Project** — privacy/security apps\n• **Bromite** — a Chromium-based browser", type: "code" },
+      { title: "How to add a repo", text: "F-Droid → Settings → Repositories → + → paste repo URL. Example for IzzyOnDroid:", code: "https://apt.izzysoft.de/fdroid/repo", type: "code" },
+
+      { chapter: "Auto-update", title: "Enable automatic updates", text: "F-Droid → Settings → Automatic Updates → ON. It checks daily and notifies you of updates.", type: "code" },
+      { title: "Permission note", text: "F-Droid needs permission to install apps. This is normal for any app store.", type: "read" },
+
+      { chapter: "Why open source matters", title: "No tracking", text: "Play Store apps can contain trackers, ads, telemetry. F-Droid verifies every app doesn't. Your data stays yours.", type: "read" },
+      { title: "Combined with Aurora", text: "Use F-Droid for open-source apps + Aurora Store for Play Store apps you still need. **Complete de-Googling possible.**", type: "tip" },
+
+      { title: "Done", text: "You just unlocked 4,000+ free apps.", type: "read" }
+    ]
+  },
+  repo: { url: "https://f-droid.org", label: "F-Droid" }
+},
+
+{
+  id: "aurora-store", title: "Aurora Store (Play Store Without Google)", category: "Android",
+  difficulty: "beginner", time: "10 min",
+  summary: "Download Play Store apps anonymously — no Google account needed.",
+  intro: "Aurora Store is an open-source Play Store client. You can install any Play Store app without logging in with your Google account. Great for privacy and for phones without Google services.",
+  tags: ["android", "aurora", "privacy"], platforms: ["android"],
+  learnList: [
+    "Install Aurora Store from F-Droid",
+    "Download apps anonymously",
+    "Log in with your Google account safely (optional)",
+    "Update apps without Play Store"
+  ],
+  steps: {
+    android: [
+      { chapter: "Install", title: "Get it from F-Droid", text: "Open F-Droid → search **Aurora Store** → install. Or direct:", code: "https://f-droid.org/packages/com.aurora.store/", type: "code" },
+      { title: "Alternative source", text: "Official GitHub releases if F-Droid is outdated.", code: "https://github.com/whyorean/AuroraStore/releases", type: "code" },
+
+      { chapter: "First launch", title: "Choose a session type", text: "You'll see three options:\n\n• **Anonymous** — no login, uses a shared anonymous account\n• **Google** — log in with your real Google account\n• **Session** — use a token from another device\n\n**Anonymous is recommended** for most users.", type: "read" },
+      { title: "Pick Anonymous", text: "Tap Anonymous → it fetches a session automatically. Done.", type: "try" },
+
+      { chapter: "Use it", title: "Search and install", text: "The UI looks like Play Store. Search any app → tap Install → apps install via Android's normal installer.", type: "try" },
+      { title: "Updates", text: "Aurora shows a badge when apps have updates. Tap to update each one.", type: "code" },
+      { title: "Auto-update", text: "Settings → Updates → toggle **Auto-update apps** on. Runs in the background.", type: "tip" },
+
+      { chapter: "Spoofing options", title: "For apps with location restrictions", text: "Aurora can pretend you're in a different country to get region-locked apps:\n\nSettings → Networking → Device spoofing → pick region.", type: "code" },
+      { title: "Note about some apps", text: "Apps that check Play Integrity (banking, some games) may not work when installed via Aurora. They require real Google Services.", type: "warn" },
+
+      { chapter: "For de-Googled phones", title: "Perfect for GrapheneOS / LineageOS", text: "If you're running a custom ROM without Google Play, Aurora gives you Play Store access without installing GApps.", type: "read" },
+      { title: "Result", text: "Play Store apps, zero Google tracking.", type: "read" }
+    ]
+  },
+  repo: { url: "https://github.com/whyorean/AuroraStore", label: "Aurora Store" }
+},
+
+// ========== AI ==========
+{
+  id: "whisper-local", title: "Transcribe Audio Offline with Whisper", category: "AI",
+  difficulty: "intermediate", time: "20 min",
+  summary: "OpenAI's Whisper transcribes any audio — offline, free, accurate.",
+  intro: "Whisper is OpenAI's open-source speech recognition model. It transcribes audio in 99 languages with impressive accuracy. Runs on your device — no cloud, no API, no cost.",
+  tags: ["ai", "whisper", "audio"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Install faster-whisper (the fast version)",
+    "Transcribe an audio or video file",
+    "Choose the right model size for your hardware",
+    "Generate subtitles (SRT) automatically"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Install Python + ffmpeg", text: "Prerequisites.", code: "sudo apt install python3 python3-pip ffmpeg -y", type: "code" },
+      { title: "Install faster-whisper", text: "Faster and lighter than the original.", code: "pip install faster-whisper", type: "code" },
+      { title: "Optional: whisper.cpp", text: "Even faster, runs on CPU efficiently. Compile from source.", code: "git clone https://github.com/ggerganov/whisper.cpp\ncd whisper.cpp\nmake", lang: "bash", type: "code" },
+
+      { chapter: "Basic transcription", title: "Transcribe any file", text: "Creates a Python script and run it:", code: "from faster_whisper import WhisperModel\n\nmodel = WhisperModel(\"base\", device=\"cpu\")\nsegments, info = model.transcribe(\"audio.mp3\")\n\nfor seg in segments:\n    print(f\"[{seg.start:.1f}s] {seg.text}\")", lang: "python", type: "code" },
+      { title: "Or one-liner with whisper CLI", text: "Simpler:", code: "whisper audio.mp3 --model base --output_format txt", type: "code" },
+      { title: "Save the output", text: "You'll get audio.txt, audio.srt, audio.vtt — all formats at once.", type: "read" },
+
+      { chapter: "Choose a model size", title: "The size/accuracy tradeoff", text: "• **tiny** — fastest, decent accuracy (~1GB RAM)\n• **base** — good balance (~1GB RAM)\n• **small** — better accuracy (~2GB RAM)\n• **medium** — very good (~5GB RAM)\n• **large** — best, but needs 10GB+ RAM\n\nFor most uses, **small** is the sweet spot.", type: "read" },
+      { title: "Auto-language detection", text: "Whisper detects language automatically. For mixed audio, specify with `--language en`.", type: "tip" },
+
+      { chapter: "Generate subtitles", title: "SRT for videos", text: "Perfect for creating subtitles for YouTube videos.", code: "whisper video.mp4 --model small --output_format srt", output: "video.srt created — upload to YouTube.", type: "try" },
+
+      { chapter: "Batch multiple files", title: "Transcribe a folder", text: "Simple Bash loop.", code: "for f in *.mp3; do\n  whisper \"$f\" --model base --output_dir ./transcripts\ndone", lang: "bash", type: "code" },
+
+      { chapter: "Real-time mic", title: "Live transcription (advanced)", text: "Use `whisper-stream` for real-time — captures from your microphone and transcribes as you speak.", code: "pip install whisper-live", type: "code" },
+
+      { title: "Done", text: "You can now transcribe anything, offline, for free.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Install via Homebrew", text: "Prereqs.", code: "brew install python ffmpeg", type: "code" },
+      { title: "Install Whisper", text: "Python package.", code: "pip3 install faster-whisper", type: "code" },
+      { chapter: "Use it", title: "Transcribe", text: "Same Python script as Linux, or use the CLI:", code: "whisper audio.mp3 --model base", type: "code" },
+      { title: "M-series advantage", text: "M1/M2/M3 chips run 'medium' models easily — much faster than Intel Macs.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Install Python + ffmpeg", text: "Python from python.org. ffmpeg via winget.", code: "winget install Gyan.FFmpeg", lang: "powershell", type: "code" },
+      { title: "Install Whisper", text: "Python package.", code: "pip install faster-whisper", lang: "powershell", type: "code" },
+      { chapter: "Use it", title: "Transcribe", text: "Same script as Linux.", code: "whisper audio.mp3 --model base", lang: "powershell", type: "code" }
+    ]
+  },
+  repo: { url: "https://github.com/SYSTRAN/faster-whisper", label: "faster-whisper" }
+},
+
+{
+  id: "stable-diffusion", title: "Generate Images with Stable Diffusion", category: "AI",
+  difficulty: "advanced", time: "30 min",
+  summary: "Create AI art on your own machine — no subscription, no limits.",
+  intro: "Stable Diffusion generates images from text prompts. Running it locally means unlimited generations, no content filters, and full privacy. Requires a decent GPU for speed.",
+  tags: ["ai", "image-generation", "sd"], platforms: ["linux", "windows", "mac"],
+  learnList: [
+    "Install Automatic1111 or ComfyUI",
+    "Generate your first image",
+    "Use negative prompts and CFG scale",
+    "Find and install models and LoRAs"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Requirements", title: "What you need", text: "• **GPU:** NVIDIA 6GB+ VRAM (best), AMD works with extra setup\n• **RAM:** 16GB+\n• **Storage:** 20GB+ for models\n• **No GPU?** It works on CPU but is 20x slower.", type: "read" },
+      { title: "NVIDIA driver + CUDA", text: "Verify your GPU is set up.", code: "nvidia-smi", output: "Should show your GPU model and CUDA version.", type: "try" },
+
+      { chapter: "Install Automatic1111 (easiest)", title: "Clone the repo", text: "The most popular SD WebUI.", code: "git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui\ncd stable-diffusion-webui", type: "code" },
+      { title: "Run the installer", text: "Downloads Python, models, and dependencies automatically.", code: "./webui.sh", output: "Running on local URL: http://127.0.0.1:7860", type: "code" },
+      { title: "Open the UI", text: "Visit http://127.0.0.1:7860 in your browser. That's your control panel.", type: "try" },
+
+      { chapter: "First generation", title: "Write a prompt", text: "In the **txt2img** tab, paste:\n\n```\na photo of a cyberpunk city at night, neon lights, raining, cinematic\n```\n\nClick **Generate**. Wait 30–60 seconds for your first image.", type: "code" },
+      { title: "Save what works", text: "Every image has metadata. Drag any downloaded SD image into the UI and it loads the exact prompt + settings used.", type: "tip" },
+
+      { chapter: "Better prompts", title: "Structure", text: "**Positive prompt:** what you want\n**Negative prompt:** what to avoid\n\nCommon negative prompt:", code: "ugly, blurry, low quality, deformed, extra fingers, watermark", type: "code" },
+      { title: "Key settings", text: "• **Steps:** 20–30 (more = slower but slightly better)\n• **CFG Scale:** 7 (higher = sticks to prompt)\n• **Sampler:** DPM++ 2M Karras (good default)\n• **Size:** 512×512 or 512×768", type: "read" },
+
+      { chapter: "Get models", title: "Where to find them", text: "The base model is outdated. Get modern models:\n\n• **civitai.com** — community models, LoRAs, styles\n• **huggingface.co** — official SD models\n\nBest beginner models: **SDXL**, **Juggernaut XL**, **Realistic Vision**", type: "code" },
+      { title: "Where to place models", text: "Drop `.safetensors` files into `models/Stable-diffusion/`. Click the refresh icon next to the model dropdown.", type: "read" },
+
+      { chapter: "LoRAs (styles)", title: "Small models that change style", text: "LoRAs are 100MB add-ons that change the style. Place in `models/Lora/`. Reference in prompt like:\n\n```\n<lora:cyberpunk_style:0.8>\n```", type: "code" },
+
+      { chapter: "ComfyUI (advanced)", title: "Node-based alternative", text: "More powerful, steeper learning curve. Node graph interface where you build the generation pipeline visually.", code: "git clone https://github.com/comfyanonymous/ComfyUI\ncd ComfyUI\npython main.py", type: "code" },
+
+      { title: "Done", text: "You now have a personal AI image generator.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Requirements", title: "What you need", text: "• NVIDIA GPU (6GB+ VRAM)\n• 16GB+ RAM\n• 20GB+ free storage", type: "read" },
+      { chapter: "Install", title: "Clone Automatic1111", text: "Install Git first, then:", code: "git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui\ncd stable-diffusion-webui", lang: "powershell", type: "code" },
+      { title: "Run installer", text: "Double-click `webui-user.bat` or run:", code: ".\\webui-user.bat", lang: "powershell", type: "code" },
+      { title: "Open UI", text: "Visit `http://127.0.0.1:7860` in your browser.", type: "try" },
+      { chapter: "Generate", title: "Try it", text: "Type a prompt in txt2img → Generate. Same as Linux.", type: "read" },
+      { title: "Better: use Pinokio", text: "GUI installer that handles everything. Search \"Pinokio Stable Diffusion\".", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Reality check", title: "Apple Silicon works but slowly", text: "M-series Macs can run SD via **Draw Things** or **DiffusionBee** — much slower than NVIDIA GPUs but works for casual use.", type: "read" },
+      { chapter: "Easiest option", title: "Draw Things", text: "Free Mac app. Runs models locally on Apple Silicon. Zero setup.", code: "https://drawthings.ai", type: "code" },
+      { title: "Or DiffusionBee", text: "Alternative if Draw Things doesn't work.", code: "https://diffusionbee.com", type: "code" },
+      { chapter: "Advanced", title: "Automatic1111 on Mac", text: "Works but slower.", code: "git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui\ncd stable-diffusion-webui\n./webui.sh", type: "code" }
+    ]
+  },
+  repo: { url: "https://github.com/AUTOMATIC1111/stable-diffusion-webui", label: "Stable Diffusion WebUI" }
+},
+
+{
+  id: "llm-rag", title: "Chat with Your Own Documents (RAG)", category: "AI",
+  difficulty: "advanced", time: "30 min",
+  summary: "Feed your PDFs to an AI and ask questions about them.",
+  intro: "RAG (Retrieval-Augmented Generation) lets you chat with your documents. Ask questions about a PDF, manual, or codebase — the AI answers using YOUR data, not general knowledge.",
+  tags: ["ai", "rag", "llm"], platforms: ["linux", "mac", "windows"],
+  learnList: [
+    "Understand what RAG actually is",
+    "Set up a local RAG system",
+    "Load PDFs, text files, or codebases",
+    "Ask questions and get grounded answers"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Concept", title: "What RAG does", text: "Normal AI: answers from training data (can hallucinate).\n**RAG AI:** searches YOUR documents first, then answers using them. Every answer has a source.", type: "read" },
+
+      { chapter: "Install", title: "Easiest tool: AnythingLLM", text: "Desktop app that handles everything — documents, embeddings, chat, memory.", code: "https://anythingllm.com", type: "code" },
+      { title: "Alternative: PrivateGPT", text: "Command-line but powerful. Runs fully offline.", code: "git clone https://github.com/zylon-ai/private-gpt\ncd private-gpt\npip install -r requirements.txt", type: "code" },
+
+      { chapter: "Setup with AnythingLLM", title: "Pick a model", text: "AnythingLLM works with:\n• **Ollama** (local models, free)\n• **OpenAI API** (paid, but better quality)\n• **Gemini API** (has free tier)\n\nFor privacy: Ollama. For quality: OpenAI/Gemini.", type: "read" },
+      { title: "Choose embeddings", text: "Embeddings convert your docs into vectors. Use the same provider as your chat model for simplicity.", type: "code" },
+
+      { chapter: "Load documents", title: "Drag and drop", text: "Create a workspace → drag PDFs/txt/md files in. AnythingLLM ingests them automatically.", type: "try" },
+      { title: "Supported formats", text: "PDF, DOCX, TXT, MD, HTML, code files, EPUB — even webpages.", type: "read" },
+
+      { chapter: "Chat", title: "Ask questions", text: "Try:\n• \"Summarize chapter 3\"\n• \"What does the document say about pricing?\"\n• \"Give me the exact quote about refund policy\"\n\nThe AI cites which document each answer comes from.", type: "try" },
+
+      { chapter: "Advanced: Custom code", title: "For developers", text: "Build your own RAG with Python.", code: "from langchain_community.document_loaders import PyPDFLoader\nfrom langchain.text_splitter import RecursiveCharacterTextSplitter\nfrom langchain_community.vectorstores import Chroma\nfrom langchain_community.embeddings import OllamaEmbeddings\n\nloader = PyPDFLoader(\"document.pdf\")\ndocs = loader.load()\n\ntext_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)\nchunks = text_splitter.split_documents(docs)\n\nembeddings = OllamaEmbeddings(model=\"nomic-embed-text\")\nvectorstore = Chroma.from_documents(chunks, embeddings)\n\nretriever = vectorstore.as_retriever()\nresults = retriever.invoke(\"What does it say about refunds?\")\nfor r in results:\n    print(r.page_content)", lang: "python", type: "code" },
+
+      { chapter: "Use cases", title: "Real applications", text: "• **Personal notes** — search Obsidian vault\n• **Legal docs** — query contracts\n• **Study material** — ask questions about textbooks\n• **Code** — chat with a codebase\n• **Manuals** — find info in tech docs instantly", type: "read" },
+      { title: "Done", text: "You now have AI that knows YOUR documents.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "AnythingLLM for Mac", text: "Download the Mac app.", code: "https://anythingllm.com", type: "code" },
+      { title: "Use with Ollama", text: "Install Ollama first (see our Ollama tutorial), then point AnythingLLM to it in settings.", type: "read" },
+      { chapter: "Use it", title: "Same workflow", text: "Drag documents, ask questions. Native Mac app.", type: "try" }
+    ],
+    windows: [
+      { chapter: "Install", title: "AnythingLLM for Windows", text: "Download and install.", code: "https://anythingllm.com", type: "code" },
+      { title: "Pair with Ollama", text: "Set Ollama URL to `http://localhost:11434` in AnythingLLM settings.", type: "code" },
+      { chapter: "Use it", title: "Drag and chat", text: "Same workflow as other platforms.", type: "try" }
+    ]
+  },
+  repo: { url: "https://github.com/Mintplex-Labs/anything-llm", label: "AnythingLLM" }
+},
+
+{
+  id: "comfyui", title: "ComfyUI: Node-Based AI Image Generation", category: "AI",
+  difficulty: "advanced", time: "35 min",
+  summary: "The power-user's Stable Diffusion tool — visual programming for AI art.",
+  intro: "ComfyUI uses a node graph instead of a form. It's more powerful than Automatic1111 — you can build complex workflows, upscale, animate, and reuse node graphs.",
+  tags: ["ai", "comfyui", "image-generation"], platforms: ["linux", "windows", "mac"],
+  learnList: [
+    "Install ComfyUI",
+    "Understand the node graph",
+    "Run a basic txt2img workflow",
+    "Import community workflows"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Why ComfyUI", title: "vs Automatic1111", text: "• **More powerful** — build custom pipelines\n• **Faster** — better VRAM usage\n• **Shareable** — workflows as JSON files\n• **Animations** — AnimateDiff, SVD support\n• **Steeper curve** — nodes take learning", type: "read" },
+      { title: "Try both", text: "If you're new to SD, start with Automatic1111. ComfyUI is for when you want serious control.", type: "tip" },
+
+      { chapter: "Install", title: "Clone + install", text: "Simple install.", code: "git clone https://github.com/comfyanonymous/ComfyUI\ncd ComfyUI\npip install -r requirements.txt", type: "code" },
+      { title: "Download a model", text: "Place a `.safetensors` model in `models/checkpoints/`. Get one from CivitAI.", code: "https://civitai.com", type: "code" },
+      { title: "Run it", text: "Starts a local server.", code: "python main.py", output: "To see the GUI go to: http://127.0.0.1:8188", type: "code" },
+
+      { chapter: "The node graph", title: "What you see", text: "The default workflow is loaded. You'll see nodes:\n• **Load Checkpoint** — your model\n• **CLIP Text Encode (Prompt)** ×2 — positive/negative\n• **KSampler** — the generation engine\n• **VAE Decode** — converts to image\n• **Save Image** — outputs the file", type: "read" },
+      { title: "How it works", text: "Data flows left-to-right through connected nodes. Output of one node is input to the next. Everything is customizable.", type: "tip" },
+
+      { chapter: "First generation", title: "Edit the prompt", text: "Find the top **CLIP Text Encode** node — type your prompt. Bottom one is negative. Click **Queue Prompt** (or Ctrl+Enter).", code: "A photo of a cat wearing sunglasses, sunny day, high detail", type: "code" },
+      { title: "Watch the progress", text: "A progress bar appears at the top. First generation takes longer (model loading).", type: "try" },
+      { title: "Save the image", text: "Generated images appear in `output/` folder. The node preview also shows it.", type: "code" },
+
+      { chapter: "Import workflows", title: "Community workflows", text: "The killer feature. Download a workflow JSON from anyone, drag it onto the ComfyUI window, and it loads the entire graph.\n\nWhere to find:\n• **comfyworkflows.com**\n• **CivitAI** — many models include workflows\n• **Reddit r/comfyui**", type: "code" },
+      { title: "Drag and drop", text: "Just drop a .json or .png (with workflow embedded) onto the UI. Everything loads.", type: "try" },
+
+      { chapter: "Advanced", title: "Upscaling workflow", text: "Add an **Upscale Image (using Model)** node after VAE Decode. Upscales 2x. Then another Save Image node.", type: "code" },
+      { title: "AnimateDiff", text: "Add motion to your images. Complex setup — search \"AnimateDiff ComfyUI tutorial\".", type: "read" },
+
+      { title: "Done", text: "You're now using the most powerful local SD tool.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Portable ComfyUI", text: "Easiest way — download the portable build from GitHub releases.", code: "https://github.com/comfyanonymous/ComfyUI/releases", type: "code" },
+      { title: "Extract and run", text: "Extract anywhere → double-click `run_nvidia_gpu.bat`. First launch downloads dependencies.", type: "read" },
+      { chapter: "Use it", title: "Open the UI", text: "Browser opens automatically at http://127.0.0.1:8188.", type: "try" },
+      { title: "Same workflow", text: "Identical to Linux from here. Edit prompt → Queue Prompt.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Clone + run", text: "Works on Apple Silicon.", code: "git clone https://github.com/comfyanonymous/ComfyUI\ncd ComfyUI\npip3 install -r requirements.txt\npython3 main.py", type: "code" },
+      { title: "Slower than NVIDIA", text: "M-series chips run ComfyUI but noticeably slower than NVIDIA GPUs. Fine for occasional use.", type: "warn" },
+      { chapter: "Alternative", title: "Draw Things", text: "Native Mac/iOS app that runs SD and some ComfyUI-like workflows. Easier than full ComfyUI on Mac.", code: "https://drawthings.ai", type: "code" }
+    ]
+  },
+  repo: { url: "https://github.com/comfyanonymous/ComfyUI", label: "ComfyUI" }
+       }
 ];
