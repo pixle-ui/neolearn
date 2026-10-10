@@ -2478,5 +2478,915 @@ window.TUTORIALS = [
     ]
   },
   repo: { url: "https://github.com/comfyanonymous/ComfyUI", label: "ComfyUI" }
-       }
+       }, 
+
+// ========== PROGRAMMING ==========
+{
+  id: "python-basics", title: "Python in 30 Minutes", category: "Programming",
+  difficulty: "beginner", time: "30 min",
+  summary: "Learn Python by running real code — no install needed to start.",
+  intro: "Python is the most popular beginner language. It's readable, powerful, and used for AI, web, automation, and data. This tutorial gets you writing real code fast.",
+  tags: ["python", "coding", "beginner"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Run Python without installing anything",
+    "Variables, strings, numbers",
+    "Lists, dictionaries, loops",
+    "Functions and conditionals",
+    "Write a real program"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Check if Python is installed", text: "Most Linux distros have it preinstalled.", code: "python3 --version", output: "Python 3.12.3", type: "try" },
+      { title: "Open the REPL", text: "Type `python3` and press Enter. You'll get a `>>>` prompt. Every line you type runs immediately.", code: "python3", type: "code" },
+      { title: "Try your first line", text: "Type this and press Enter:", code: "print(\"Hello, world!\")", output: "Hello, world!", type: "try" },
+      { title: "Exit", text: "Type `exit()` or press Ctrl+D.", type: "code" },
+
+      { chapter: "Variables", title: "Store data", text: "Unlike JavaScript, Python doesn't need `let`/`const`.", code: "name = \"Neo\"\nage = 42\nprint(name, age)", output: "Neo 42", type: "try" },
+      { title: "Numbers + math", text: "Python handles all the math.", code: "print(5 + 3)\nprint(10 / 3)\nprint(10 // 3)\nprint(2 ** 10)", output: "8\n3.333...\n3\n1024", type: "try" },
+
+      { chapter: "Lists and loops", title: "Lists", text: "Python calls them lists. Similar to JS arrays.", code: "fruits = [\"apple\", \"banana\", \"cherry\"]\nprint(fruits[0])\nprint(len(fruits))", output: "apple\n3", type: "try" },
+      { title: "Loops", text: "Very clean syntax.", code: "for f in fruits:\n    print(f)", output: "apple\nbanana\ncherry", type: "try" },
+
+      { chapter: "Conditionals", title: "If / else", text: "Python uses indentation, not `{ }`.", code: "age = 20\nif age >= 18:\n    print(\"Adult\")\nelse:\n    print(\"Minor\")", output: "Adult", type: "try" },
+      { title: "Multiple conditions", text: "elif means else-if.", code: "score = 85\nif score >= 90:\n    print(\"A\")\nelif score >= 80:\n    print(\"B\")\nelse:\n    print(\"C\")", output: "B", type: "try" },
+
+      { chapter: "Functions", title: "Define a function", text: "`def` starts a function definition.", code: "def greet(name):\n    return f\"Hello, {name}!\"\n\nprint(greet(\"Neo\"))", output: "Hello, Neo!", type: "try" },
+
+      { chapter: "Dictionaries", title: "Key-value pairs", text: "Like JavaScript objects.", code: "user = {\"name\": \"Neo\", \"age\": 42}\nprint(user[\"name\"])\nuser[\"email\"] = \"neo@example.com\"\nprint(user)", output: "Neo\n{'name': 'Neo', 'age': 42, 'email': 'neo@example.com'}", type: "try" },
+
+      { chapter: "Real program", title: "Save to a file", text: "Create `hello.py` with this content:", code: "name = input(\"What's your name? \")\nprint(f\"Hello, {name}!\")\nage = int(input(\"How old are you? \"))\nprint(f\"You'll be {age + 1} next year.\")", lang: "python", type: "code" },
+      { title: "Run it", text: "Back in terminal:", code: "python3 hello.py", output: "What's your name? Neo\nHello, Neo!\nHow old are you? 20\nYou'll be 21 next year.", type: "try" },
+
+      { chapter: "Next steps", title: "Where to go", text: "• Read: **Python Crash Course** by Eric Matthes\n• Practice: **exercism.org/tracks/python**\n• Project: build a to-do list CLI\n• Then take our **Python Virtual Environments** tutorial", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install Python", text: "In Termux:", code: "pkg install python -y", type: "code" },
+      { title: "Open the REPL", text: "Type `python` and Enter. `>>>` prompt appears.", code: "python", type: "code" },
+      { title: "First line", text: "Try it:", code: "print(\"Hello from Android!\")", output: "Hello from Android!", type: "try" },
+      { chapter: "Core concepts", title: "Variables", text: "Simple.", code: "name = \"Neo\"\nage = 20\nprint(name, age)", output: "Neo 20", type: "try" },
+      { title: "Lists + loops", text: "Compact syntax.", code: "for i in [1,2,3,4,5]:\n    print(i * 2)", output: "2\n4\n6\n8\n10", type: "try" },
+      { chapter: "Real script", title: "Create a file", text: "In Termux:", code: "nano hello.py\n# Paste: print(\"Hello!\")\n# Ctrl+O, Enter, Ctrl+X to save", type: "code" },
+      { title: "Run it", text: "Execute the script.", code: "python hello.py", output: "Hello!", type: "try" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Install Python", text: "Via Homebrew or download from python.org.", code: "brew install python", type: "code" },
+      { title: "Test", text: "Verify installation.", code: "python3 --version", output: "Python 3.12.3", type: "try" },
+      { chapter: "Core concepts", title: "Same as Linux", text: "Open the REPL and follow the Linux tab steps — identical on macOS.", code: "python3", type: "code" },
+      { title: "Save scripts as files", text: "Create `.py` files with VS Code or any editor, run with `python3 file.py`.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Install Python", text: "Via winget.", code: "winget install Python.Python.3.12", lang: "powershell", type: "code" },
+      { title: "Verify", text: "Open a new PowerShell window (important — must be new).", code: "python --version", lang: "powershell", output: "Python 3.12.3", type: "try" },
+      { chapter: "Core concepts", title: "REPL", text: "Open the Python prompt.", code: "python", lang: "powershell", type: "code" },
+      { title: "Follow Linux steps", text: "Everything is identical from here.", type: "read" }
+    ],
+    ios: [
+      { chapter: "Setup", title: "Install a-Shell", text: "Free app with Python 3 built in.", code: "https://apps.apple.com/app/a-shell/id1473805438", type: "code" },
+      { title: "Open Python", text: "In a-Shell, type:", code: "python3", type: "code" },
+      { chapter: "Core concepts", title: "Same syntax", text: "Follow the Linux tab — Python is Python everywhere.", code: "print(\"Hello from iOS!\")", output: "Hello from iOS!", type: "try" },
+      { title: "Save scripts", text: "In a-Shell:", code: "nano hello.py\npython3 hello.py", type: "code" }
+    ]
+  },
+  repo: { url: "https://docs.python.org/3/tutorial/", label: "Python Official Tutorial" }
+},
+
+{
+  id: "cli-basics", title: "Command Line for Absolute Beginners", category: "Programming",
+  difficulty: "beginner", time: "20 min",
+  summary: "The terminal isn't scary. Learn the 20 commands that cover 95% of daily use.",
+  intro: "The command line is faster than clicking for many tasks. This tutorial teaches the 20 commands you'll use every day — no Linux knowledge required.",
+  tags: ["cli", "terminal", "shell"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Navigate folders without clicking",
+    "Create, move, and delete files",
+    "Search inside files",
+    "Chain commands with pipes"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Orientation", title: "Where am I?", text: "`pwd` = print working directory.", code: "pwd", output: "/home/neo", type: "try" },
+      { title: "What's here?", text: "`ls` = list. Options for more detail.", code: "ls\nls -la", output: "Documents  Downloads  Pictures\n\ndrwxr-xr-x 5 neo neo 4096 Oct  7 12:00 Documents", type: "try" },
+      { title: "Move around", text: "`cd` = change directory.", code: "cd Documents\ncd ..\ncd ~\ncd -", type: "code" },
+
+      { chapter: "Files", title: "Create", text: "`touch` makes empty files, `mkdir` makes folders.", code: "touch notes.txt\nmkdir myproject\nmkdir -p a/b/c", type: "code" },
+      { title: "Copy, move, delete", text: "The three essentials.", code: "cp notes.txt backup.txt\nmv notes.txt renamed.txt\nrm renamed.txt\nrm -r myproject", type: "code" },
+      { title: "⚠️ rm is permanent", text: "`rm` doesn't use a trash can. Be careful.", note: { type: "danger", text: "`rm -rf /` will destroy your system. Never run it." }, type: "warn" },
+
+      { chapter: "Reading files", title: "View contents", text: "Three ways, different use cases.", code: "cat file.txt        # whole file\nless file.txt       # scrollable (q to quit)\nhead -20 file.txt   # first 20 lines\ntail -20 file.txt   # last 20 lines", type: "code" },
+      { title: "Search inside files", text: "`grep` finds text patterns.", code: "grep \"error\" log.txt\ngrep -r \"TODO\" ~/projects", output: "error on line 42\n...", type: "try" },
+
+      { chapter: "Pipes and redirection", title: "Chain commands", text: "`|` sends output of one command into another.", code: "ls -la | grep \".txt\"\ncat log.txt | grep error | head -5", type: "code" },
+      { title: "Save output", text: "`>` writes, `>>` appends.", code: "ls > filelist.txt\necho \"more text\" >> filelist.txt", type: "code" },
+
+      { chapter: "Finding things", title: "Find files by name", text: "`find` searches the filesystem.", code: "find . -name \"*.py\"\nfind ~ -type f -name \"notes*\"", type: "code" },
+      { title: "Which command?", text: "Find where a command lives.", code: "which python3\nwhich git", output: "/usr/bin/python3\n/usr/bin/git", type: "try" },
+
+      { chapter: "Shortcuts", title: "Save hours", text: "• **Tab** — autocomplete (use constantly)\n• **↑ / ↓** — command history\n• **Ctrl + C** — kill running command\n• **Ctrl + L** — clear screen\n• **Ctrl + R** — search history\n• **Ctrl + A** — jump to line start\n• **Ctrl + E** — jump to end", type: "read" },
+
+      { chapter: "Putting it together", title: "Real workflow", text: "Find all your Python files, show their size, sort by largest.", code: "find ~ -name \"*.py\" -exec ls -lh {} \\; | sort -k5 -h -r | head -10", type: "code" },
+
+      { title: "You know the CLI", text: "These 20 commands cover 95% of daily use. The rest you'll pick up as needed.", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install Termux", text: "From F-Droid — not Play Store.", type: "read" },
+      { title: "Same commands", text: "Termux uses the same commands as Linux. Follow the Linux tab.", type: "read" },
+      { title: "First commands", text: "Try these:", code: "pwd\nls\ncd ~", type: "try" },
+      { chapter: "Phone-specific", title: "Access storage", text: "After `termux-setup-storage`, your phone files are accessible.", code: "ls ~/storage\ncd ~/storage/downloads", type: "code" },
+      { title: "Rest is identical", text: "Everything from the Linux tab works exactly the same in Termux.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Open Terminal", text: "⌘ + Space → type 'Terminal' → Enter.", type: "read" },
+      { title: "Same commands", text: "macOS is Unix-based, so all Linux commands work — with two differences noted below.", type: "read" },
+      { chapter: "macOS quirks", title: "`ls` colors", text: "macOS `ls` doesn't colorize by default. Add this to `~/.zshrc`:", code: "echo 'export CLICOLOR=1' >> ~/.zshrc\necho 'alias ls=\"ls -G\"' >> ~/.zshrc", type: "code" },
+      { title: "Homebrew for missing tools", text: "macOS doesn't include `tree`, `wget`, etc. Install via Homebrew.", code: "brew install tree wget coreutils", type: "code" },
+      { title: "Follow Linux steps", text: "The rest is the same.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Option 1: WSL (recommended)", text: "Install WSL2 first (see our WSL2 tutorial). Then everything from the Linux tab works inside Ubuntu.", type: "read" },
+      { title: "Option 2: PowerShell", text: "PowerShell works but commands differ. Common equivalents:\n\n• `ls` — same\n• `cd` — same\n• `cat` → `cat` (works in PS 7+)\n• `rm` → `Remove-Item`\n• `cp` → `Copy-Item`\n• `mv` → `Move-Item`", type: "code" },
+      { title: "Best experience", text: "Install WSL2 → use Ubuntu terminal → everything from Linux tab works.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://missing.csail.mit.edu/", label: "MIT Missing Semester" }
+},
+
+{
+  id: "regex", title: "Regex in 20 Minutes", category: "Programming",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Regular expressions look scary. They're not. Here's the whole thing.",
+  intro: "Regex matches text patterns. It's used everywhere — search, validation, find/replace, scraping. You don't need to memorize it — just understand the building blocks.",
+  tags: ["regex", "programming", "text"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Match single characters and patterns",
+    "Use quantifiers and anchors",
+    "Capture groups",
+    "Test regex online"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Test online", text: "Fastest way to learn: regexr.com or regex101.com. Paste text on top, type regex below — matches highlight live.", code: "https://regex101.com", type: "code" },
+
+      { chapter: "Basics", title: "Literal match", text: "Simplest regex is just text.", code: "cat", output: "Matches: \"cat\", \"catch\", \"wildcat\"", type: "try" },
+      { title: "Special characters", text: "• `.` — any single character\n• `\\d` — any digit (0-9)\n• `\\w` — any word character (a-z, A-Z, 0-9, _)\n• `\\s` — any whitespace (space, tab, newline)", code: "\\d\\d\\d", output: "Matches: \"123\", \"456\", \"999\"", type: "code" },
+
+      { chapter: "Character classes", title: "Set of characters", text: "Square brackets = one of these.", code: "[aeiou]         # any vowel\n[a-z]           # any lowercase letter\n[a-zA-Z0-9]     # any letter or digit\n[^abc]          # any character EXCEPT a, b, c", type: "code" },
+
+      { chapter: "Quantifiers", title: "How many times?", text: "• `+` — one or more\n• `*` — zero or more\n• `?` — optional (zero or one)\n• `{3}` — exactly 3\n• `{3,5}` — 3 to 5\n• `{3,}` — 3 or more", code: "\\d{3}-\\d{4}    # matches: 555-1234\n[a-z]+          # matches: hello, world, cat", type: "code" },
+
+      { chapter: "Anchors", title: "Start and end", text: "• `^` — start of string\n• `$` — end of string\n• `\\b` — word boundary", code: "^Hello          # string starts with Hello\nworld$          # string ends with world\n\\bcat\\b        # the whole word 'cat', not 'catch'", type: "code" },
+
+      { chapter: "Groups and alternation", title: "Capture groups", text: "Parentheses capture matched parts.", code: "(\\d{4})-(\\d{2})-(\\d{2})", output: "For '2026-10-07':\nGroup 1: 2026\nGroup 2: 10\nGroup 3: 07", type: "try" },
+      { title: "Alternation (OR)", text: "Pipe = OR.", code: "cat|dog|bird", output: "Matches any of: cat, dog, bird", type: "code" },
+
+      { chapter: "Real patterns", title: "Email", text: "Common validation regex.", code: "^[\\w.-]+@[\\w.-]+\\.\\w+$", output: "Matches: user@example.com\nRejects: not-an-email", type: "code" },
+      { title: "Phone (Nigerian)", text: "Nigerian mobile numbers.", code: "^(\\+234|0)[789]\\d{9}$", output: "Matches: +2348012345678, 08012345678", type: "code" },
+      { title: "URL", text: "Basic URL validation.", code: "https?://[\\w.-]+(?:\\.[\\w]+)+[\\w.,@?^=%&:/~+#-]*", type: "code" },
+
+      { chapter: "Practical usage", title: "In the shell", text: "Find all .txt files containing an email.", code: "grep -E \"[\\w.-]+@[\\w.-]+\" *.txt", type: "code" },
+      { title: "In JavaScript", text: "Test a pattern.", code: "const pattern = /^[\\w.-]+@[\\w.-]+\\.\\w+$/;\nconsole.log(pattern.test(\"user@example.com\"));  // true", lang: "javascript", type: "code" },
+      { title: "In Python", text: "Same pattern, Python syntax.", code: "import re\npattern = r\"^[\\w.-]+@[\\w.-]+\\.\\w+$\"\nprint(re.match(pattern, \"user@example.com\"))", lang: "python", type: "code" },
+
+      { title: "Done", text: "You now understand regex. Practice with regex101.com daily — you'll be fluent in a week.", type: "read" }
+    ],
+    android: [
+      { chapter: "Test online", title: "Use regex101", text: "Open in Kiwi Browser.", code: "https://regex101.com", type: "code" },
+      { chapter: "Same syntax", title: "Learn the concepts", text: "Everything from the Linux tab applies. Follow it, testing in the browser.", type: "read" },
+      { chapter: "Use in Termux", title: "grep with regex", text: "Search files with patterns.", code: "pkg install grep -y\ngrep -E \"\\d{3}-\\d{4}\" file.txt", type: "code" },
+      { title: "Use in Python", text: "Termux has Python.", code: "pkg install python -y\npython3\n>>> import re\n>>> re.findall(r\"\\d+\", \"Order 42 has 7 items\")\n['42', '7']", type: "code" }
+    ],
+    mac: [
+      { chapter: "Learn", title: "regex101.com", text: "Same as everywhere.", code: "https://regex101.com", type: "code" },
+      { title: "macOS grep quirk", text: "macOS `grep` needs `-E` for extended regex, or use `egrep`.", code: "grep -E \"pattern\" file.txt", type: "code" },
+      { title: "Follow Linux", text: "Rest is identical.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Learn", title: "regex101.com in browser", text: "Same site.", code: "https://regex101.com", type: "code" },
+      { title: "PowerShell regex", text: "PowerShell has native regex support.", code: "\"user@example.com\" -match \"^[\\w.-]+@[\\w.-]+\\.\\w+$\"", lang: "powershell", type: "code" },
+      { title: "Install ripgrep", text: "Better than grep on Windows.", code: "winget install BurntSushi.ripgrep.MSVC", lang: "powershell", type: "code" }
+    ]
+  },
+  repo: { url: "https://regex101.com", label: "regex101 (practice tool)" }
+},
+
+{
+  id: "css-layout", title: "CSS Flexbox & Grid in 25 Minutes", category: "Programming",
+  difficulty: "beginner", time: "25 min",
+  summary: "The two layout systems that replaced all the hacks.",
+  intro: "Flexbox handles one-direction layouts (rows OR columns). Grid handles two-direction layouts. Together they solve 99% of layout problems — no more floats or tables.",
+  tags: ["css", "web", "layout"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Center anything with Flexbox",
+    "Build rows and columns",
+    "Create 2D layouts with Grid",
+    "Combine both for real pages"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Create an HTML file", text: "We'll test everything in the browser. Create index.html:", code: "<!DOCTYPE html>\n<html>\n<head>\n<style>\n  /* we add CSS here */\n</style>\n</head>\n<body>\n  <div class=\"container\">\n    <div>1</div>\n    <div>2</div>\n    <div>3</div>\n  </div>\n</body>\n</html>", lang: "html", type: "code" },
+
+      { chapter: "Flexbox basics", title: "Turn flex on", text: "Add this inside the style tag. Container becomes a flex row.", code: ".container {\n  display: flex;\n  gap: 10px;\n}\n.container > div {\n  background: #333;\n  color: white;\n  padding: 20px;\n  font-family: sans-serif;\n}", lang: "css", type: "code" },
+      { title: "Center everything", text: "The most-used flex pattern: perfect centering.", code: "body {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n  margin: 0;\n}", lang: "css", type: "code" },
+
+      { chapter: "Flex direction", title: "Rows vs columns", text: "`flex-direction` decides the main axis.", code: "flex-direction: row;      /* default: horizontal */\nflex-direction: column;   /* vertical */\nflex-direction: row-reverse;\nflex-direction: column-reverse;", type: "code" },
+
+      { chapter: "Justify and align", title: "Along the main axis", text: "`justify-content` distributes along main axis. `align-items` along the cross axis.", code: "justify-content: flex-start;    /* default */\njustify-content: center;\njustify-content: space-between;  /* gap in middle */\njustify-content: space-around;\njustify-content: space-evenly;\n\nalign-items: stretch;    /* default */\nalign-items: center;\nalign-items: flex-start;\nalign-items: flex-end;", type: "code" },
+
+      { chapter: "Flex sizing", title: "Make items grow/shrink", text: "Control how items fill space.", code: ".container > div {\n  flex: 1;     /* all share space equally */\n}\n\n/* Or specific: */\n.item-1 { flex: 1; }    /* 1 part */\n.item-2 { flex: 2; }    /* 2 parts — twice as wide */", lang: "css", type: "code" },
+
+      { chapter: "Grid basics", title: "Turn grid on", text: "CSS Grid is 2D — rows AND columns.", code: ".container {\n  display: grid;\n  grid-template-columns: 1fr 1fr 1fr;\n  gap: 10px;\n}\n/* 3 equal columns */", lang: "css", type: "code" },
+      { title: "Custom column sizes", text: "Mix units as needed.", code: "grid-template-columns: 200px 1fr 1fr;\n/* sidebar 200px, two equal columns */\n\ngrid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n/* Responsive: fits as many 200px+ columns as possible */", lang: "css", type: "code" },
+
+      { chapter: "Grid rows", title: "Explicit rows", text: "Control rows too.", code: "grid-template-rows: 100px 1fr 50px;\n/* header 100px, content fills, footer 50px */", lang: "css", type: "code" },
+      { title: "Span cells", text: "Make an item span multiple columns/rows.", code: ".hero {\n  grid-column: span 2;   /* spans 2 columns */\n  grid-row: span 2;      /* spans 2 rows */\n}", lang: "css", type: "code" },
+
+      { chapter: "Real layout", title: "Combined example", text: "Header + sidebar + main + footer, all responsive.", code: "body {\n  display: grid;\n  grid-template-rows: 60px 1fr 40px;\n  grid-template-columns: 200px 1fr;\n  grid-template-areas:\n    \"header header\"\n    \"sidebar main\"\n    \"footer footer\";\n  height: 100vh;\n  margin: 0;\n}\n\nheader { grid-area: header; background: #222; color: white; }\naside  { grid-area: sidebar; background: #333; }\nmain   { grid-area: main; padding: 20px; }\nfooter { grid-area: footer; background: #222; color: white; }", lang: "css", type: "code" },
+
+      { chapter: "Which to use?", title: "Rule of thumb", text: "• **Flexbox** — one axis. Navigation bars, buttons in a row, centered content.\n• **Grid** — two axes. Page layouts, image galleries, card grids.\n• **Both** — often together: Grid for page structure, Flexbox inside components.", type: "read" },
+
+      { title: "Learn more", text: "Visual guides:\n• **flexboxfroggy.com** — game\n• **cssgridgarden.com** — game\n• **flexbox.malven.co** — cheatsheet", type: "tip" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Use Acode", text: "Create index.html in Acode. Or use Kiwi Browser → DevTools → Elements to experiment live on any website.", type: "read" },
+      { chapter: "Learn interactively", title: "Flexbox Froggy", text: "A game that teaches flexbox. Open in Chrome.", code: "https://flexboxfroggy.com", type: "code" },
+      { title: "Grid Garden", text: "Same for CSS Grid.", code: "https://cssgridgarden.com", type: "code" },
+      { chapter: "Playground", title: "Try it live", text: "In Kiwi Browser → any site → DevTools → Elements → click an element → edit its style live. Watch flexbox/grid react instantly.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "VS Code + Live Server", text: "Install the Live Server extension. Right-click index.html → Open with Live Server. Auto-reloads on save.", type: "read" },
+      { chapter: "Learn", title: "Follow Linux tab", text: "Everything applies. Use VS Code's built-in CSS IntelliSense for autocomplete.", type: "read" },
+      { title: "Bonus: DevTools Grid inspector", text: "Firefox has the best Grid inspector. Chrome has 'Layout' tab in DevTools showing all grids.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "VS Code + Live Server", text: "Same as Mac. Live Server extension + open with Live Server.", type: "read" },
+      { chapter: "Learn", title: "Follow Linux tab", text: "Identical.", type: "read" },
+      { title: "Chrome Grid Inspector", text: "DevTools → Elements → Layout tab. Shows every grid visually.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/", label: "CSS-Tricks Flexbox Guide" }
+},
+
+{
+  id: "node-express", title: "Build a REST API with Node.js + Express", category: "Programming",
+  difficulty: "intermediate", time: "30 min",
+  summary: "Your first backend — a real API that returns JSON.",
+  intro: "Express is the standard Node.js web framework. This tutorial builds a working REST API that stores notes in memory. It's the foundation for real backends.",
+  tags: ["node", "express", "backend", "api"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Install Node.js",
+    "Create your first Express server",
+    "Handle GET, POST, PUT, DELETE",
+    "Test with curl"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Setup", title: "Install Node.js", text: "Via NodeSource for latest version.", code: "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -\nsudo apt install nodejs -y", type: "code" },
+      { title: "Verify", text: "Check version.", code: "node --version\nnpm --version", output: "v20.11.0\n10.2.4", type: "try" },
+
+      { chapter: "Create project", title: "Init project", text: "New folder with package.json.", code: "mkdir my-api\ncd my-api\nnpm init -y", type: "code" },
+      { title: "Install Express", text: "Add the framework.", code: "npm install express", type: "code" },
+
+      { chapter: "First server", title: "Create server.js", text: "The entire app is 8 lines.", code: "const express = require('express');\nconst app = express();\n\napp.use(express.json());\n\napp.get('/', (req, res) => {\n  res.json({ message: 'Hello, world!' });\n});\n\napp.listen(3000, () => console.log('http://localhost:3000'));", lang: "javascript", type: "code" },
+      { title: "Run it", text: "In the terminal:", code: "node server.js", output: "http://localhost:3000", type: "try" },
+      { title: "Test with curl", text: "In another terminal:", code: "curl http://localhost:3000", output: "{\"message\":\"Hello, world!\"}", type: "try" },
+
+      { chapter: "Real API — CRUD", title: "Add in-memory data", text: "Replace server.js with this:", code: "const express = require('express');\nconst app = express();\napp.use(express.json());\n\nlet notes = [\n  { id: 1, title: 'First note' },\n  { id: 2, title: 'Second note' }\n];\n\n// Get all notes\napp.get('/notes', (req, res) => res.json(notes));\n\n// Get one note\napp.get('/notes/:id', (req, res) => {\n  const note = notes.find(n => n.id === parseInt(req.params.id));\n  if (!note) return res.status(404).json({ error: 'Not found' });\n  res.json(note);\n});\n\n// Create\napp.post('/notes', (req, res) => {\n  const note = { id: notes.length + 1, title: req.body.title };\n  notes.push(note);\n  res.status(201).json(note);\n});\n\n// Update\napp.put('/notes/:id', (req, res) => {\n  const note = notes.find(n => n.id === parseInt(req.params.id));\n  if (!note) return res.status(404).json({ error: 'Not found' });\n  note.title = req.body.title;\n  res.json(note);\n});\n\n// Delete\napp.delete('/notes/:id', (req, res) => {\n  notes = notes.filter(n => n.id !== parseInt(req.params.id));\n  res.status(204).send();\n});\n\napp.listen(3000, () => console.log('http://localhost:3000'));", lang: "javascript", type: "code" },
+
+      { chapter: "Test the API", title: "GET all", text: "List everything.", code: "curl http://localhost:3000/notes", output: "[{\"id\":1,\"title\":\"First note\"},{\"id\":2,\"title\":\"Second note\"}]", type: "try" },
+      { title: "POST a new note", text: "Create.", code: "curl -X POST http://localhost:3000/notes \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"title\":\"New note\"}'", output: "{\"id\":3,\"title\":\"New note\"}", type: "try" },
+      { title: "PUT update", text: "Modify.", code: "curl -X PUT http://localhost:3000/notes/1 \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"title\":\"Updated\"}'", type: "try" },
+      { title: "DELETE", text: "Remove.", code: "curl -X DELETE http://localhost:3000/notes/1", type: "try" },
+
+      { chapter: "Auto-reload", title: "nodemon", text: "Restart on every file save.", code: "npm install --save-dev nodemon\nnpx nodemon server.js", type: "code" },
+      { title: "Update package.json", text: "Add a start script:", code: "\"scripts\": {\n  \"start\": \"node server.js\",\n  \"dev\": \"nodemon server.js\"\n}", lang: "json", type: "code" },
+
+      { chapter: "Next steps", title: "Real projects", text: "• Add a **database** — SQLite, MongoDB\n• Add **auth** — JWT tokens\n• Add **validation** — zod, joi\n• **Deploy** — Render, Railway, Fly.io", type: "read" },
+      { title: "Done", text: "You just built a backend. This is how every API starts.", type: "read" }
+    ],
+    android: [
+      { chapter: "Setup", title: "Install Node.js in Termux", text: "Works perfectly.", code: "pkg install nodejs -y\nnode --version", output: "v20.11.0", type: "try" },
+      { chapter: "Create project", title: "Setup", text: "New folder.", code: "mkdir my-api\ncd my-api\nnpm init -y\nnpm install express", type: "code" },
+      { chapter: "Write server", title: "Create server.js", text: "Use nano.", code: "nano server.js\n# paste code from Linux tab\n# Ctrl+O, Enter, Ctrl+X to save", type: "code" },
+      { title: "Run it", text: "Start the server.", code: "node server.js", output: "http://localhost:3000", type: "try" },
+      { title: "Test from the same phone", text: "Open another Termux session (swipe from left edge → NEW SESSION). Then:", code: "curl http://localhost:3000", output: "{\"message\":\"Hello, world!\"}", type: "try" },
+      { title: "Test from another device", text: "Find your phone's IP and access from a computer on same WiFi.", code: "ifconfig | grep inet\n# Then from PC: curl http://192.168.1.42:3000", type: "code" }
+    ],
+    mac: [
+      { chapter: "Setup", title: "Install Node.js", text: "Via Homebrew.", code: "brew install node", type: "code" },
+      { title: "Verify", text: "Check version.", code: "node --version", output: "v20.11.0", type: "try" },
+      { chapter: "Follow Linux", title: "Rest is identical", text: "Same commands from here.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Setup", title: "Install Node.js", text: "Via winget.", code: "winget install OpenJS.NodeJS", lang: "powershell", type: "code" },
+      { title: "Verify", text: "Open a NEW PowerShell window (important).", code: "node --version", lang: "powershell", output: "v20.11.0", type: "try" },
+      { chapter: "Follow Linux", title: "Rest is identical", text: "Same commands.", type: "read" }
+    ]
+  },
+  repo: { url: "https://expressjs.com/", label: "Express Docs" }
+},
+
+{
+  id: "markdown", title: "Markdown in 10 Minutes", category: "Programming",
+  difficulty: "beginner", time: "10 min",
+  summary: "The plain-text formatting language used everywhere.",
+  intro: "Markdown formats text with plain characters. It's how GitHub READMEs, Reddit, Discord, Notion, and every docs site works. Learn it once, use it everywhere.",
+  tags: ["markdown", "writing", "docs"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Headings, bold, italic",
+    "Lists, links, images",
+    "Code blocks and quotes",
+    "Tables and checkboxes"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Basics", title: "Headings", text: "`#` symbols create headings. More `#` = smaller.", code: "# Heading 1\n## Heading 2\n### Heading 3\n#### Heading 4", type: "code" },
+      { title: "Emphasis", text: "Bold and italic.", code: "**bold text**\n*italic text*\n~~strikethrough~~\n***bold italic***", type: "code" },
+      { title: "Lists", text: "Ordered and unordered.", code: "- Item one\n- Item two\n  - Nested item\n\n1. First\n2. Second\n3. Third", type: "code" },
+
+      { chapter: "Links and images", title: "Links", text: "Square brackets for text, parens for URL.", code: "[Click here](https://example.com)\n\n[NeoLearn](https://neolearn-a09.pages.dev)", type: "code" },
+      { title: "Images", text: "Add `!` before a link.", code: "![Alt text](image.png)\n![Logo](https://neolearn-a09.pages.dev/og-image.png)", type: "code" },
+
+      { chapter: "Code", title: "Inline code", text: "Backticks around words.", code: "Use `console.log()` to debug.", output: "Use console.log() to debug.", type: "code" },
+      { title: "Code blocks", text: "Triple backticks, optionally with language.", code: "```javascript\nconst x = 5;\nconsole.log(x);\n```", type: "code" },
+
+      { chapter: "Advanced", title: "Blockquotes", text: "Prefix with `>`.", code: "> This is a quote.\n> It can span multiple lines.\n> > Nested quotes work too.", type: "code" },
+      { title: "Horizontal rule", text: "Three or more dashes.", code: "---", type: "code" },
+      { title: "Tables", text: "Pipe characters create tables.", code: "| Name | Age |\n|------|-----|\n| Neo  | 42  |\n| Alice| 30  |", type: "code" },
+      { title: "Task lists", text: "Checkboxes.", code: "- [x] Completed task\n- [ ] Pending task\n- [ ] Another task", type: "code" },
+
+      { chapter: "Where it's used", title: "Everywhere", text: "• **GitHub** READMEs and issues\n• **Reddit** comments and posts\n• **Discord** messages (partially)\n• **Notion** — type markdown, it converts\n• **Obsidian** — notes are plain markdown\n• **Static site generators** — Jekyll, Hugo, Astro", type: "read" },
+
+      { chapter: "Practice", title: "Try it live", text: "Use **dillinger.io** to write markdown and see the HTML render live.", code: "https://dillinger.io", type: "code" },
+      { title: "Reference", text: "Bookmark the official guide:", code: "https://www.markdownguide.org", type: "code" },
+      { title: "Done", text: "You now speak Markdown.", type: "read" }
+    ],
+    android: [
+      { chapter: "Practice", title: "Use dillinger.io", text: "Works in any browser.", code: "https://dillinger.io", type: "code" },
+      { chapter: "Learn", title: "Follow Linux tab", text: "All the syntax is identical.", type: "read" },
+      { chapter: "Real usage", title: "Reddit comments", text: "Reddit uses Markdown. Type `**bold**` in a comment and it renders bold.", type: "try" },
+      { title: "Discord", text: "Discord supports Markdown too.", code: "**bold**\n*italic*\n__underline__\n~~strike~~\n`code`\n```code block```", type: "code" }
+    ],
+    mac: [
+      { chapter: "Best editor", title: "VS Code", text: "Built-in markdown preview. ⌘+K then V to preview side-by-side.", type: "read" },
+      { title: "Or Obsidian", text: "Free Mac app for note-taking. Everything is markdown.", code: "https://obsidian.md", type: "code" },
+      { chapter: "Learn", title: "Follow Linux tab", text: "Same syntax everywhere.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Best editor", title: "VS Code", text: "Ctrl+K then V for preview.", type: "read" },
+      { title: "Obsidian", text: "Free.", code: "https://obsidian.md", type: "code" },
+      { chapter: "Learn", title: "Follow Linux", text: "Same everywhere.", type: "read" }
+    ],
+    ios: [
+      { chapter: "Best app", title: "Obsidian", text: "Free from App Store.", type: "read" },
+      { title: "Or iA Writer", text: "Polished markdown editor for iOS.", code: "https://ia.net/writer", type: "code" },
+      { chapter: "Learn", title: "Follow Linux tab", text: "Same syntax.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.markdownguide.org", label: "Markdown Guide" }
+},
+
+// ========== LINUX ==========
+{
+  id: "ubuntu-install", title: "Install Ubuntu (Beginner-Friendly Linux)", category: "Linux",
+  difficulty: "beginner", time: "30 min",
+  summary: "Replace Windows with Ubuntu, or dual boot alongside it.",
+  intro: "Ubuntu is the easiest Linux for beginners. Modern, polished, and enormous community support. This tutorial covers both a full install and a safe dual-boot with Windows.",
+  tags: ["ubuntu", "linux", "install"], platforms: ["linux"],
+  learnList: [
+    "Download and write Ubuntu to a USB",
+    "Choose between full install and dual boot",
+    "Complete the install wizard",
+    "Set up essential apps"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Before you start", title: "⚠️ Back up everything", text: "Any installation can erase your data. Back up important files to an external drive or cloud first.", note: { type: "danger", text: "You can lose everything. Back up first." }, type: "warn" },
+      { title: "Get a USB drive", text: "8GB or larger. **Everything on it will be erased.**", type: "read" },
+      { title: "Download Ubuntu ISO", text: "Get the latest LTS version.", code: "https://ubuntu.com/download/desktop", type: "code" },
+
+      { chapter: "Write to USB", title: "Use Rufus (Windows) or dd (Linux/Mac)", text: "Rufus is the easiest on Windows. On Linux:", code: "sudo dd if=ubuntu-24.04.iso of=/dev/sdX bs=4M status=progress\nsync", type: "code" },
+      { title: "Alternative: balenaEtcher", text: "Graphical tool for all platforms.", code: "https://etcher.balena.io", type: "code" },
+
+      { chapter: "Boot from USB", title: "Enter BIOS/boot menu", text: "Restart → press F2, F12, Del, or Esc (varies by manufacturer). Select your USB drive.", type: "read" },
+      { title: "Choose Try vs Install", text: "You'll see \"Try Ubuntu\" or \"Install Ubuntu\". Choose **Try** first to test compatibility without installing.", type: "tip" },
+
+      { chapter: "Install", title: "Run the installer", text: "If it works fine in Try mode, click **Install Ubuntu** on the desktop.", type: "read" },
+      { title: "Installation type", text: "You'll be asked:\n• **Erase disk and install Ubuntu** — wipes Windows, full Ubuntu\n• **Install alongside** — dual boot, keeps Windows (recommended if unsure)", type: "code" },
+      { title: "Set up user", text: "Name, username, password, timezone. Same as any OS.", type: "read" },
+
+      { chapter: "Post-install", title: "Update everything", text: "First thing.", code: "sudo apt update && sudo apt upgrade -y", type: "code" },
+      { title: "Enable firewall", text: "Simple and effective.", code: "sudo ufw enable", type: "code" },
+      { title: "Install essential apps", text: "Common software.", code: "sudo apt install git curl wget vlc gimp -y", type: "code" },
+      { title: "Flatpak (for modern apps)", text: "Access to thousands of apps.", code: "sudo apt install flatpak -y\nflatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo", type: "code" },
+
+      { chapter: "Get oriented", title: "Important places", text: "• **Settings** — all system config\n• **Software Center** — GUI app store\n• **Files** — file manager\n• **Ubuntu Software** — install more apps", type: "read" },
+      { title: "Terminal basics", text: "Open with **Ctrl + Alt + T**. See our **Command Line for Beginners** tutorial.", type: "tip" },
+
+      { title: "Done", text: "You now run Ubuntu. Welcome to Linux.", type: "read" }
+    ]
+  },
+  repo: { url: "https://ubuntu.com/tutorials/install-ubuntu-desktop", label: "Ubuntu Install Guide" }
+},
+
+{
+  id: "linux-permissions", title: "Linux File Permissions Explained", category: "Linux",
+  difficulty: "intermediate", time: "15 min",
+  summary: "rwxr-xr-x — what it means and how to control it.",
+  intro: "Every file on Linux has an owner, a group, and permission bits. Understanding them unlocks why some things fail with 'Permission denied' and how to fix it correctly.",
+  tags: ["linux", "permissions", "chmod"], platforms: ["linux", "android", "mac"],
+  learnList: [
+    "Read permission strings like rwxr-xr-x",
+    "Use chmod and chown",
+    "Understand umask and default permissions",
+    "Fix common permission problems"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Reading permissions", title: "See them in ls -l", text: "The first 10 characters tell you everything.", code: "ls -l myfile.txt", output: "-rwxr-xr-- 1 neo users 1234 Oct 7 12:00 myfile.txt", type: "try" },
+      { title: "Breakdown", text: "• `-` — file type (- file, d directory, l symlink)\n• `rwx` — owner permissions (read, write, execute)\n• `r-x` — group permissions\n• `r--` — everyone else\n• `neo` — owner\n• `users` — group", type: "read" },
+
+      { chapter: "Symbolic chmod", title: "Add/remove permissions", text: "Use `+` to add, `-` to remove, `=` to set exactly. Users: `u` (owner), `g` (group), `o` (others), `a` (all).", code: "chmod +x script.sh        # make executable\nchmod u+x script.sh        # same, only owner\nchmod go-rw secret.txt     # remove read/write for group+others\nchmod a+r file.txt         # add read for everyone", type: "code" },
+
+      { chapter: "Numeric chmod", title: "Numbers are faster", text: "Each permission = a number: r=4, w=2, x=1. Add them per user.", code: "chmod 755 script.sh    # rwxr-xr-x (common for scripts)\nchmod 644 file.txt     # rw-r--r-- (common for files)\nchmod 600 id_rsa       # rw------- (SSH keys)\nchmod 700 .ssh         # rwx------ (only you)\nchmod 777 public       # everyone full access (avoid!)", type: "code" },
+      { title: "Memory trick", text: "755 = 7(rwx) 5(r-x) 5(r-x). 644 = 6(rw-) 4(r--) 4(r--).", type: "tip" },
+
+      { chapter: "Ownership", title: "chown — change owner", text: "Usually needs sudo.", code: "sudo chown neo file.txt             # change owner\nsudo chown neo:users file.txt         # owner and group\nsudo chown -R neo:users directory/    # recursive", type: "code" },
+
+      { chapter: "Common scenarios", title: "Script won't run", text: "Make it executable.", code: "chmod +x myscript.sh\n./myscript.sh", type: "code" },
+      { title: "SSH key too open", text: "This error: 'Permissions 0644 for id_rsa are too open'.", code: "chmod 600 ~/.ssh/id_rsa", type: "code" },
+      { title: "Web server can't read", text: "Files need to be readable by www-data.", code: "sudo chown -R www-data:www-data /var/www/html\nsudo chmod -R 755 /var/www/html", type: "code" },
+
+      { chapter: "Special permissions", title: "suid, sgid, sticky bit", text: "Advanced — usually avoid unless you know why.\n\n• **suid (4xxx)** — run as owner instead of user (e.g. `passwd`)\n• **sgid (2xxx)** — run as group\n• **sticky (1xxx)** — only owner can delete (e.g. /tmp)", type: "warn" },
+
+      { title: "Done", text: "Permissions stop being mysterious now.", type: "read" }
+    ],
+    android: [
+      { chapter: "Same as Linux", title: "Termux uses standard permissions", text: "All commands work in Termux.", code: "ls -l\nchmod +x script.sh\nchmod 600 file.txt", type: "code" },
+      { title: "Android quirk", text: "Files in `/storage/` are on a non-Linux filesystem — chmod doesn't work there. It only works in `~/` (Termux home).", type: "warn" }
+    ],
+    mac: [
+      { chapter: "Same as Linux", title: "Identical commands", text: "macOS is Unix.", code: "ls -l\nchmod 755 script.sh", type: "code" },
+      { title: "macOS quirk", text: "macOS has some extra ACLs. Use `ls -le` to see them.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://www.gnu.org/software/coreutils/manual/html_node/File-permissions.html", label: "GNU Coreutils" }
+},
+
+{
+  id: "systemd-services", title: "Create Linux Services with systemd", category: "Linux",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Make anything run on boot, restart on crash, log output.",
+  intro: "systemd is Linux's init system. It manages background services (daemons). You can make your own script run as a service — start on boot, auto-restart on failure, proper logging.",
+  tags: ["linux", "systemd", "server"], platforms: ["linux"],
+  learnList: [
+    "Understand what a service is",
+    "Create your own systemd service",
+    "Enable, start, stop, check status",
+    "Read logs with journalctl"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Basics", title: "What is a service?", text: "Any program that runs in the background: web servers, databases, your scripts. systemd starts them on boot, restarts them if they crash, and captures their logs.", type: "read" },
+      { title: "See running services", text: "Long list. Filter as needed.", code: "systemctl list-units --type=service\nsystemctl list-units --type=service --state=running", type: "code" },
+
+      { chapter: "Create a service", title: "Write a simple script", text: "First, make a script that does something.", code: "mkdir -p ~/scripts\nnano ~/scripts/hello-service.sh", type: "code" },
+      { title: "Script content", text: "Prints a timestamp every 10 seconds.", code: "#!/bin/bash\nwhile true; do\n  echo \"Service ran at $(date)\"\n  sleep 10\ndone", lang: "bash", type: "code" },
+      { title: "Make executable", text: "chmod +x.", code: "chmod +x ~/scripts/hello-service.sh", type: "code" },
+
+      { chapter: "Service file", title: "Create unit file", text: "Lives in `/etc/systemd/system/`.", code: "sudo nano /etc/systemd/system/hello.service", type: "code" },
+      { title: "Unit file content", text: "Three sections: Unit, Service, Install.", code: "[Unit]\nDescription=Hello Service\nAfter=network.target\n\n[Service]\nType=simple\nUser=neo\nExecStart=/home/neo/scripts/hello-service.sh\nRestart=always\nRestartSec=5\n\n[Install]\nWantedBy=multi-user.target", lang: "ini", type: "code" },
+      { title: "Reload systemd", text: "systemd needs to know about the new file.", code: "sudo systemctl daemon-reload", type: "code" },
+
+      { chapter: "Manage it", title: "Start the service", text: "Run it now.", code: "sudo systemctl start hello.service", type: "code" },
+      { title: "Check status", text: "See if it's running.", code: "sudo systemctl status hello.service", output: "● hello.service - Hello Service\n     Loaded: loaded\n     Active: active (running)", type: "try" },
+      { title: "Enable on boot", text: "Auto-start.", code: "sudo systemctl enable hello.service", type: "code" },
+      { title: "Stop it", text: "Manual stop.", code: "sudo systemctl stop hello.service", type: "code" },
+      { title: "Disable", text: "Remove from boot.", code: "sudo systemctl disable hello.service", type: "code" },
+
+      { chapter: "Logs", title: "View with journalctl", text: "All service output goes to journald.", code: "journalctl -u hello.service\njournalctl -u hello.service -f        # follow live\njournalctl -u hello.service --since \"1 hour ago\"\njournalctl -u hello.service -n 50     # last 50 lines", type: "code" },
+
+      { chapter: "Real use cases", title: "Common services to run", text: "• **Your Python script** as a background worker\n• **Node API** as a persistent server\n• **Syncthing** for file sync\n• **Nextcloud** for personal cloud\n• **Custom backup** running every hour", type: "read" },
+
+      { title: "Done", text: "You can now make anything run as a proper Linux service.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.freedesktop.org/software/systemd/man/systemd.service.html", label: "systemd docs" }
+},
+
+{
+  id: "linux-recovery", title: "Linux Rescue: Fix a Broken System", category: "Linux",
+  difficulty: "advanced", time: "25 min",
+  summary: "Boot fails? Password lost? Here's how to recover.",
+  intro: "Sooner or later your Linux won't boot, or you'll forget the password, or break sudo. All of these are recoverable. Here are the standard rescue workflows.",
+  tags: ["linux", "recovery", "rescue"], platforms: ["linux"],
+  learnList: [
+    "Boot into recovery mode",
+    "Reset a forgotten password",
+    "Fix GRUB if it stops loading",
+    "Repair filesystem corruption"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Recovery mode", title: "Access GRUB menu", text: "Reboot → hold **Shift** (BIOS) or **Esc** (UEFI) during boot to see the GRUB menu.", type: "read" },
+      { title: "Advanced options", text: "Select **Advanced options for Ubuntu** (or your distro) → **Recovery mode**.", type: "code" },
+      { title: "Recovery menu", text: "Options:\n• **Resume** — continue normal boot\n• **Clean** — free disk space\n• **dpkg** — fix broken packages\n• **fsck** — check filesystem\n• **grub** — update GRUB\n• **root** — drop to root shell", type: "read" },
+
+      { chapter: "Forgot password", title: "Boot recovery → root shell", text: "Select **root — Drop to root shell prompt**.", type: "code" },
+      { title: "Remount as read-write", text: "The filesystem is read-only in recovery.", code: "mount -o remount,rw /", type: "code" },
+      { title: "Change password", text: "Replace `yourusername`.", code: "passwd yourusername\n# Enter new password twice\nexit\n# Reboot", type: "code" },
+
+      { chapter: "Fix GRUB", title: "GRUB not showing / gone", text: "Common after Windows updates. Boot from a Linux live USB.", code: "# Boot live USB → Try Ubuntu → open terminal\nsudo apt install grub-efi-amd64 -y\nsudo fdisk -l                    # find your Linux partition (e.g. /dev/sda2)\nsudo mount /dev/sda2 /mnt\nsudo mount --bind /dev /mnt/dev\nsudo mount --bind /proc /mnt/proc\nsudo mount --bind /sys /mnt/sys\nsudo chroot /mnt\ngrub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB\ngrub-mkconfig -o /boot/grub/grub.cfg\nexit\nsudo reboot", type: "code" },
+
+      { chapter: "Filesystem repair", title: "Filesystem corruption", text: "System won't boot, mentions 'fsck'. Boot from live USB.", code: "sudo fsck -f /dev/sda2\ny # to fix any issues", type: "code" },
+      { title: "⚠️ Never fsck a mounted partition", text: "It can permanently damage data. Always run fsck on an unmounted partition (from live USB).", type: "danger" },
+
+      { chapter: "Broken sudo", title: "Not in sudoers file", text: "Need to be root first. Boot recovery → root shell.", code: "mount -o remount,rw /\nusermod -aG sudo yourusername\n# Or edit /etc/sudoers with visudo\nvisudo\n# Add: yourusername ALL=(ALL:ALL) ALL", type: "code" },
+
+      { chapter: "Broken packages", title: "dpkg is stuck", text: "Error about dpkg lock or broken packages.", code: "sudo dpkg --configure -a\nsudo apt --fix-broken install\nsudo apt clean && sudo apt autoremove", type: "code" },
+
+      { chapter: "Full disk", title: "Disk full, can't boot", text: "Boot recovery → **clean** — removes old packages. Then:", code: "sudo journalctl --vacuum-size=100M\nsudo apt autoremove\nsudo apt clean\nsudo rm -rf /var/tmp/* /tmp/*", type: "code" },
+
+      { title: "Prevention", text: "• Set up automatic backups (Timeshift)\n• Keep a live USB ready\n• Note your disk layout when the system works\n• Don't run random commands from the internet", type: "tip" }
+    ]
+  },
+  repo: { url: "https://wiki.archlinux.org/title/General_troubleshooting", label: "Arch Wiki Troubleshooting" }
+},
+
+{
+  id: "bash-aliases", title: "Bash Aliases and Shortcuts That Save Hours", category: "Linux",
+  difficulty: "beginner", time: "12 min",
+  summary: "Turn 5-second commands into 1-second shortcuts.",
+  intro: "You type the same commands every day. Aliases and shell config turn them into instant shortcuts. Small effort, huge daily payoff.",
+  tags: ["bash", "zsh", "productivity"], platforms: ["linux", "android", "mac"],
+  learnList: [
+    "Create your first alias",
+    "Save aliases permanently",
+    "Add functions and shortcuts",
+    "Customize your prompt"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Quick aliases", title: "Test in the shell", text: "The `alias` command creates them temporarily.", code: "alias ll='ls -lah'\nll", output: "total 24K\ndrwxr-xr-x 5 neo neo 4.0K Oct 7 12:00 .\n...", type: "try" },
+      { title: "More useful ones", text: "Try these for a session.", code: "alias gs='git status'\nalias ga='git add .'\nalias gc='git commit -m'\nalias gp='git push'\nalias update='sudo apt update && sudo apt upgrade -y'\nalias ports='ss -tulpn'", type: "code" },
+
+      { chapter: "Permanent aliases", title: "Add to bashrc", text: "These are lost when you close the terminal. To save, edit your shell's config file.", code: "nano ~/.bashrc", type: "code" },
+      { title: "Append your aliases", text: "Add at the bottom:", code: "# My aliases\nalias ll='ls -lah'\nalias la='ls -A'\nalias ..='cd ..'\nalias ...='cd ../..'\nalias gs='git status'\nalias gd='git diff'\nalias gc='git commit -m'\nalias gp='git push'\nalias update='sudo apt update && sudo apt upgrade -y'\nalias myip='curl ifconfig.me'\nalias ports='ss -tulpn'\nalias weather='curl wttr.in'", type: "code" },
+      { title: "Reload", text: "Apply changes.", code: "source ~/.bashrc", type: "try" },
+      { title: "Zsh (macOS default)", text: "Same but use `~/.zshrc` instead.", code: "nano ~/.zshrc\nsource ~/.zshrc", type: "code" },
+
+      { chapter: "Shell functions", title: "Multi-line shortcuts", text: "Aliases can't take arguments, but functions can.", code: "mkcd() {\n  mkdir -p \"$1\"\n  cd \"$1\"\n}\n\n# Usage:\n# mkcd my-new-project", type: "code" },
+      { title: "Another useful function", text: "Create a backup of any file with one command.", code: "bak() {\n  cp \"$1\" \"$1.backup-$(date +%Y%m%d)\"\n}\n\n# Usage: bak important.txt", type: "code" },
+
+      { chapter: "Prompt customization", title: "Show git branch in prompt", text: "Add to `.bashrc`. Big time saver.", code: "parse_git_branch() {\n  git branch 2>/dev/null | sed -n 's/^* //p'\n}\nexport PS1='\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[33m\\]$(parse_git_branch)\\[\\033[00m\\] \\$ '", type: "code" },
+
+      { chapter: "Bookmark directories", title: "Jump to common folders", text: "Save paths as variables.", code: "# In .bashrc:\nexport PROJ=~/projects\nexport DOWN=~/Downloads\n\n# Then:\ncd $PROJ", type: "code" },
+
+      { title: "Try oh-my-zsh", text: "If you want a full prompt system: **ohmyzsh.com**. Hundreds of themes and plugins.", type: "tip" },
+      { title: "Done", text: "You just saved yourself hours per week.", type: "read" }
+    ],
+    android: [
+      { chapter: "Same as Linux", title: "Termux uses bash", text: "All aliases work in Termux.", code: "nano ~/.bashrc\n# Add your aliases\nsource ~/.bashrc", type: "code" },
+      { title: "Phone-specific aliases", text: "Useful ones for Termux.", code: "alias dl='cd ~/storage/downloads'\nalias dcim='cd ~/storage/dcim'\nalias share='cd ~/storage/shared'\nalias wk='cd ~/storage/shared/WhatsApp'", type: "code" }
+    ],
+    mac: [
+      { chapter: "Zsh, not bash", title: "macOS default is zsh", text: "Config lives in `~/.zshrc`.", code: "nano ~/.zshrc\n# Add your aliases\nsource ~/.zshrc", type: "code" },
+      { chapter: "macOS-flavored aliases", title: "Common ones", text: "Use macOS-specific tools.", code: "alias ll='ls -lahG'\nalias brewup='brew update && brew upgrade'\nalias cleanup='brew cleanup'\nalias showfiles='defaults write com.apple.finder AppleShowAllFiles true && killall Finder'\nalias hidefiles='defaults write com.apple.finder AppleShowAllFiles false && killall Finder'", type: "code" }
+    ]
+  },
+  repo: { url: "https://www.gnu.org/software/bash/manual/html_node/Aliases.html", label: "Bash Manual" }
+},
+
+// ========== ANDROID ==========
+{
+  id: "termux-x11", title: "Run GUI Linux Apps on Android (X11)", category: "Android",
+  difficulty: "advanced", time: "25 min",
+  summary: "Real GUI Linux programs on your phone — GIMP, Firefox, Thunar, more.",
+  intro: "Termux can run GUI Linux apps using X11. You get a real Linux desktop environment inside a window on your phone. Slow but works — great for occasional use.",
+  tags: ["termux", "x11", "gui"], platforms: ["android"],
+  learnList: [
+    "Install Termux:X11 app",
+    "Set up a full XFCE desktop",
+    "Run GUI apps like GIMP",
+    "Access phone files inside the GUI"
+  ],
+  steps: {
+    android: [
+      { chapter: "What you're building", title: "A real Linux desktop on your phone", text: "Termux:X11 runs an X server inside Termux. Combined with a desktop environment (XFCE, LXQt), you get a full Linux UI — windows, taskbar, mouse cursor.", type: "read" },
+
+      { chapter: "Install", title: "Termux:X11 app", text: "Download from GitHub releases — not Play Store.", code: "https://github.com/termux/termux-x11/releases", type: "code" },
+      { title: "Termux", text: "If you don't have it: F-Droid.", code: "https://f-droid.org/packages/com.termux/", type: "code" },
+      { title: "Update Termux", text: "Standard first step.", code: "pkg update && pkg upgrade -y", type: "code" },
+      { title: "Install X11 packages", text: "Termux:X11 + a desktop.", code: "pkg install x11-repo -y\npkg install termux-x11-nightly -y", type: "code" },
+
+      { chapter: "Install a desktop", title: "XFCE (light and full-featured)", text: "Installs a lot — takes 5–10 minutes.", code: "pkg install xfce4 xfce4-terminal thunar -y", type: "code" },
+      { title: "Alternative: LXQt", text: "Lighter than XFCE.", code: "pkg install lxqt -y", type: "code" },
+
+      { chapter: "Start the desktop", title: "Terminal 1 — start X server", text: "Leave running.", code: "termux-x11 :0 &\nexport DISPLAY=:0", type: "code" },
+      { title: "Terminal 2 — start XFCE", text: "New Termux session (swipe left edge → NEW SESSION).", code: "export DISPLAY=:0\nstartxfce4 &", type: "code" },
+      { title: "Open Termux:X11 app", text: "Switch to the Termux:X11 app. You should see the XFCE desktop.", type: "try" },
+
+      { chapter: "Run GUI apps", title: "Try a few", text: "From XFCE terminal, install and run:", code: "pkg install gimp -y\ngimp", type: "code" },
+      { title: "Or file manager", text: "Browse your phone files.", code: "pkg install pcmanfm -y\npcmanfm", type: "code" },
+      { title: "Firefox", text: "Yes, real Firefox.", code: "pkg install firefox -y\nfirefox", type: "code" },
+
+      { chapter: "Access phone storage", title: "Link storage", text: "From Termux:", code: "termux-setup-storage\nln -s ~/storage/shared ~/Desktop/phone", type: "code" },
+      { title: "Browse it", text: "Open Thunar file manager → Desktop → phone. All your photos, videos, downloads.", type: "try" },
+
+      { chapter: "Optional: VNC instead", title: "Remote desktop from another device", text: "Run the desktop and access it from a PC browser.", code: "pkg install tigervnc -y\nvncserver -localhost no\n# Then connect from PC to phone-ip:5901", type: "code" },
+
+      { chapter: "Reality check", title: "Performance", text: "• Runs fine on modern phones (Snapdragon 7xx+)\n• Slow on older devices\n• Great for occasional Linux tasks\n• Not a replacement for a real PC", type: "warn" },
+
+      { title: "Done", text: "You have a real Linux desktop on your phone.", type: "read" }
+    ]
+  },
+  repo: { url: "https://github.com/termux/termux-x11", label: "Termux:X11" }
+},
+
+{
+  id: "magisk-modules", title: "Must-Have Magisk Modules", category: "Android",
+  difficulty: "intermediate", time: "15 min",
+  summary: "The best Magisk modules for a rooted phone.",
+  intro: "Magisk modules extend what root can do. Some fix problems, some add features, some unlock hidden Android potential. Here are the essential ones.",
+  tags: ["magisk", "root", "android"], platforms: ["android"],
+  learnList: [
+    "Install modules safely",
+    "Enable Zygisk for hiding root",
+    "Install the top 6 modules",
+    "Recover if a module breaks things"
+  ],
+  steps: {
+    android: [
+      { chapter: "Prerequisites", title: "Rooted with Magisk", text: "See our **Magisk** tutorial if not rooted yet.", type: "read" },
+      { title: "Repositories", text: "Modules come from:\n• **Magisk app** — built-in repo\n• **github.com/Magisk-Modules-Repo** — official\n• **GitHub releases** — mods publish directly", type: "read" },
+
+      { chapter: "Enable Zygisk", title: "Required for hiding root", text: "Magisk → Settings → **Enable Zygisk** → reboot.", type: "code" },
+      { title: "Why it matters", text: "Zygisk hides root from banking apps, Google Pay, games with anti-cheat.", type: "tip" },
+
+      { chapter: "Top modules", title: "1. Play Integrity Fix", text: "Makes Play Store and banking apps pass Google's integrity checks. Essential.", code: "Search: Play Integrity Fix (chiteroman)", type: "code" },
+      { title: "2. Shamiko", text: "Hide root from detection apps. Works with Zygisk DenyList.", code: "Search: Shamiko", type: "code" },
+      { title: "3. Universal SafetyNet Fix", text: "Alternative for older devices.", type: "code" },
+      { title: "4. LSPosed", text: "Run Xposed modules on modern Android. Huge ecosystem of tweaks.", code: "https://github.com/LSPosed/LSPosed", type: "code" },
+      { title: "5. AdGuard Home (local)", text: "Run ad-blocking DNS on your phone (not the app). Advanced.", type: "code" },
+      { title: "6. Systemless Hosts", text: "System-wide ad-blocking via hosts file. Pairs with AdAway.", code: "Search: Systemless Hosts", type: "code" },
+      { title: "Bonus: Viper4Android", text: "Massively improve audio quality. Install Viper4Android FX.", type: "tip" },
+
+      { chapter: "Install a module", title: "From Magisk app", text: "Magisk → Modules → Install from storage → pick the .zip → reboot.", type: "code" },
+      { title: "From GitHub", text: "Download the latest .zip from the module's releases → same install.", type: "read" },
+
+      { chapter: "Deny list", title: "Hide root from specific apps", text: "Magisk → Settings → Configure DenyList → check the apps you want to hide root from (banking, Google Pay).", type: "code" },
+
+      { chapter: "Troubleshooting", title: "Bootloop after module", text: "Boot into recovery → Magisk → Modules → toggle off the broken one. Or use **Magisk Safe Mode**: hold volume down during boot.", type: "warn" },
+      { title: "Uninstall everything", text: "Recovery → Magisk → Uninstall. Removes root cleanly.", type: "code" },
+
+      { title: "Done", text: "Your rooted phone now has superpowers.", type: "read" }
+    ]
+  },
+  repo: { url: "https://github.com/Magisk-Modules-Repo", label: "Magisk Modules Repo" }
+},
+
+{
+  id: "android-launcher", title: "Customize Android with Third-Party Launchers", category: "Android",
+  difficulty: "beginner", time: "15 min",
+  summary: "Make your phone feel new — different home screen, icons, widgets.",
+  intro: "The launcher is your home screen. Swapping it is the single biggest visual change you can make to Android. Free, no root, reversible in seconds.",
+  tags: ["android", "launcher", "customization"], platforms: ["android"],
+  learnList: [
+    "Install a custom launcher",
+    "Set it as default safely",
+    "Change icon packs",
+    "Add useful widgets"
+  ],
+  steps: {
+    android: [
+      { chapter: "Pick a launcher", title: "Best options", text: "• **Nova Launcher** — most popular, tons of options\n• **Niagara** — minimalist, vertical list\n• **Lawnchair** — Pixel-style but customizable\n• **Kvaesitso** — modern, search-focused\n• **Smart Launcher** — auto-organizes apps\n\n**Nova** or **Lawnchair** for beginners.", type: "read" },
+      { title: "Install from Play Store", text: "Or F-Droid for open-source launchers. Search the app name.", type: "code" },
+
+      { chapter: "Set as default", title: "After installing", text: "Press Home button → Android asks which launcher to use → pick the new one → tap **Always**.", type: "try" },
+      { title: "To revert", text: "Settings → Apps → Default apps → Home app → pick original launcher.", type: "read" },
+
+      { chapter: "Customize", title: "Change grid size", text: "Launcher Settings → Home Screen → Grid. 5×6 or 6×6 for denser.", type: "code" },
+      { title: "Icons", text: "Nova Settings → Look & Feel → Icon Style → Icon Pack. Download icon packs from Play Store.", type: "code" },
+      { title: "Best icon packs", text: "• **Whicons** — minimal white\n• **Delta** — flat\n• **Vera** — clean\n• **Lines** — outlined", type: "read" },
+      { title: "Gestures", text: "Nova supports swipe up/down on home screen, double-tap, two-finger swipe. Bind them to actions (open camera, search, app drawer).", type: "tip" },
+
+      { chapter: "Widgets", title: "Best widget apps", text: "• **KWGT** — design your own widgets\n• **KWGT Presets** — thousands of pre-made\n• **Chronus** — clock + weather\n• **Today Weather** — beautiful forecasts", type: "code" },
+      { title: "Install KWGT", text: "Then download preset packs like **Pixxy**, **Huk**, **Vera** — free.", type: "tip" },
+
+      { chapter: "Themes", title: "Match everything", text: "Use same color palette across wallpaper, icons, and widgets. Search r/androidthemes for inspiration.", type: "read" },
+      { title: "Wallpaper apps", text: "**Walli**, **Walli 4K**, **Unsplash**, or search r/wallpapers.", type: "code" },
+
+      { title: "Result", text: "Your phone now looks like a designer made it.", type: "read" }
+    ]
+  },
+  repo: { url: "https://nova.launcher.com/", label: "Nova Launcher" }
+},
+
+{
+  id: "aegis-2fa", title: "Set Up Aegis Authenticator (2FA)", category: "Android",
+  difficulty: "beginner", time: "12 min",
+  summary: "Secure, offline 2FA — better than Google Authenticator.",
+  intro: "Two-factor authentication protects accounts even if your password leaks. Aegis is an open-source 2FA app with encrypted backups, unlike Google Authenticator.",
+  tags: ["android", "2fa", "security"], platforms: ["android"],
+  learnList: [
+    "Install Aegis from F-Droid",
+    "Add your first 2FA account",
+    "Create encrypted backups",
+    "Restore on a new device"
+  ],
+  steps: {
+    android: [
+      { chapter: "Why Aegis", title: "Better than Google Authenticator", text: "• **Open source** — code is audited\n• **Encrypted backups** — you control them\n• **No cloud** — your codes never leave your phone\n• **Export/import** — move between phones easily", type: "read" },
+
+      { chapter: "Install", title: "Get it from F-Droid", text: "Search F-Droid for Aegis. Or:", code: "https://f-droid.org/packages/com.beemdevelopment.aegis/", type: "code" },
+      { title: "Or Play Store", text: "Same app, latest version.", type: "read" },
+
+      { chapter: "Add your first 2FA", title: "Open your account's security settings", text: "Example: GitHub → Settings → Password and authentication → Two-factor auth → Set up authenticator app.", type: "read" },
+      { title: "Scan the QR code", text: "The site shows a QR code. In Aegis: tap **+** → **Scan QR code** → point at the screen.", type: "try" },
+      { title: "Save recovery codes", text: "The site gives you recovery codes. **Save these** — screenshot or write them down. If you lose your phone, they're the only way back in.", type: "warn" },
+      { title: "Verify", text: "Enter the 6-digit code from Aegis to confirm setup. Done.", type: "try" },
+
+      { chapter: "Backups", title: "Create encrypted backup", text: "Aegis → Settings → Backup → Export. Save the file somewhere safe (Proton Drive, external drive, printed).", code: "Aegis → ⋮ → Settings → Backup → Export", type: "code" },
+      { title: "Set a strong password", text: "The backup file is encrypted with a password you choose. **Write it down** — losing it means losing access to all your 2FA.", type: "danger" },
+      { title: "Enable auto-backup", text: "Aegis → Settings → Auto-backup → ON. Saves encrypted backup to a folder weekly.", type: "tip" },
+
+      { chapter: "Restore on new phone", title: "Move accounts", text: "New phone → install Aegis → import the backup file → enter password → done.", type: "code" },
+
+      { chapter: "Best practices", title: "Rules", text: "• **Never** screenshot 2FA codes (or store unencrypted)\n• Keep the backup off your phone\n• Save recovery codes in a password manager\n• Use 2FA on: email, banking, GitHub, crypto, anything important", type: "read" },
+
+      { title: "Result", text: "Your accounts are now 10x more secure.", type: "read" }
+    ]
+  },
+  repo: { url: "https://getaegis.app", label: "Aegis Authenticator" }
+},
+
+// ========== CYBERSECURITY ==========
+{
+  id: "gpg-encryption", title: "Encrypt Anything with GPG", category: "Hacking",
+  difficulty: "intermediate", time: "20 min",
+  summary: "Real end-to-end encryption for files and messages.",
+  intro: "GPG (GNU Privacy Guard) is the standard for email encryption, file encryption, and code signing. This tutorial teaches the practical commands — no crypto theory.",
+  tags: ["gpg", "encryption", "security"], platforms: ["linux", "android", "mac", "windows"],
+  learnList: [
+    "Generate your GPG key pair",
+    "Encrypt and decrypt files",
+    "Sign messages to prove they're from you",
+    "Exchange encrypted messages with others"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Install", title: "Check if installed", text: "Most distros have it.", code: "gpg --version", output: "gpg (GnuPG) 2.4.0", type: "try" },
+      { title: "Install if needed", text: "Debian/Ubuntu.", code: "sudo apt install gnupg -y", type: "code" },
+
+      { chapter: "Generate keys", title: "Create your keypair", text: "Interactive prompt — asks for name, email, and a passphrase.", code: "gpg --full-generate-key", type: "code" },
+      { title: "Recommended choices", text: "• Key type: **RSA and RSA** (default)\n• Size: **4096** bits\n• Expiry: **2 years** (or 0 for never)\n• Name: your real name or handle\n• Email: the one you want associated\n• Passphrase: **strong, memorable**", type: "code" },
+      { title: "List your keys", text: "Verify it was created.", code: "gpg --list-keys", output: "/home/neo/.gnupg/pubring.kbx\n--------------------------\npub   rsa4096 2026-10-07 [SC]\n      ABC123DEF456...\nuid   [ultimate] Neo <neo@example.com>", type: "try" },
+
+      { chapter: "Encrypt files", title: "Encrypt for yourself", text: "Creates `file.txt.gpg`.", code: "gpg -c file.txt", output: "Enter passphrase:\nRepeat passphrase:\nFile 'file.txt.gpg' created.", type: "code" },
+      { title: "Or use public key", text: "No passphrase prompt — uses your keypair.", code: "gpg -e -r neo@example.com file.txt", type: "code" },
+      { title: "Decrypt", text: "Either way.", code: "gpg -d file.txt.gpg > file.txt", type: "code" },
+
+      { chapter: "Sign messages", title: "Prove authorship", text: "Sign a file — anyone can verify it came from you.", code: "gpg --detach-sign file.txt\n# Creates file.txt.sig", type: "code" },
+      { title: "Verify signature", text: "Someone with your public key can verify.", code: "gpg --verify file.txt.sig file.txt", output: "gpg: Good signature from \"Neo <neo@example.com>\"", type: "try" },
+
+      { chapter: "Share your public key", title: "Export it", text: "Text or file.", code: "gpg --armor --export neo@example.com > mypubkey.asc\ncat mypubkey.asc", type: "code" },
+      { title: "Send to someone", text: "Email, chat, or upload to a keyserver.", code: "gpg --keyserver keys.openpgp.org --send-keys ABC123DEF456", type: "code" },
+
+      { chapter: "Receive encrypted", title: "Import their key", text: "They send you their `.asc` file.", code: "gpg --import theirkey.asc", type: "code" },
+      { title: "Encrypt for them", text: "Only they can decrypt.", code: "gpg -e -r their@email.com secret.txt", type: "code" },
+
+      { chapter: "Email encryption", title: "Thunderbird + Enigmail", text: "For real email GPG, use Thunderbird with the built-in OpenPGP support. Setup wizard walks through importing your key.", type: "read" },
+
+      { chapter: "Backup your keys", title: "⚠️ Important", text: "If you lose your private key, you lose access forever. Back it up.", code: "gpg --export-secret-keys --armor > privkey.asc\n# Store offline — USB, printed, encrypted backup", type: "code" },
+      { title: "Restore later", text: "Import the backup.", code: "gpg --import privkey.asc", type: "code" },
+
+      { title: "Done", text: "You can now encrypt anything with the same protocol governments use.", type: "read" }
+    ],
+    android: [
+      { chapter: "Install", title: "In Termux", text: "One command.", code: "pkg install gnupg -y", type: "code" },
+      { chapter: "Same commands", title: "Everything works", text: "Follow the Linux tab. All commands are identical.", code: "gpg --full-generate-key\ngpg -c file.txt\ngpg -d file.txt.gpg", type: "code" },
+      { title: "Mobile tip", text: "Use `gpg --armor` (ASCII output) for anything you'll share via chat or email.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Via Homebrew", text: "Or use GPG Suite GUI.", code: "brew install gnupg", type: "code" },
+      { title: "GUI option", text: "GPG Suite gives you a Mac app — easier for beginners.", code: "https://gpgtools.org", type: "code" },
+      { chapter: "Follow Linux", title: "Same commands", text: "Terminal workflow is identical.", type: "read" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Gpg4win", text: "Official Windows GPG package with GUI.", code: "https://gpg4win.org", type: "code" },
+      { title: "Or winget", text: "Command-line only.", code: "winget install GnuPG.GnuPG", lang: "powershell", type: "code" },
+      { chapter: "Same commands", title: "Follow Linux tab", text: "Once installed, commands are identical.", type: "read" }
+    ]
+  },
+  repo: { url: "https://gnupg.org/", label: "GnuPG" }
+},
+
+{
+  id: "password-manager", title: "Set Up a Password Manager (Bitwarden)", category: "Hacking",
+  difficulty: "beginner", time: "15 min",
+  summary: "Never reuse a password again. One master password, unique everything.",
+  intro: "Password managers generate and store strong unique passwords for every account. You remember one master password. This is the single biggest security upgrade you can make.",
+  tags: ["passwords", "security", "bitwarden"], platforms: ["linux", "android", "mac", "windows", "ios"],
+  learnList: [
+    "Install Bitwarden everywhere",
+    "Generate strong passwords",
+    "Migrate from browser password managers",
+    "Set up 2FA on Bitwarden itself"
+  ],
+  steps: {
+    linux: [
+      { chapter: "Why Bitwarden", title: "Best free option", text: "• **Free tier is generous** — unlimited passwords, all devices\n• **Open source** — audited code\n• **Cross-platform** — every OS has an app\n• **Self-hostable** — if you want full control\n\nAlternative: **KeePassXC** (fully offline, no cloud).", type: "read" },
+
+      { chapter: "Create account", title: "Sign up", text: "at bitwarden.com. Use a **strong master password** — this is the ONE password you must remember.", code: "https://bitwarden.com", type: "code" },
+      { title: "⚠️ Master password rules", text: "• At least 5 random words (passphrase)\n• Or 16+ characters of randomness\n• **Never reuse it anywhere else**\n• Write it down and store offline if you might forget", type: "warn" },
+
+      { chapter: "Install on every device", title: "Apps for all platforms", text: "• **Browser extension** — Chrome, Firefox, Safari\n• **Desktop app** — Linux, macOS, Windows\n• **Mobile app** — Android, iOS\n• **CLI** — for terminal lovers", code: "https://bitwarden.com/download/", type: "code" },
+      { title: "Log in on each", text: "Same account, same master password. Passwords sync automatically.", type: "read" },
+
+      { chapter: "First use", title: "Import existing passwords", text: "If Chrome/Firefox has your passwords saved: Bitwarden → Tools → Import data. Choose the source and upload the CSV.", type: "code" },
+      { title: "Then delete from browser", text: "Once imported, clear saved passwords from your browser. Bitwarden handles it from now on.", type: "tip" },
+
+      { chapter: "Generate passwords", title: "When creating new accounts", text: "In Bitwarden extension: **+** → Password → adjust length → **Regenerate** until you like it → **Save**.", type: "code" },
+      { title: "Or use the built-in generator", text: "Auto-fill popups let you generate a strong password with one tap on any signup form.", type: "try" },
+
+      { chapter: "Enable 2FA on Bitwarden", title: "Protect your vault", text: "Bitwarden → Settings → Two-step login → Authenticator app. Scan with Aegis or Google Authenticator.", type: "code" },
+      { title: "⚠️ Save recovery code", text: "Bitwarden gives you a recovery code. Store it offline (paper, different device). Losing both = losing everything.", type: "danger" },
+
+      { chapter: "Emergency access", title: "Optional but wise", text: "Bitwarden lets you designate a trusted contact who can access your vault if you're incapacitated. Settings → Emergency access.", type: "tip" },
+
+      { chapter: "KeePassXC alternative", title: "Fully offline option", text: "If you don't want any cloud: **KeePassXC** stores an encrypted file on your device. Sync it via Nextcloud or Syncthing.", code: "https://keepassxc.org", type: "code" },
+
+      { title: "Done", text: "You just fixed the #1 way accounts get hacked — password reuse.", type: "read" }
+    ],
+    android: [
+      { chapter: "Install", title: "From Play Store or F-Droid", text: "Both have the official app.", type: "code" },
+      { chapter: "Setup", title: "Log in", text: "Same account you created on desktop. Enable **Autofill Service** when prompted.", type: "code" },
+      { title: "Enable autofill", text: "Settings → System → Languages & input → Autofill service → Bitwarden.", type: "code" },
+      { chapter: "Use it", title: "Auto-fill anywhere", text: "Tap any login field in any app → Bitwarden popup appears → select account → autofilled.", type: "try" },
+      { title: "Best tip", text: "Long-press a password field in Chrome → Autofill with Bitwarden.", type: "tip" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Desktop app + Safari extension", text: "Download from bitwarden.com. Then install the Safari extension from the Mac App Store.", type: "code" },
+      { title: "Biometric unlock", text: "Enable Touch ID in Bitwarden → Settings → Unlock with Touch ID. Unlock with fingerprint instead of master password.", type: "tip" }
+    ],
+    windows: [
+      { chapter: "Install", title: "Desktop + browser extension", text: "From bitwarden.com. Browser extension from Chrome/Edge/Firefox store.", type: "code" },
+      { title: "Windows Hello unlock", text: "Enable biometric unlock in Bitwarden settings.", type: "tip" }
+    ],
+    ios: [
+      { chapter: "Install", title: "From App Store", text: "Official Bitwarden app.", type: "code" },
+      { chapter: "Setup", title: "Enable autofill", text: "Settings → Passwords → Password Options → Bitwarden ON.", type: "code" },
+      { title: "Face ID unlock", text: "Bitwarden → Settings → Unlock with Face ID.", type: "tip" }
+    ]
+  },
+  repo: { url: "https://bitwarden.com", label: "Bitwarden" }
+},
+
+{
+  id: "johntheripper-defense", title: "Password Strength: What John the Ripper Teaches", category: "Hacking",
+  difficulty: "intermediate", time: "18 min",
+  summary: "See how fast your password would be cracked — ethically.",
+  intro: "John the Ripper is a password-cracking tool used by security pros to test password strength. We use it here on YOUR OWN password hashes to demonstrate why weak passwords fail.",
+  tags: ["john", "passwords", "defense"], platforms: ["linux", "mac", "android"],
+  learnList: [
+    "Install John the Ripper",
+    "Hash your own password",
+    "Crack it to see how fast it fails",
+    "Learn what makes a password strong"
+  ],
+  steps: {
+    linux: [
+      { chapter: "⚠️ Legal warning", title: "Only your own passwords", text: "Cracking anyone else's password hashes is a crime in most countries. This tutorial uses your own password to demonstrate principles.", note: { type: "danger", text: "YOUR OWN hashes only." }, type: "warn" },
+
+      { chapter: "Setup", title: "Install John", text: "Debian/Ubuntu.", code: "sudo apt install john -y", type: "code" },
+
+      { chapter: "Create a test hash", title: "Hash a password", text: "We'll make a hash from a password you choose.", code: "echo -n 'password123' | md5sum", output: "482c811da5d5b4bc6d497ffa98491e38  -", type: "code" },
+      { title: "Save it to a file", text: "John needs a file with hashes.", code: "echo 'user1:482c811da5d5b4bc6a7ef9db22d0e6c':$(echo -n 'password123' | md5sum | cut -d' ' -f1) > hashes.txt\ncat hashes.txt", type: "code" },
+
+      { chapter: "Crack it", title: "Run John", text: "Watch how fast a weak password falls.", code: "john --format=raw-md5 hashes.txt", output: "Loaded 1 password hash (Raw-MD5)\nPress 'q' or Ctrl-C to abort\npassword123      (user1)\n1g 0:00:00:00 DONE", type: "try" },
+      { title: "Show cracked", text: "See the results.", code: "john --show --format=raw-md5 hashes.txt", output: "user1:password123", type: "try" },
+
+      { chapter: "The lesson", title: "Speed tells the story", text: "John cracked `password123` in **milliseconds** because it's in every wordlist. With a GPU, an attacker tries **billions per second**.", type: "read" },
+      { title: "What survives", text: "Passwords that survive a GPU attack:\n• **Long passphrases** — 4+ random words\n• **Random 16+ chars** — spaces, symbols, no patterns\n• **Anything a password manager generates**", type: "tip" },
+
+      { chapter: "Better hash algorithms", title: "MD5 is dead", text: "Modern systems use:\n• **bcrypt** — slow by design\n• **scrypt** — memory-hard\n• **argon2** — current best practice\n\nFast hashes (MD5, SHA1, SHA256) are terrible for passwords — cracking them is easy.", type: "read" },
+      { title: "See the difference", text: "Generate a bcrypt hash and try to crack it.", code: "sudo apt install python3-bcrypt -y\npython3 -c \"import bcrypt; print(bcrypt.hashpw(b'password123', bcrypt.gensalt()).decode())\"\n# Copy the output, save as hash.txt\n# Then: john --format=bcrypt hash.txt\n# Watch it struggle.", type: "code" },
+
+      { chapter: "Real test", title: "How long would yours take?", text: "Use **howsecureismypassword.net** or **bitwarden.com/password-strength**. Enter a password you think is strong — check the crack time.", code: "https://bitwarden.com/password-strength/", type: "code" },
+
+      { chapter: "Defense", title: "What to do", text: "• Use a **password manager**\n• **16+ characters** minimum for important accounts\n• **Never reuse** passwords\n• Enable **2FA** where available\n• Passphrases beat complex gibberish (longer = harder)", type: "read" },
+
+      { title: "Done", text: "You now understand why weak passwords fail — from experience, not theory.", type: "read" }
+    ],
+    mac: [
+      { chapter: "Install", title: "Homebrew", text: "Or use hashcat as alternative.", code: "brew install john-jumbo", type: "code" },
+      { title: "Follow Linux", text: "Same commands once installed.", type: "read" }
+    ],
+    android: [
+      { chapter: "Install", title: "In Termux", text: "One command.", code: "pkg install john -y", type: "code" },
+      { title: "Follow Linux", text: "Same workflow. Slower on phones but works for demos.", type: "read" }
+    ]
+  },
+  repo: { url: "https://www.openwall.com/john/", label: "John the Ripper" }
+}, 
+
+
 ];
