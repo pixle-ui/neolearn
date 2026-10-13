@@ -32,7 +32,7 @@ window.TUTORIALS = [
 
   // ===== AI =====
   {
-    id: "ollama", title: "Run AI Models Locally with Oll", category: "AI",
+    id: "ollama", title: "Run AI Models Locally with Ollama", category: "AI",
     difficulty: "beginner", time: "15 min",
     summary: "Run Llama, Mistral, DeepSeek offline on your own machine.",
     intro: "Ollama runs large language models locally with one command. No API keys, nothing leaves your device.",
