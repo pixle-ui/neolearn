@@ -408,7 +408,7 @@
     el.overlay.classList.remove("show");
   }
 
-  function showPage(id) {
+  function showPage(id, preserveScroll) {
     var pages = document.querySelectorAll(".page");
     for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
     var t = document.getElementById(id);
@@ -418,7 +418,7 @@
     document.body.classList.toggle("on-tutorial", id === "tutorial");
 
     closeSide();
-    window.scrollTo(0, 0);
+    if (!preserveScroll) window.scrollTo(0, 0);
   }
 
   el.pageNav.querySelectorAll(".nav-btn").forEach(function (btn) {
@@ -673,11 +673,12 @@
     if (Array.isArray(tut.steps)) return { platform: null, steps: tut.steps };
     var tutPlats = getPlatforms(tut);
 
-    var plat = (currentPlatform === "all") ? currentDetailPlatform : currentPlatform;
+    var plat = currentDetailPlatform;
 
     if (tutPlats.indexOf(plat) === -1) {
       plat = tutPlats[0];
       currentDetailPlatform = plat;
+      localStorage.setItem("neoDetailPlatform", plat);
     }
 
     return { platform: plat, steps: tut.steps[plat] || [] };
@@ -686,7 +687,8 @@
   // =============================================
   // OPEN TUTORIAL
   // =============================================
-  function openTutorial(id, skipHash) {
+  function openTutorial(id, skipHash, preserveScroll) {
+    var previousScrollY = preserveScroll ? window.scrollY : 0;
     var tut = null;
     for (var i = 0; i < window.TUTORIALS.length; i++) {
       if (window.TUTORIALS[i].id === id) { tut = window.TUTORIALS[i]; break; }
@@ -850,7 +852,7 @@
       btn.onclick = function () {
         currentDetailPlatform = btn.getAttribute("data-detail-plat");
         localStorage.setItem("neoDetailPlatform", currentDetailPlatform);
-        openTutorial(id, true);
+        openTutorial(id, true, true);
       };
     });
 
@@ -874,7 +876,8 @@
       };
     });
 
-    showPage("tutorial");
+    showPage("tutorial", preserveScroll);
+    if (preserveScroll) window.scrollTo(0, previousScrollY);
   }
 
   // =============================================
