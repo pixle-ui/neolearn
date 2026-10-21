@@ -637,6 +637,9 @@
     }
     saveFavorites();
     renderSidebarList();
+    if (document.getElementById("favorites").classList.contains("active")) {
+      renderFavorites();
+    }
   }
 
   function swapTutorial(id) {
@@ -1033,16 +1036,17 @@
   // SIDEBAR COLLAPSE
   // =============================================
   document.querySelectorAll(".sidebar-section").forEach(function (sec) {
+    var nav = sec.nextElementSibling;
     var chev = document.createElement("span");
     chev.className = "chev";
     chev.textContent = "▼";
     sec.appendChild(chev);
     sec.onclick = function () {
-      sec.classList.toggle("collapsed");
-      var next = sec.nextElementSibling;
-      if (next && next.tagName === "NAV") {
-        next.style.maxHeight = sec.classList.contains("collapsed") ? "0px" : "";
-        next.style.overflow = "hidden";
+      var collapsed = sec.classList.toggle("collapsed");
+      sec.setAttribute("aria-expanded", String(!collapsed));
+      if (nav && nav.tagName === "NAV") {
+        nav.style.maxHeight = collapsed ? "0px" : "";
+        nav.style.overflow = "hidden";
       }
     };
   });

@@ -6,7 +6,7 @@ A free, multi-platform tech tutorial site. Every tutorial shows commands specifi
 
 ## What's inside
 
-- **32 tutorials** across 6 categories: AI, Hacking, Android, Streaming, Networking, Coding, Linux, iOS, Mac
+- **102 tutorials** across 12 categories: AI, Hacking, Networking, Android, Streaming, Coding, Linux, iOS, Mac, Windows, macOS, Programming
 - **Platform-aware** — switch platforms mid-tutorial and the steps update live
 - **Favorites** — save tutorials, stored locally
 - **Progress tracking** — check off steps as you complete them

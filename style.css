@@ -268,6 +268,12 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: calc(100% - 16px);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font-family: inherit;
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -277,6 +283,11 @@ body::before {
   cursor: pointer;
   user-select: none;
   transition: all 0.25s var(--ease);
+}
+
+.sidebar-section:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
 }
 
 .sidebar-section:hover {
@@ -508,7 +519,6 @@ body::before {
   cursor: pointer;
   transition: all 0.25s var(--ease);
   white-space: nowrap;
-  outline: none;
   flex-shrink: 0;
   font-family: inherit;
   position: relative;
@@ -530,6 +540,11 @@ body::before {
 }
 
 .plat-btn:hover svg { transform: scale(1.15) rotate(5deg); }
+
+.plat-btn:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
 
 .plat-btn.active {
   background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
