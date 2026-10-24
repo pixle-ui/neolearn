@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects &amp; Labs — PÏXLĒ</title>
+  <meta name="description" content="Explore PÏXLĒ's software projects and hands-on TryHackMe cybersecurity lab write-ups." />
+  <meta name="theme-color" content="#05030d" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2305030d'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ff2fb9' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='3.5' fill='%2300f0ff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand projects-brand" href="index.html"><span class="brand-icon">⌬</span> NeoLearn</a>
+    <div class="spacer"></div>
+    <a class="projects-home-link" href="index.html">← Home</a>
+  </header>
+
+  <main class="content portfolio-content">
+    <header class="portfolio-header">
+      <p class="hero-tag">// selected work //</p>
+      <h1>Projects <span class="grad">&amp; Labs</span></h1>
+      <p>Software I’m building and practical security assessments completed in authorized training environments.</p>
+      <div class="portfolio-stats" aria-label="Portfolio overview">
+        <span><strong>2</strong> Software projects</span>
+        <span><strong>6</strong> TryHackMe labs</span>
+        <span><strong>2</strong> Security focus areas</span>
+      </div>
+    </header>
+
+    <section class="portfolio-group portfolio-group-projects" aria-labelledby="softwareTitle">
+      <div class="portfolio-group-heading">
+        <span class="portfolio-section-icon" aria-hidden="true">⌘</span>
+        <div>
+          <p class="portfolio-eyebrow">BUILDING &amp; SHIPPING</p>
+          <h2 id="softwareTitle">Software Projects</h2>
+          <p>Application development and network automation work.</p>
+        </div>
+      </div>
+      <div class="project-grid">
+        <article class="project-card project-card-software">
+          <span class="project-label">Python <span class="status-dot"></span> In progress</span>
+          <h3>Network Automation Script</h3>
+          <p>Developing a custom IP pinger and network scanner for authorized networks and lab environments.</p>
+          <div class="project-tags" aria-label="Project areas">
+            <span>Python</span><span>Networking</span><span>Automation</span>
+          </div>
+        </article>
+        <article class="project-card project-card-software project-card-featured">
+          <span class="project-label">Web development <span class="status-dot status-live"></span> Live</span>
+          <h3>NeoLearn</h3>
+          <p>A multi-platform tutorial library built with browser-native technologies, featuring typo-tolerant search and local learning progress.</p>
+          <div class="project-tags" aria-label="Technologies">
+            <span>HTML</span><span>CSS</span><span>Vanilla JavaScript</span>
+          </div>
+          <a href="https://github.com/pixle-ui/neolearn" target="_blank" rel="noopener noreferrer">View source code →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="portfolio-group portfolio-group-web" aria-labelledby="webLabsTitle">
+      <div class="portfolio-group-heading">
+        <span class="portfolio-section-icon" aria-hidden="true">⌕</span>
+        <div>
+          <p class="portfolio-eyebrow">TRYHACKME · 3 LABS</p>
+          <h2 id="webLabsTitle">Web Application Security</h2>
+          <p>Service exposure, web attack surfaces, and access-control testing.</p>
+        </div>
+      </div>
+      <div class="project-grid">
+        <article class="project-card project-card-lab project-card-web">
+          <span class="project-label">Tomghost <span class="project-label-divider">·</span> Tomcat / AJP</span>
+          <h3>Chaining Ghostcat with Credential Recovery</h3>
+          <p><strong>Objective:</strong> Assess the lab's Tomcat service, establish an initial foothold, and identify a path to root.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance:</strong> Used Nmap to map exposed services and identify the Tomcat/AJP attack surface.</li>
+              <li><strong>Exploitation:</strong> Validated the Ghostcat (CVE-2020-1938) file-read exposure in the authorized lab and used disclosed credentials for SSH access.</li>
+              <li><strong>Credential recovery:</strong> Cracked a PGP key passphrase to decrypt a credential file and move laterally to a second user.</li>
+              <li><strong>Privilege escalation:</strong> Abused an unsafe sudo permission for <code>zip</code>, applying the relevant GTFOBins technique to validate root-level impact.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Nmap, Metasploit Framework, John the Ripper (<code>gpg2john</code>), GnuPG, SSH, GTFOBins.</p>
+        </article>
+        <article class="project-card project-card-lab project-card-web">
+          <span class="project-label">Vulnversity <span class="project-label-divider">·</span> File uploads</span>
+          <h3>Upload Validation and SUID Escalation</h3>
+          <p><strong>Objective:</strong> Evaluate a web application's upload controls and determine whether local privilege boundaries can be bypassed.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance:</strong> Used Nmap to identify exposed services and Gobuster to discover web application paths.</li>
+              <li><strong>Exploitation:</strong> Assessed extension-based upload filtering and demonstrated why superficial file-name checks are insufficient.</li>
+              <li><strong>Initial access:</strong> In the isolated lab, used an accepted server-side script extension to obtain a remote shell and confirm the access level.</li>
+              <li><strong>Privilege escalation:</strong> Audited SUID programs, identified <code>systemctl</code> as an escalation path, and used the relevant GTFOBins technique to validate root-level impact.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Nmap, Gobuster, Netcat, GTFOBins.</p>
+        </article>
+        <article class="project-card project-card-lab project-card-web">
+          <span class="project-label">Corridor <span class="project-label-divider">·</span> Access control</span>
+          <h3>Identifying Predictable Object References</h3>
+          <p><strong>Objective:</strong> Assess whether predictable URL identifiers expose web resources that are not linked through the normal interface.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance:</strong> Inspected application navigation and URL patterns, noting the consistent format of resource identifiers.</li>
+              <li><strong>Enumeration:</strong> Determined that the identifiers were MD5 hashes of sequential numeric values.</li>
+              <li><strong>Access-control testing:</strong> Manipulated an identifier to test for an insecure direct object reference (IDOR) and access to an unlinked lab resource.</li>
+              <li><strong>Key takeaway:</strong> Confirmed that opaque or hashed identifiers do not replace server-side authorization checks.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Browser developer tools, MD5 hashing.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="portfolio-group portfolio-group-system" aria-labelledby="systemLabsTitle">
+      <div class="portfolio-group-heading">
+        <span class="portfolio-section-icon" aria-hidden="true">⌘</span>
+        <div>
+          <p class="portfolio-eyebrow">TRYHACKME · 3 LABS</p>
+          <h2 id="systemLabsTitle">Network Enumeration &amp; Linux Access</h2>
+          <p>Service enumeration, credential security, initial access, and privilege escalation.</p>
+        </div>
+      </div>
+      <div class="project-grid">
+        <article class="project-card project-card-lab project-card-system">
+          <span class="project-label">Basic Pentesting <span class="project-label-divider">·</span> Enumeration</span>
+          <h3>From Service Enumeration to Credentialed Access</h3>
+          <p><strong>Objective:</strong> Assess exposed services and determine how weak credentials and SSH key protection could lead to account access.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance and enumeration:</strong> Used Nmap and enum4linux to map services and identify SMB user information.</li>
+              <li><strong>Web assessment:</strong> Enumerated web paths with Gobuster and reviewed discovered content for clues about weak credential practices.</li>
+              <li><strong>Initial access:</strong> In the lab, tested SSH credential strength with Hydra and examined a private key associated with another user.</li>
+              <li><strong>Credential recovery:</strong> Cracked the SSH key passphrase with John the Ripper and used the recovered access to complete the lab objectives.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Nmap, Gobuster, enum4linux, Hydra, John the Ripper (<code>ssh2john</code>), SSH.</p>
+        </article>
+        <article class="project-card project-card-lab project-card-system">
+          <span class="project-label">Wgel CTF <span class="project-label-divider">·</span> Linux privilege escalation</span>
+          <h3>Source Review and Sudo Misconfiguration</h3>
+          <p><strong>Objective:</strong> Combine web reconnaissance with host permission analysis to reach the lab's privileged objective.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance:</strong> Scanned services with Nmap and inspected HTML source for user-identifying information.</li>
+              <li><strong>Web enumeration:</strong> Used Gobuster to locate an exposed SSH-related directory and assess the risk of publishing private authentication material.</li>
+              <li><strong>Initial access:</strong> Retrieved the lab's exposed RSA key and used it to authenticate over SSH.</li>
+              <li><strong>Privilege escalation:</strong> Identified unrestricted sudo use of <code>wget</code> and demonstrated its impact against protected lab data.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Nmap, Gobuster, <code>wget</code>, Netcat, SSH.</p>
+        </article>
+        <article class="project-card project-card-lab project-card-system">
+          <span class="project-label">Bounty Hacker <span class="project-label-divider">·</span> FTP / sudo</span>
+          <h3>Anonymous FTP and Excessive Tar Privileges</h3>
+          <p><strong>Objective:</strong> Assess anonymous FTP exposure and determine how weak SSH credentials and broad sudo permissions affect host security.</p>
+          <details class="project-methodology">
+            <summary>Methodology &amp; Key Takeaways</summary>
+            <ul>
+              <li><strong>Reconnaissance:</strong> Used Nmap to identify FTP and SSH services and verified anonymous access to the lab FTP server.</li>
+              <li><strong>Exposure assessment:</strong> Reviewed accessible task materials and evaluated the risks of distributing account and password-related information.</li>
+              <li><strong>Initial access:</strong> Evaluated SSH credential strength in the authorized environment with Hydra to obtain a lab account.</li>
+              <li><strong>Privilege escalation:</strong> Identified excessive sudo permission for <code>tar</code> and applied the corresponding GTFOBins technique to validate root-level impact.</li>
+            </ul>
+          </details>
+          <p class="project-tools"><strong>Tools:</strong> Nmap, FTP, Hydra, SSH, GTFOBins.</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="portfolio-disclaimer">Security testing described here was conducted in authorized TryHackMe training environments. Techniques are documented for learning and defensive awareness.</p>
+  </main>
+</body>
+</html>

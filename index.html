@@ -38,23 +38,25 @@
 </head>
 <body>
 
+  <a class="skip-link" href="#mainContent">Skip to main content</a>
+
   <header class="topbar">
-    <button class="menu-btn" id="menuBtn" type="button">☰</button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">☰</button>
     <div class="brand"><span class="brand-icon">⌬</span> NeoLearn</div>
     <div class="spacer"></div>
     <span class="version">v2.0</span>
   </header>
 
-  <div class="overlay" id="overlay"></div>
+  <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" aria-label="Site navigation" inert>
     <div class="sidebar-header">
       <span>⌬ NeoLearn</span>
-      <button class="close-btn" id="closeBtn" type="button">✕</button>
+      <button class="close-btn" id="closeBtn" type="button" aria-label="Close navigation menu">✕</button>
     </div>
 
     <button class="sidebar-section" type="button" aria-expanded="true" aria-controls="pageNav">Pages</button>
-<nav id="pageNav">
+<nav id="pageNav" aria-label="Pages">
   <button class="nav-btn" data-page="home">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
     <span>Home</span>
@@ -71,84 +73,63 @@
     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
     <span>About</span>
   </button>
+  <a class="nav-btn portfolio-nav-link" href="projects.html">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6M7 16h4"/></svg>
+    <span>Projects &amp; Labs</span>
+  </a>
 </nav>
 
     <button class="sidebar-section" type="button" aria-expanded="true" aria-controls="categoryNav">Categories</button>
-    <nav id="categoryNav"></nav>
+    <nav id="categoryNav" aria-label="Tutorial categories"></nav>
 
     <button class="sidebar-section" type="button" aria-expanded="true" aria-controls="tutorialNav">All Tutorials</button>
-    <nav id="tutorialNav"></nav>
+    <nav id="tutorialNav" aria-label="All tutorials"></nav>
   </aside>
 
-  <main class="content">
+  <main class="content" id="mainContent" tabindex="-1">
 
     <!-- HOME -->
-    <section class="page active" id="home">
+    <section class="page active" id="home" aria-labelledby="homeTitle">
       <div class="hero">
-        <div class="hero-tag">// developer portfolio + tech labs //</div>
-        <h1>I build useful tech.<br><span class="grad">And share what I learn.</span></h1>
-        <p>Self-taught developer and cybersecurity enthusiast from Nigeria, planning to study Computer Engineering and build a career in secure, high-impact technology. Explore my work and practical tutorials.</p>
+        <div class="hero-tag">// developer portfolio + tech tutorials //</div>
+        <h1 id="homeTitle">I build useful tech.<br><span class="grad">And share what I learn.</span></h1>
+        <p>Self-taught developer and cybersecurity learner from Nigeria. Browse practical guides across Linux, Android, macOS, Windows, and iOS—or explore my projects and authorized security labs.</p>
         <div class="hero-links">
           <a href="https://github.com/pixle-ui/neolearn" class="repo-btn" target="_blank" rel="noopener noreferrer">
             View Source Code on GitHub
           </a>
-          <a class="portfolio-link" href="#projects">
-            Explore my projects ↓
+          <a class="portfolio-link" href="projects.html">
+            Explore my projects &amp; labs →
           </a>
         </div>
         <div class="search-wrap">
-          <input type="text" id="searchInput" placeholder="🔍 Search tutorials..." />
+          <label class="sr-only" for="searchInput">Search tutorials</label>
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" id="searchInput" placeholder="Search tutorials..." autocomplete="off" />
         </div>
       </div>
-      <section class="projects-section" id="projects" aria-labelledby="projectsTitle">
-        <div class="projects-heading">
-          <div>
-            <p class="hero-tag">// developer portfolio //</p>
-            <h2 id="projectsTitle">My Projects &amp; Labs</h2>
-            <p>Selected work and technical explorations, alongside the NeoLearn tutorial library.</p>
-          </div>
-          <a href="https://github.com/pixle-ui/neolearn" class="repo-btn" target="_blank" rel="noopener noreferrer">
-            View Source Code on GitHub
-          </a>
-        </div>
-        <div class="project-grid">
-          <article class="project-card">
-            <span class="project-label">Python · In progress</span>
-            <h3>Network Automation Script</h3>
-            <p>Placeholder for a custom IP pinger and network scanner, designed for authorized networks and lab environments.</p>
-          </article>
-          <article class="project-card">
-            <span class="project-label">Cybersecurity · Coming soon</span>
-            <h3>Cybersecurity Write-ups</h3>
-            <p>Placeholder for learning notes and walkthroughs from legal TryHackMe and Hack The Box labs.</p>
-          </article>
-          <article class="project-card project-card-featured">
-            <span class="project-label">Web development · Live</span>
-            <h3>NeoLearn Core</h3>
-            <p>Built with 100% Vanilla JS, featuring a custom Levenshtein distance search algorithm and LocalStorage state management.</p>
-            <a href="https://github.com/pixle-ui/neolearn" target="_blank" rel="noopener noreferrer">View source code →</a>
-          </article>
-        </div>
-      </section>
+      <p class="search-status" id="searchStatus" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="filter-chips" id="filterChips"></div>
       <div class="tutorial-grid" id="tutorialGrid"></div>
       <div class="empty" id="emptyState" style="display:none;">
-        <p>No tutorials match.</p>
+        <span class="empty-icon" aria-hidden="true">⌕</span>
+        <h2>No tutorials found</h2>
+        <p>Try a different search, platform, or category.</p>
       </div>
     </section>
 
     <!-- TUTORIAL DETAIL -->
-    <section class="page" id="tutorial">
+    <section class="page" id="tutorial" aria-label="Tutorial details">
       <button class="back-btn" id="backBtn" type="button">← Back</button>
       <article id="tutorialContent"></article>
     </section>
 
     <!-- FAVORITES -->
-    <section class="page" id="favorites">
+    <section class="page" id="favorites" aria-labelledby="favoritesTitle">
       <div class="about-header">
         <h1>
   <svg class="page-icon pink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
-  Favorites
+  <span id="favoritesTitle">Favorites</span>
 </h1>
         <p>Your bookmarked tutorials.</p>
       </div>
@@ -159,11 +140,11 @@
     </section>
 
     <!-- PROGRESS -->
-    <section class="page" id="progress">
+    <section class="page" id="progress" aria-labelledby="progressTitle">
       <div class="about-header">
         <h1>
   <svg class="page-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V10M9 20V4M15 20v-8M21 20V6"/></svg>
-  Your Progress
+  <span id="progressTitle">Your Progress</span>
        </h1>
         <p>Steps you've marked as complete.</p>
       </div>
@@ -174,11 +155,11 @@
     </section>
 
     <!-- ABOUT -->
-    <section class="page" id="about">
+    <section class="page" id="about" aria-labelledby="aboutTitle">
       <div class="about-header">
         <h1>
   <svg class="page-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
-  About NeoLearn
+  <span id="aboutTitle">About NeoLearn</span>
        </h1>
         <p>A free, open library of practical tech tutorials.</p>
       </div>

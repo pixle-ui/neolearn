@@ -184,17 +184,19 @@
       if (w === ql) return 85;
       // Word starts with query
       if (w.indexOf(ql) === 0) return 80;
-      // Query starts with word (e.g., "javascript" query vs "java" word)
-      if (ql.indexOf(w) === 0 && w.length >= 3) return 70;
     }
 
-    // Subsequence match (all query chars appear in order)
-    if (ql.length >= 2) {
-      var qi = 0;
-      for (var k = 0; k < t.length && qi < ql.length; k++) {
-        if (t[k] === ql[qi]) qi++;
+    // Match a subsequence within one word so unrelated words cannot combine into a false result.
+    if (ql.length >= 3) {
+      for (var k = 0; k < words.length; k++) {
+        var candidate = words[k];
+        if (candidate.length < ql.length) continue;
+        var qi = 0;
+        for (var n = 0; n < candidate.length && qi < ql.length; n++) {
+          if (candidate[n] === ql[qi]) qi++;
+        }
+        if (qi === ql.length) return 55;
       }
-      if (qi === ql.length) return 55;
     }
 
     // Typo tolerance via Levenshtein (only for longer terms)
@@ -271,6 +273,8 @@
     if (content) {
       var bar = document.createElement("div");
       bar.className = "platform-bar";
+      bar.setAttribute("role", "group");
+      bar.setAttribute("aria-label", "Filter tutorials by platform");
       bar.innerHTML = '<span class="platform-label">Platform</span><div class="platform-btns" id="platformBtns"></div>';
       content.insertBefore(bar, content.firstChild);
     }
@@ -287,6 +291,7 @@
     grid: document.getElementById("tutorialGrid"),
     empty: document.getElementById("emptyState"),
     search: document.getElementById("searchInput"),
+    searchStatus: document.getElementById("searchStatus"),
     chips: document.getElementById("filterChips"),
     catNav: document.getElementById("categoryNav"),
     tutNav: document.getElementById("tutorialNav"),
@@ -336,6 +341,8 @@
     if (!toastEl) {
       toastEl = document.createElement("div");
       toastEl.className = "toast";
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
       document.body.appendChild(toastEl);
     }
     toastEl.textContent = msg;
@@ -351,6 +358,7 @@
   allBtn.type = "button";
   allBtn.className = "plat-btn" + (currentPlatform === "all" ? " active" : "");
   allBtn.setAttribute("data-plat", "all");
+  allBtn.setAttribute("aria-pressed", String(currentPlatform === "all"));
   allBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg><span>All</span>';
   allBtn.onclick = function () { setPlatform("all"); };
   el.platBtns.appendChild(allBtn);
@@ -360,6 +368,7 @@
     btn.type = "button";
     btn.className = "plat-btn" + (p.id === currentPlatform ? " active" : "");
     btn.setAttribute("data-plat", p.id);
+    btn.setAttribute("aria-pressed", String(p.id === currentPlatform));
     btn.innerHTML = (p.svg || "") + '<span>' + p.label + '</span>';
     btn.onclick = function () { setPlatform(p.id); };
     el.platBtns.appendChild(btn);
@@ -385,7 +394,9 @@
   function updatePlatBtns() {
     var btns = document.querySelectorAll(".plat-btn");
     for (var i = 0; i < btns.length; i++) {
-      btns[i].classList.toggle("active", btns[i].getAttribute("data-plat") === currentPlatform);
+      var isActive = btns[i].getAttribute("data-plat") === currentPlatform;
+      btns[i].classList.toggle("active", isActive);
+      btns[i].setAttribute("aria-pressed", String(isActive));
     }
   }
 
@@ -400,13 +411,26 @@
   el.menuBtn.onclick = function () {
     el.sidebar.classList.add("open");
     el.overlay.classList.add("show");
+    el.overlay.setAttribute("aria-hidden", "false");
+    el.sidebar.inert = false;
+    el.menuBtn.setAttribute("aria-expanded", "true");
+    el.closeBtn.focus();
   };
-  el.closeBtn.onclick = closeSide;
-  el.overlay.onclick = closeSide;
-  function closeSide() {
+  el.closeBtn.onclick = function () { closeSide(true); };
+  el.overlay.onclick = function () { closeSide(true); };
+  function closeSide(restoreFocus) {
+    var wasOpen = el.sidebar.classList.contains("open");
     el.sidebar.classList.remove("open");
     el.overlay.classList.remove("show");
+    el.overlay.setAttribute("aria-hidden", "true");
+    el.sidebar.inert = true;
+    el.menuBtn.setAttribute("aria-expanded", "false");
+    if (restoreFocus && wasOpen) el.menuBtn.focus();
   }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && el.sidebar.classList.contains("open")) closeSide(true);
+  });
 
   function showPage(id, preserveScroll) {
     var pages = document.querySelectorAll(".page");
@@ -417,7 +441,7 @@
     // Hide top platform bar when inside a tutorial
     document.body.classList.toggle("on-tutorial", id === "tutorial");
 
-    closeSide();
+    closeSide(true);
     if (!preserveScroll) window.scrollTo(0, 0);
   }
 
@@ -433,7 +457,10 @@
 
   function updatePageNavActive(pageId) {
     el.pageNav.querySelectorAll(".nav-btn").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-page") === pageId);
+      var isActive = b.getAttribute("data-page") === pageId;
+      b.classList.toggle("active", isActive);
+      if (isActive) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
     });
   }
 
@@ -442,6 +469,7 @@
     btn.type = "button";
     btn.className = "nav-btn" + (cat === "all" ? " active" : "");
     btn.setAttribute("data-cat", cat);
+    btn.setAttribute("aria-pressed", String(cat === "all"));
     btn.dataset.catKey = cat;
     btn.onclick = function () {
       currentCategory = cat;
@@ -468,6 +496,7 @@
       }
       var label = cat === "all" ? "◇ All" : "◇ " + cat;
       btn.innerHTML = label + '<span class="count">' + count + '</span>';
+      btn.setAttribute("aria-label", (cat === "all" ? "All categories" : cat) + ", " + count + " tutorials");
     });
   }
 
@@ -524,6 +553,7 @@
     chip.type = "button";
     chip.className = "chip" + (cat === "all" ? " active" : "");
     chip.setAttribute("data-cat", cat);
+    chip.setAttribute("aria-pressed", String(cat === "all"));
     chip.textContent = cat === "all" ? "All" : cat;
     chip.onclick = function () {
       currentCategory = cat;
@@ -535,10 +565,14 @@
 
   function updateChips() {
     document.querySelectorAll(".chip").forEach(function (c) {
-      c.classList.toggle("active", c.getAttribute("data-cat") === currentCategory);
+      var isActive = c.getAttribute("data-cat") === currentCategory;
+      c.classList.toggle("active", isActive);
+      c.setAttribute("aria-pressed", String(isActive));
     });
     document.querySelectorAll("#categoryNav .nav-btn").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-cat") === currentCategory);
+      var isActive = b.getAttribute("data-cat") === currentCategory;
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-pressed", String(isActive));
     });
   }
 
@@ -567,6 +601,7 @@
     scored.sort(function (a, b) { return b.score - a.score; });
 
     el.grid.innerHTML = "";
+    el.searchStatus.textContent = scored.length + " tutorial" + (scored.length === 1 ? "" : "s") + " found";
     if (scored.length === 0) {
       el.empty.style.display = "block";
       return;
@@ -594,13 +629,14 @@
       stepCount = getSteps(tut, currentPlatform).length;
     }
 
-    var card = document.createElement("div");
+    var card = document.createElement("article");
     card.className = "tut-card";
+    card.dataset.tutorialId = tut.id;
     card.innerHTML =
-      '<button class="fav-btn' + (isFav(tut.id) ? ' on' : '') + '" type="button">' + (isFav(tut.id) ? '★' : '☆') + '</button>' +
+      '<button class="fav-btn' + (isFav(tut.id) ? ' on' : '') + '" type="button" aria-label="' + (isFav(tut.id) ? 'Remove ' + tut.title + ' from favorites' : 'Add ' + tut.title + ' to favorites') + '" aria-pressed="' + isFav(tut.id) + '">' + (isFav(tut.id) ? '★' : '☆') + '</button>' +
       '<div class="tut-cat">' + tut.category + '</div>' +
       badgeHtml +
-      '<h3>' + tut.title + '</h3>' +
+      '<h3><button class="tut-open" type="button">' + tut.title + '</button></h3>' +
       '<p>' + tut.summary + '</p>' +
       '<div class="tut-meta">' +
         '<span class="diff ' + tut.difficulty + '">' + tut.difficulty + '</span>' +
@@ -609,33 +645,41 @@
       '</div>';
 
     card.onclick = function (e) {
-      if (e.target.classList.contains("fav-btn")) return;
+      if (e.target.closest(".fav-btn, .tut-open")) return;
       openTutorial(tut.id);
     };
+
+    card.querySelector(".tut-open").onclick = function () { openTutorial(tut.id); };
 
     var favBtn = card.querySelector(".fav-btn");
     favBtn.onclick = function (e) {
       e.stopPropagation();
-      toggleFav(tut.id, favBtn);
+      toggleFav(tut.id);
     };
 
     return card;
   }
 
-  function toggleFav(id, btn) {
+  function toggleFav(id) {
     var idx = favorites.indexOf(id);
     if (idx === -1) {
       favorites.push(id);
-      btn.textContent = "★";
-      btn.classList.add("on");
       showToast("⭐ Added to favorites");
     } else {
       favorites.splice(idx, 1);
-      btn.textContent = "☆";
-      btn.classList.remove("on");
       showToast("Removed from favorites");
     }
     saveFavorites();
+    var saved = isFav(id);
+    document.querySelectorAll(".tut-card").forEach(function (card) {
+      if (card.dataset.tutorialId !== id) return;
+      var button = card.querySelector(".fav-btn");
+      if (!button) return;
+      button.textContent = saved ? "★" : "☆";
+      button.classList.toggle("on", saved);
+      button.setAttribute("aria-pressed", String(saved));
+      button.setAttribute("aria-label", (saved ? "Remove " : "Add ") + card.querySelector(".tut-open").textContent + " " + (saved ? "from" : "to") + " favorites");
+    });
     renderSidebarList();
     if (document.getElementById("favorites").classList.contains("active")) {
       renderFavorites();
@@ -1026,13 +1070,17 @@
   topBtn.type = "button";
   topBtn.className = "scroll-top-btn";
   topBtn.setAttribute("aria-label", "Scroll to top");
+  topBtn.setAttribute("aria-hidden", "true");
+  topBtn.tabIndex = -1;
   topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
   topBtn.onclick = function () { window.scrollTo({ top: 0, behavior: "smooth" }); };
   document.body.appendChild(topBtn);
 
   window.addEventListener("scroll", function () {
-    if (window.scrollY > 400) topBtn.classList.add("show");
-    else topBtn.classList.remove("show");
+    var isVisible = window.scrollY > 400;
+    topBtn.classList.toggle("show", isVisible);
+    topBtn.setAttribute("aria-hidden", String(!isVisible));
+    topBtn.tabIndex = isVisible ? 0 : -1;
   });
 
   // =============================================
